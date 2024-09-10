@@ -33,3 +33,35 @@ int kprobe__sys_execve(struct pt_regs *ctx) {
 ```
 
 @bprm_creds_for_exec
+
+## bprm_creds_from_file
+파일 실행 시 해당 파일이 특수 권한(setuid, setgid 등)을 가지고 있는 경우<br> 
+권한을 변경을 반영하여 실행 중인 프로세스의 자격증명을 업데이트한다.<br>
+인터프리터 없이 직접 실행되었을 때 호출되는 특징이 있다.<br>
+
+- e.g.
+setuid/setgid가 어느 파일에서 실행되었는지 감지
+```
+#include <uapi/linux/bpf.h>
+#include <uapi/linux/ptrace.h>
+#include <linux/binfmts.h>
+
+SEC("lsm/bprm_creds_from_file")
+int BPF_PROG(trace_exec, struct linux_binprm *bprm)
+{
+    // 파일 정보에 접근
+    struct file *file = bprm->file;
+    if (file->f_path.dentry->d_inode->i_mode & (S_ISUID | S_ISGID)) {
+        bpf_trace_printk("setuid/setgid 실행 감지: %s\n", file->f_path.dentry->d_name.name);
+    }
+
+    return 0;
+}
+
+char _license[] SEC("license") = "GPL";
+```
+`trace_exec`: bpf 프로그램의 이름<br>
+`struct linux_binprm`: <br>
+    bpf 프로그램에 전달되는 파라미터<br>
+    Linux 커널이 실행 파일을 로드할 때 사용하는 정보를 담고있음<br>
+    실행 파일의 경로, 실행 파일을 로드하기 위한 메모리 포인터, 실행에 필요한 자격 증명 등이 포함<br>
