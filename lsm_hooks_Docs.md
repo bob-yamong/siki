@@ -62,6 +62,6 @@ char _license[] SEC("license") = "GPL";
 ```
 `trace_exec`: bpf 프로그램의 이름<br>
 `struct linux_binprm`: <br>
-    bpf 프로그램에 전달되는 파라미터<br>
-    Linux 커널이 실행 파일을 로드할 때 사용하는 정보를 담고있음<br>
-    실행 파일의 경로, 실행 파일을 로드하기 위한 메모리 포인터, 실행에 필요한 자격 증명 등이 포함<br>
+    &emsp;bpf 프로그램에 전달되는 파라미터<br>
+    &emsp;Linux 커널이 실행 파일을 로드할 때 사용하는 정보를 담고있음<br>
+    &emsp;실행 파일의 경로, 실행 파일을 로드하기 위한 메모리 포인터, 실행에 필요한 자격 증명 등이 포함<br>
