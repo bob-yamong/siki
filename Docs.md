@@ -1,5 +1,5 @@
 # LSM hooks Document
-LSM hook의 용도와 eBPF에서의 사용 방법을 정리한 문서
+LSM hook, syscall, Kprobe의 용도와 eBPF에서의 사용 방법을 정리한 문서
 
 ## kprobe__sys_execve
 execve가 실행된 시점과 관련 메타데이터를 context로 가져올 수 있다.<br>
