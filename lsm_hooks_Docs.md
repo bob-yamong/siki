@@ -5,7 +5,8 @@ LSM hook의 용도와 eBPF에서의 사용 방법을 정리한 문서
 execve가 실행된 시점과 관련 메타데이터를 context로 가져올 수 있다.<br>
 `struct pt_regs`는 프로세서의 레지스터 상태를 저장하는 구조체
 
-- exempli gratia
+- e.g.
+pid 당 execve 호출 횟수 모니터링
 ```
 #include <uapi/linux/bpf.h>
 #include <uapi/linux/ptrace.h>
