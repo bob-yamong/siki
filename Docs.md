@@ -5,7 +5,7 @@ LSM hook, syscall, Kprobe의 용도와 eBPF에서의 사용 방법을 정리한 
 execve가 실행된 시점과 관련 메타데이터를 context로 가져올 수 있다.<br>
 `struct pt_regs`는 프로세서의 레지스터 상태를 저장하는 구조체
 
-- e.g.
+- e.g.<br>
 pid 당 execve 호출 횟수 모니터링
 ```
 #include <uapi/linux/bpf.h>
@@ -39,7 +39,7 @@ int kprobe__sys_execve(struct pt_regs *ctx) {
 권한을 변경을 반영하여 실행 중인 프로세스의 자격증명을 업데이트한다.<br>
 인터프리터 없이 직접 실행되었을 때 호출되는 특징이 있다.<br>
 
-- e.g.
+- e.g.<br>
 setuid/setgid가 어느 파일에서 실행되었는지 감지
 ```
 #include <uapi/linux/bpf.h>
