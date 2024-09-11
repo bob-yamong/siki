@@ -212,3 +212,5 @@ int BPF_PROG(parse_fs_param, struct fs_context *fc, struct fs_parameter *param)
 
 char _license[] SEC("license") = "GPL";
 ```
+`struct fs_context`: 파일 시스템 슈퍼블록을 생성하고 구성하는 데 사용되는 커널 구조체<br>
+`struct fs_parameter`: 파일 시스템 구성 매개변수를 전달하는 데 사용 
