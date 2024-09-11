@@ -65,3 +65,43 @@ char _license[] SEC("license") = "GPL";
     &emsp;bpf 프로그램에 전달되는 파라미터<br>
     &emsp;Linux 커널이 실행 파일을 로드할 때 사용하는 정보를 담고있음<br>
     &emsp;실행 파일의 경로, 실행 파일을 로드하기 위한 메모리 포인터, 실행에 필요한 자격 증명 등이 포함<br>
+
+## bprm_check_security
+시스템 호출 과정에서 바이너리 핸들러에 대한 검색이 시작되기 직전에 보안 검사를 수행할 수 있도록 설계된 훅<br>
+실행 파일의 보안 속성을 확인하고, 해당 실행 파일이 적절한 권한을 가지고 있는지 검사<br>
+argv 및 envp 리스트에 접근할 수 있어, 실행될 파일의 인자와 환경 변수를 기반으로 추가적인 보안 검사를 수행할 수 있음<br>
+
+- e.g. <br>
+실행 중인 혹은 실행하려는 바이너리에 대한 파라미터를 검사하여 차단
+
+```
+#include <linux/bpf.h>
+#include <linux/binfmts.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/string.h>
+
+SEC("lsm/bprm_check_security")
+int BPF_PROG(check_exec_security, struct linux_binprm *bprm)
+{
+    // 실행 파일 경로 추출
+    struct file *file = bprm->file;
+    if (file) {
+        struct dentry *dentry = file->f_path.dentry;
+        if (dentry && dentry->d_name.name) {
+            // 실행 파일 이름 확인
+            const char *filename = dentry->d_name.name;
+            bpf_trace_printk("Attempting to execute binary: %s\n", filename);
+
+            // 특정 바이너리 이름("blocked_binary")일 경우 실행 차단
+            if (bpf_strncmp(filename, "blocked_binary", sizeof("blocked_binary") - 1) == 0) {
+                bpf_trace_printk("Execution blocked for binary: %s\n", filename);
+                return -1; // -1을 반환하면 실행이 차단됨
+            }
+        }
+    }
+
+    return 0; // 0을 반환하면 실행 허용
+}
+
+char _license[] SEC("license") = "GPL";
+```
