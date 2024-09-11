@@ -97,3 +97,62 @@ struct fs_context {
     struct fs_parser *parser;
 };
 ```
+
+## struct fs_context
+- 파일 시스템 슈퍼블록을 생성하고 구성하는 데 사용되는 커널 구조체
+- 파일 시스템 마운트 작업의 컨텍스트를 캡슐화
+- 파일 시스템별 구성 매개변수를 관리하는 데 사용
+
+### x86-64에서의 정의
+아래 내용은 일반적인 구조임
+```
+struct fs_context {
+    const struct fs_context_operations *ops;  // 파일 시스템 컨텍스트와 관련된 연산
+    struct file_system_type *fs_type;         // 파일 시스템의 타입
+    struct dentry *root;                     // 파일 시스템의 루트 디렉터리
+    struct super_block *sget_ssb;             // sget() 동안 사용된 슈퍼블록
+    struct super_block *sb;                  // 최종 슈퍼블록
+    struct user_namespace *user_ns;          // 사용 중인 사용자 네임스페이스
+    struct net *net_ns;                      // 연관된 네트워크 네임스페이스
+    const struct cred *cred;                 // 생성자의 자격 증명
+    void *security;                          // 보안 데이터 포인터
+    char *source;                            // 소스 경로 또는 장치
+    void *fs_private;                        // 파일 시스템별 개인 데이터
+    const char *subtype;                     // 파일 시스템의 하위 타입 문자열
+    unsigned long sb_flags;                  // 슈퍼블록 플래그
+    unsigned int sb_flags_mask;              // 설정 가능한 슈퍼블록 플래그의 마스크
+    loff_t max_size;                         // 파일 시스템의 최대 크기
+    enum fs_context_purpose purpose;         // 컨텍스트의 목적(마운트, 재구성 등)
+    bool need_free:1;                        // 컨텍스트가 해제되어야 하는지 여부
+    bool global:1;                           // 컨텍스트가 전역인지 여부
+    unsigned int net_nsok:1;                 // net_ns가 검사된 상태인지 여부
+    unsigned int no_open:1;                  // 설정된 경우 소스를 열지 않음
+    unsigned int no_fscrypt_key:1;           // 설정된 경우 파일 시스템 암호화 키 거부
+    unsigned int legacy_data:1;              // 레거시 데이터를 특정 방식으로 처리
+    char *security_xattr;                    // 보안 xattr 버퍼
+    size_t security_xattr_size;              // 보안 xattr 버퍼 크기
+    struct fc_log *log;                      // 오류 메시지용 로그 구조체 포인터
+    struct mutex *uapi_mutex;                // 사용자 공간 API 작업용 뮤텍스
+    struct list_head *monitors;              // 컨텍스트 모니터 목록
+};
+```
+
+## struct fs_parameter
+- 파일 시스템 구성 매개변수를 전달하는 데 사용
+- 사용자 공간에서 커널로 설정 정보를 전달할 때 사용
+
+### x86-64에서의 정의
+아래 내용은 일반적인 구조임
+```
+struct fs_parameter {
+    char *key;                               // 파라미터 키
+    union {
+        void *value_generic;                 // 일반적인 값 포인터
+        int value_int;                       // 정수형 값
+        char *value_string;                  // 문자열 값
+    };
+    enum fs_value_type type;                 // 값의 타입
+    struct fs_parameter_spec *spec;          // 파라미터 스펙 포인터
+    struct list_head link;                   // 다른 파라미터와의 연결을 위한 리스트 헤더
+};
+```
