@@ -176,3 +176,39 @@ int BPF_PROG(handle_fs_context_dup, struct fs_context *fc, struct fs_context *sr
 }
 ```
 `struct fs_context`: 파일 시스템 마운트 또는 재구성 작업에 대한 정보
+
+## fs_context_parse_param
+- 사용자 공간에서 제공된 매개변수를 통해 슈퍼블록을 구성할 때 사용
+- 파라미터 검증, 파라미터 거부, 내부 사용, 파일 시스템 전달에 주로 사용 
+
+### e.g.
+- 파일 시스템 작업을 보안 감사하거나 검증
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/fs_context.h>
+
+SEC("lsm/fs_context_parse_param")
+int BPF_PROG(parse_fs_param, struct fs_context *fc, struct fs_parameter *param)
+{
+    char expected_value[] = "safe_value";
+    char provided_value[64];
+
+    // 매개변수의 값을 가져옵니다.
+    bpf_probe_read_user_str(provided_value, sizeof(provided_value), param->key);
+
+    // 예상된 안전한 값을 확인합니다.
+    if (bpf_strncmp(provided_value, expected_value, sizeof(expected_value)) == 0) {
+        bpf_printk("Safe filesystem parameter provided: %s\n", provided_value);
+        return 0;  // LSM에서 매개변수 사용
+    } else {
+        bpf_printk("Unsafe filesystem parameter provided: %s\n", provided_value);
+        return -EPERM;  // 매개변수 거부
+    }
+
+    // 기본적으로 파일 시스템에 매개변수를 전달
+    return -ENOPARAM;
+}
+
+char _license[] SEC("license") = "GPL";
+```
