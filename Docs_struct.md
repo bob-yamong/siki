@@ -67,3 +67,33 @@ struct linux_binprm {
     struct rlimit rlim_stack;         // 스택 크기 제한 정보
 };
 ```
+
+## struct fs_context
+- 파일 시스템 마운트 또는 재구성 작업에 대한 정보
+- 파일 시스템의 설정과 상태를 나타냄
+- 파일 시스템 구현이 초기화 및 구성 단계를 처리하는 데 사용
+
+### x86-64에서의 정의
+아래 내용은 일반적인 구조로 버전마다 상이할 수 있음
+```
+struct fs_context {
+    const struct fs_parameter_spec *fs_type;
+    struct dentry *root;
+    const struct cred *cred;
+    struct user_namespace *user_ns;
+    struct fc_log *log;
+    const struct fs_context_operations *ops;
+    const char *source;
+    void *security;
+    unsigned int sb_flags;
+    unsigned int sb_flags_mask;
+    loff_t max_size;
+    enum fs_context_purpose purpose;
+    int need_free:1,
+        sb_rdonly:1;
+    void *fs_private;
+    struct net *net_ns;
+    struct fs_parameter *params;
+    struct fs_parser *parser;
+};
+```

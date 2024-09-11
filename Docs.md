@@ -139,3 +139,40 @@ int BPF_PROG(handle_committed_creds, struct linux_binprm *bprm)
     return 0;
 }
 ```
+
+## fs_context_dup
+- 파일 시스템 컨텍스트를 복제할 때 호출
+- 새로운 파일 시스템 컨텍스트(fc)가 생성되고 원본 파일 시스템 컨텍스트(src_fc)로부터 복제되는 과정에서 보안 구조를 할당하고 초기화하는 역할
+- fs_context_dup은 보안 모듈이 필요한 보안 속성을 새로운 컨텍스트에 적절히 복제할 수 있도록함
+
+### e.g.
+- 파일 시스템 컨텍스트의 복제 과정에서 발생하는 보안 관련 이벤트를 로깅
+```
+#include <linux/bpf.h>
+#include <linux/fs_context.h>
+#include <bpf/bpf_helpers.h>
+
+// 프로그램 라이선스 명시
+char LICENSE[] SEC("license") = "GPL";
+
+// LSM Hook: fs_context_dup
+SEC("lsm/fs_context_dup")
+int BPF_PROG(handle_fs_context_dup, struct fs_context *fc, struct fs_context *src_fc)
+{
+    // 원본 fs_context 정보 로깅
+    if (src_fc) {
+        bpf_trace_printk("Original fs_context: %p\n", src_fc);
+    }
+
+    // 새로운 fs_context 정보 로깅
+    if (fc) {
+        bpf_trace_printk("New fs_context: %p\n", fc);
+    }
+
+    // 보안 모듈에서 요구하는 추가적인 검사나 조치 수행 가능
+    // 예: 특정 타입의 파일 시스템에 대한 접근 제한 등
+
+    return 0;
+}
+```
+`struct fs_context`: 파일 시스템 마운트 또는 재구성 작업에 대한 정보
