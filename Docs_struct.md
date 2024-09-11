@@ -34,3 +34,36 @@ struct pt_regs {
     unsigned long ss;    // 스택 세그먼트 레지스터 (SS)
 };
 ```
+
+## struct linux_binprm
+프로세스의 실행 파일과 관련된 정보를 관리하는 구조체<br>
+주로 새로운 프로세스를 실행하기 위해 `execve()` 이 호출될 때 사용<br>
+실행 파일과 메타데이터를 저장<br>
+모든 아키텍쳐가 거의 동일한 구조<br>
+
+### x86-64에서의 정의
+```
+struct linux_binprm {
+    char buf[BINPRM_BUF_SIZE];        // 실행 파일의 헤더(파일 앞부분)를 저장하는 버퍼
+    struct mm_struct *mm;             // 새로운 프로세스의 메모리 구조체
+    struct file *file;                // 실행할 파일에 대한 포인터 (struct file)
+    struct cred *cred;                // 프로세스가 사용할 자격 증명 (권한 및 사용자 정보)
+    int argc;                         // 실행 파일의 인수 개수
+    int envc;                         // 환경 변수 개수
+    char *filename;                   // 실행할 파일의 이름
+    char *interp;                     // 해석기(interpreter)가 필요한 경우 해당 경로
+    unsigned interp_flags;            // 인터프리터 플래그
+    unsigned interp_data;             // 인터프리터를 위한 데이터
+    int execfd;                       // 실행 파일 디스크립터 (fd)
+    struct page *page[MAX_ARG_PAGES]; // 명령 인수 및 환경 변수를 위한 메모리 페이지
+    struct vm_area_struct *vma;       // 가상 메모리 영역 구조체
+    int pid;                          // 실행 중인 프로세스의 PID
+    unsigned long p;                  // 현재 명령 줄 인수의 위치
+    int per_clear;                    // 퍼스낼리티를 초기화해야 하는지 여부
+    unsigned long stack_base;         // 스택이 시작되는 주소
+    unsigned long pgrp;               // 프로세스 그룹 ID
+    unsigned long brk;                // 현재 brk 포인터(메모리 확장용)
+    int secureexec;                   // 보안 실행 여부(보안 모드로 실행될 때 설정)
+    struct rlimit rlim_stack;         // 스택 크기 제한 정보
+};
+```
