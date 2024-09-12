@@ -324,3 +324,35 @@ void BPF_PROG(cleanup_mount_options, struct mount_options *mnt_ops) {
 
 char _license[] SEC("license") = "GPL";
 ```
+
+## sb_eat_lsm_opts
+- 파일 시스템 마운트 옵션을 분석하고 저장하는 데 사용
+- 마운트 옵션 문자열`(@orig)`에서 보안 관련 설정을 파싱하고 이를 내부 데이터 구조`(@mnt_opts)`에 저장
+- 마운트 프로세스의 초기 단계에서 호출되어, 보안 관련 마운트 옵션을 적절히 처리하고 나머지 파일 시스템 코드에 영향을 미치기 전에 보안 설정을 적용
+
+### e.g.
+- 마운트 옵션을 파싱하고 로깅
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/fs.h>
+
+struct mount_options {
+    char options[256];  // 예제 구조체 필드
+};
+
+SEC("lsm/sb_eat_lsm_opts")
+int BPF_PROG(parse_mount_options, const char *orig, struct mount_options *mnt_opts) {
+    // 원본 옵션에서 특정 보안 관련 옵션을 찾고 파싱
+    if (strstr(orig, "secure")) {
+        // 'secure' 옵션 발견 시 처리
+        bpf_probe_read_str(mnt_opts->options, sizeof(mnt_opts->options), orig);
+        char msg[] = "Secure mount option parsed\n";
+        bpf_trace_printk(msg, sizeof(msg));
+    }
+
+    return 0;  // 옵션 처리 완료
+}
+
+char _license[] SEC("license") = "GPL";
+```
