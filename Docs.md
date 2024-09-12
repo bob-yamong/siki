@@ -300,3 +300,28 @@ int BPF_PROG(clean_superblock_security, struct super_block *sb) {
 char _license[] SEC("license") = "GPL";
 ```
 
+## sb_free_mnt_opts
+- 마운트된 파일 시스템 옵션에 할당된 메모리를 해제할 때 사용
+- 파일 시스템을 마운트할 때 보안 모듈에 의해 할당된 추가 옵션 또는 메타데이터가 있다면, 이 훅을 통해 해당 메모리를 안전하게 정리하고 해제할 수 있음
+
+### e.g.
+- 마운트 옵션을 해제할 때 로깅
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/fs.h>
+
+SEC("lsm/sb_free_mnt_opts")
+void BPF_PROG(cleanup_mount_options, struct mount_options *mnt_ops) {
+    // 로깅 메시지 생성
+    char msg[] = "Cleaning up mount options\n";
+
+    // 로깅 함수 호출 (주의: 실제 사용에서는 bpf_trace_printk 사용을 자제하고, 다른 로깅 메커니즘을 사용할 것)
+    bpf_trace_printk(msg, sizeof(msg));
+    
+    // 실제로 mnt_ops 구조체를 해제하는 로직은 보안 모듈 내부적으로 처리됩니다.
+}
+
+char _license[] SEC("license") = "GPL";
+```
+
