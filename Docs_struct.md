@@ -191,3 +191,40 @@ struct super_block {
     const struct xattr_handler **s_xattr;
 };
 ```
+
+## struct dentry
+- 디렉터리 엔트리를 추상화하는 주요 데이터 구조 중 하나
+- 파일 시스템의 디렉터리와 파일을 나타내며, 파일 이름, 파일의 위치, 상위 및 하위 디렉터리와의 관계 등의 정보를 포함
+- 파일 시스템의 각 파일이나 디렉터리는 하나의 dentry 구조체를 가지고 있으며, 이는 해당 파일이나 디렉터리에 대한 메타데이터 역할을 수행
+
+### x86-64에서의 정의
+```
+struct dentry {
+    unsigned int d_flags;           // 플래그 (마운트 포인트, 루트 등을 표시)
+    seqcount_t d_seq;               // 잠금 없이 dentry 접근을 보호하는 시퀀스 카운터
+    struct hlist_bl_node d_hash;    // 해시 테이블 링크
+    struct dentry *d_parent;        // 상위 dentry 포인터
+    struct qstr d_name;             // 디렉터리 항목 이름
+    struct inode *d_inode;          // 관련 inode
+    unsigned char d_iname[DNAME_INLINE_LEN]; // 짧은 이름을 위한 인라인 버퍼
+
+    // 하위 디렉터리와의 관계를 나타내는 리스트
+    struct list_head d_child;       // 하위 dentry 리스트
+    struct list_head d_subdirs;     // 하위 디렉터리 리스트
+
+    // 참조 카운트와 락을 위한 멤버
+    struct list_head d_lru;         // LRU 리스트
+    struct list_head d_u;           // 사용중인 dentry 리스트
+    struct dentry *d_alias;         // inode 에 대한 다른 dentry 리스트
+
+    // 관련 파일 시스템 및 마운트 정보
+    struct super_block *d_sb;       // 소유한 super_block 포인터
+    unsigned long d_time;           // 마지막 사용 시간
+    void *d_fsdata;                 // 파일 시스템 관련 데이터
+    struct dentry_operations *d_op; // dentry 작업에 대한 포인터
+
+    // 참조 카운트
+    struct kref d_ref;              // dentry에 대한 참조 카운트
+    struct rcu_head d_rcu;          // RCU 해드
+} __randomize_layout;
+```
