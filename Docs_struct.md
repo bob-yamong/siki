@@ -156,3 +156,38 @@ struct fs_parameter {
     struct list_head link;                   // 다른 파라미터와의 연결을 위한 리스트 헤더
 };
 ```
+
+## struct super_block
+- 리눅스 커널에서 파일 시스템의 상위 구조를 설명하는 중요한 데이터 구조
+- 각 마운트된 파일 시스템은 struct super_block 인스턴스를 하나씩 갖음
+- 파일 시스템의 타입, 상태, 동작 방식 등을 정의
+
+### x86-64에서의 정의
+```
+struct super_block {
+    struct list_head s_list;        /* 연결 리스트 */
+    dev_t s_dev;                    /* 장치 식별자 */
+    unsigned long s_blocksize;
+    unsigned char s_blocksize_bits;
+    unsigned long s_magic;
+    struct dentry *s_root;
+    struct rw_semaphore s_umount;
+    int s_count;
+    atomic_t s_active;
+    const struct super_operations *s_op;
+    struct hlist_bl_head s_mounts;  /* 마운트된 파일 시스템 목록 */
+    struct mutex s_lock;
+    int s_readonly_remount;
+    int s_dirt;
+    struct list_head s_inodes;     /* 인덱스 노드 리스트 */
+    void *s_fs_info;               /* 파일 시스템 스펙 정보 */
+    unsigned int s_maxbytes;
+    struct file_system_type *s_type;
+    const char *s_id;
+    unsigned int s_flags;
+    unsigned long s_iflags;
+    struct timespec64 s_time_gran;
+    struct sb_writers s_writers;
+    const struct xattr_handler **s_xattr;
+};
+```
