@@ -324,4 +324,3 @@ void BPF_PROG(cleanup_mount_options, struct mount_options *mnt_ops) {
 
 char _license[] SEC("license") = "GPL";
 ```
-
