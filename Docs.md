@@ -270,3 +270,33 @@ int BPF_PROG(check_superblock_release, struct super_block *sb) {
 
 char _license[] SEC("license") = "GPL";
 ```
+
+## sb_free_security
+- `super_block` 구조체의 보안 관련 필드`(s_security)`를 해제할 때 사용
+- 파일 시스템의 `super_block`이 메모리에서 제거되어야 할 때, 이 훅을 통해 할당된 보안 구조체를 정리하고 필요한 마지막 보안 체크를 수행할 수 있음
+
+### e.g.
+- `super_block`의 보안 정보를 해제할 때 추가 로깅 수행
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/security.h>
+#include <linux/fs.h>
+
+SEC("lsm/sb_free_security")
+int BPF_PROG(clean_superblock_security, struct super_block *sb) {
+    // 로깅 메시지 생성
+    char msg[] = "Clearing security for superblock with device: %d:%d\n";
+    
+    // sb 구조체에서 장치 번호 추출
+    dev_t dev = sb->s_dev;
+
+    // 로깅 함수 호출 (주의: 실제 사용에서는 bpf_trace_printk 사용을 자제하고, 다른 로깅 메커니즘을 사용할 것)
+    bpf_trace_printk(msg, sizeof(msg), MAJOR(dev), MINOR(dev));
+    
+    return 0; // 항상 성공적으로 수행됨을 의미
+}
+
+char _license[] SEC("license") = "GPL";
+```
+
