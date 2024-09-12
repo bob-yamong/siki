@@ -240,3 +240,33 @@ int BPF_PROG(sb_alloc_security_logger, struct super_block *sb)
 char LICENSE[] SEC("license") = "GPL";
 ```
 `struct super_block`: 파일 시스템의 전반적인 정보를 담고 있는 핵심 구조체 중 하나
+
+### sb_delete
+- `super_block` 구조체가 해제될 때 호출
+- 파일 시스템의 `super_block`이 메모리에서 해제되기 전에 관련된 객체(예: 인덱스 노드, 보안 정보 등)를 정리하고 필요한 보안 관련 청소 작업을 수행하는 데 사용
+- 보안 모듈은 이 훅을 사용하여 `super_block`과 연관된 보안 정보를 정리하거나 추가적인 보안 정책을 강제할 때 사용
+
+### e.g.
+- `super_block` 구조체가 해제되기 전에 특정 보안 정책을 검사하고 로깅
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/security.h>
+#include <linux/fs.h>
+
+SEC("lsm/sb_delete")
+int BPF_PROG(check_superblock_release, struct super_block *sb) {
+    // 로깅 메시지 생성
+    char msg[] = "Releasing superblock with device: %d:%d\n";
+    
+    // sb 구조체에서 장치 번호 추출
+    dev_t dev = sb->s_dev;
+
+    // 로깅 함수 호출 (주의: 실제 사용에서는 bpf_trace_printk 사용을 자제하고, 다른 로깅 메커니즘을 사용할 것)
+    bpf_trace_printk(msg, sizeof(msg), MAJOR(dev), MINOR(dev));
+    
+    return 0; // 항상 성공적으로 수행됨을 의미
+}
+
+char _license[] SEC("license") = "GPL";
+```
