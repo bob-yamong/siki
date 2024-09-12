@@ -356,3 +356,40 @@ int BPF_PROG(parse_mount_options, const char *orig, struct mount_options *mnt_op
 
 char _license[] SEC("license") = "GPL";
 ```
+
+## sb_statfs
+- 파일 시스템 통계 정보를 가져오기 전에 해당 작업에 대한 권한을 확인하는 데 사용
+- 파일 시스템의 마운트 지점(mnt)에 대한 정보를 검색하려고 할 때 권한을 확인하는데 사용
+- 보안 검사, 파일 시스템 보호에 사용
+
+### e.g.
+- 파일 시스템의 통계를 요청한 사용자가 특정 기준을 충족하는지 확인하고, 그렇지 않을 경우 로깅을 수행
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/dentry.h>
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __type(key, u32);
+    __type(value, u32);
+    __uint(max_entries, 1024);
+} restricted_uid_map SEC(".maps");
+
+SEC("lsm/sb_statfs")
+int BPF_PROG(check_fs_stat_permission, struct dentry *dentry)
+{
+    u32 uid = bpf_get_current_uid_gid() & 0xFFFFFFFF;  // 현재 사용자의 UID를 가져옴
+    u32 *is_restricted = bpf_map_lookup_elem(&restricted_uid_map, &uid);
+
+    if (is_restricted && *is_restricted) {
+        bpf_printk("UID %u is restricted from accessing fs stats\n", uid);
+        return -EPERM;  // 허용되지 않은 사용자에게는 접근을 거부
+    }
+
+    return 0;  // 권한 부여
+}
+
+char _license[] SEC("license") = "GPL";
+```
+`struct dentry`: 파일 시스템의 수퍼블록에 대한 핸들을 제공하는 dentry 구조체 
