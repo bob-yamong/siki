@@ -214,3 +214,29 @@ char _license[] SEC("license") = "GPL";
 ```
 `struct fs_context`: 파일 시스템 슈퍼블록을 생성하고 구성하는 데 사용되는 커널 구조체<br>
 `struct fs_parameter`: 파일 시스템 구성 매개변수를 전달하는 데 사용 
+
+## sb_alloc_security
+- 파일 시스템의 super_block 구조체에 보안 관련 구조체를 할당하고 첨부하는 역할
+- 파일 시스템이 마운트되는 시점에서 호출
+- 보안 모듈이 파일 시스템의 보안 관련 정보를 초기화할 수 있게함
+
+### e.g.
+- 파일 시스템의 마운트 시점에 로깅
+```
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+#include <linux/super_block.h>
+
+SEC("lsm/sb_alloc_security")
+int BPF_PROG(sb_alloc_security_logger, struct super_block *sb)
+{
+    // 여기서는 파일 시스템 타입을 로그로 남김
+    bpf_printk("Allocating security for filesystem type: %s\n", sb->s_type->name);
+
+    // 성공적으로 수행했다고 가정하고 0을 반환
+    return 0;
+}
+
+char LICENSE[] SEC("license") = "GPL";
+```
+`struct super_block`: 파일 시스템의 전반적인 정보를 담고 있는 핵심 구조체 중 하나
