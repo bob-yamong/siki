@@ -7,7 +7,6 @@
 
 
 1. [syscall.md](./syscall.md) : 프로세스와 관련한 syscall을 정리한 문서
-2. tracepoint : tracepoint 별 사용하는 syscall을 정리해둔 문서
-3. lsm_hook : lsm hook 별 사용하는 syscall을 정리해둔 문서
-
-
+2. [tracepoint](./tracepoint.md) : 프로세스와 관련한 tracepoint 정보를 정리한 문서
+3. [lsm_hook](./lsm_hook.md) : lsm hook 별 사용하는 syscall을 정리해둔 문서
+4. kprobe: : kprobe 정리 해둔 문서
