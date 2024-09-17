@@ -1,4 +1,5 @@
 # Network-Related LSM Hooks in Linux
+네트워크 조작과 관련된 lsm hook 정리 문서
 
 ### 1. `security_socket_create`
 - Triggered when a socket is created. This hook can be used to monitor socket creation for specific protocol families (like TCP, UDP, etc.).
