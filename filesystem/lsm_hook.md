@@ -94,3 +94,60 @@
 
 - **설명**: 경로 기반 API를 사용하여 디렉토리가 제거될 때 트리거됩니다.
 - **Use Case**: Enforce security policies on directory deletion.
+
+# Additional Filesystem-Related LSM Hooks in Linux
+
+### 1. `inode_post_setattr`
+
+- **설명**: inode 속성이 설정된 후 호출됩니다.
+- **Use Case**: Useful for enforcing post-modification checks or logging.
+
+### 2. `inode_setxattr`
+
+- **설명**: inode에 확장 속성(xattr)이 설정될 때 호출됩니다.
+- **Use Case**: Used to control or log modifications to extended attributes like SELinux labels.
+
+### 3. `inode_removexattr`
+
+- **설명**: inode에서 확장 속성(xattr)이 제거될 때 호출됩니다.
+- **Use Case**: Allows monitoring or blocking the removal of important xattrs.
+
+### 4. `inode_set_acl`
+
+- **설명**: inode에 ACL(Access Control List)이 설정될 때 호출됩니다.
+- **Use Case**: Enforces ACL policies or tracks changes to file permissions.
+
+### 5. `file_permission`
+
+- **설명**: 파일 접근 권한이 확인될 때 호출됩니다.
+- **Use Case**: Enforces or audits access control policies.
+
+### 6. `file_mprotect`
+
+- **설명**: 메모리 보호 작업 중에 호출됩니다 (예: 메모리 권한 변경).
+- **Use Case**: Ensures safe memory protection changes for processes, especially useful for security-focused modules like SELinux.
+
+### 7. `file_receive`
+
+- **설명**: UNIX 도메인 소켓을 통해 파일 디스크립터를 받을 때 호출됩니다.
+- **Use Case**: Controls or audits the sharing of file descriptors between processes.
+
+### 8. `task_alloc`
+
+- **설명**: 새로운 태스크가 할당될 때 (프로세스 생성 시) 호출됩니다.
+- **Use Case**: Monitors task creation for potential malicious activities.
+
+### 9. `task_free`
+
+- **설명**: 태스크가 해제될 때 (프로세스 종료 시) 호출됩니다.
+- **Use Case**: Ensures any necessary cleanup and auditing is performed when a task terminates.
+
+### 10. `file_ioctl`
+
+- **설명**: 파일에서 ioctl 작업이 수행될 때 호출됩니다.
+- **Use Case**: Controls or logs system calls that interact with hardware devices via ioctl.
+
+### 11. `file_post_open`
+
+- **설명**: 파일이 열린 후에 호출됩니다.
+- **Use Case**: Useful for enforcing access policies or logging after the file open event.
