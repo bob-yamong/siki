@@ -11,3 +11,4 @@
 
 ## Reference
 - https://linasm.sourceforge.net/docs/syscalls/network.php#socket
+- https://man7.org/linux/man-pages/dir_section_2.html
