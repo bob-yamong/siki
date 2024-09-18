@@ -1,3 +1,8 @@
+> [!NOTE]
+> This document is based on Linux manual pages[^1].
+>
+> 이 문서는 리눅스 메뉴얼 페이지[^1]를 기반으로 작성하였음.
+
 ## 1. 프로세스 생성 및 종료 관련 시스템 호출
 
 ### FORK
@@ -1831,3 +1836,6 @@
 
 - 성공 시 `0` 반환
 - 실패 시 `-1` 반환하고 `errno` 설정
+
+
+[^1]: [Linux manual pages](https://man7.org/linux/man-pages/dir_section_2.html)
