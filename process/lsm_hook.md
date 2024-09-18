@@ -1,5 +1,10 @@
 # Process-Related LSM Hooks in Linux
 
+> [!NOTE]
+> This document is based on linux repository[^1].
+>
+> 이 문서는 리눅스 레포[^1]를 참고 하였음.
+
 ## 1. 생성
 ## task_alloc
 > 새 태스크 구조체 할당 시 호출
@@ -519,3 +524,6 @@ struct kernel_siginfo {
 
 **Return(default_value)** :
 - `void` LSM_RET_VOID
+
+
+[^1]: [linux 레포 lsm_hook](https://github.com/torvalds/linux/blob/v6.8/include/linux/lsm_hook_defs.h)
