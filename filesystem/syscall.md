@@ -47,7 +47,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/close.2.html
 
----
+
 
 ### Creat
 > Open and possibly create a file.
@@ -67,7 +67,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/creat.2.html
 
----
+
 
 ### Open
 > Open and possibly create a file.
@@ -88,7 +88,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/open.2.html
 
----
+
 
 ### Openat
 > Open and possibly create a file relative to a directory file descriptor.
@@ -110,7 +110,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/openat.2.html
 
----
+
 
 ### Name_to_handle_at
 > Obtain handle for a pathname.
@@ -133,7 +133,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/name_to_handle_at.2.html
 
----
+
 
 ### Open_by_handle_at
 > Open file via a handle.
@@ -154,7 +154,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/open_by_handle_at.2.html
 
----
+
 
 ### Memfd_create
 > Create an anonymous file.
@@ -193,7 +193,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mknod.2.html
 
----
+
 
 ### Mknodat
 > Create a special or ordinary file relative to a directory file descriptor.
@@ -215,7 +215,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mknodat.2.html
 
----
+
 
 ### Rename
 > Rename a file.
@@ -235,7 +235,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/rename.2.html
 
----
+
 
 ### Renameat
 > Rename a file relative to directory file descriptors.
@@ -257,7 +257,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/renameat.2.html
 
----
+
 
 ### Renameat2
 > Rename a file relative to directory file descriptors with additional flags.
@@ -280,7 +280,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/renameat2.2.html
 
----
+
 
 ### Truncate
 > Truncate a file to a specified length.
@@ -300,7 +300,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/truncate.2.html
 
----
+
 
 ### Ftruncate
 > Truncate a file to a specified length.
@@ -320,7 +320,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/ftruncate.2.html
 
----
+
 
 ### Fallocate
 > Manipulate file space.
@@ -363,7 +363,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mkdir.2.html
 
----
+
 
 ### Mkdirat
 > Create a directory relative to a directory file descriptor.
@@ -385,7 +385,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mkdirat.2.html
 
----
+
 
 ### Rmdir
 > Delete a directory.
@@ -404,7 +404,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/rmdir.2.html
 
----
+
 
 ### Getcwd
 > Get current working directory.
@@ -424,7 +424,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getcwd.2.html
 
----
+
 
 ### Chdir
 > Change working directory.
@@ -443,7 +443,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chdir.2.html
 
----
+
 
 ### Fchdir
 > Change working directory using a file descriptor.
@@ -462,7 +462,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fchdir.2.html
 
----
+
 
 ### Chroot
 > Change root directory.
@@ -481,7 +481,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chroot.2.html
 
----
+
 
 ### Getdents
 > Get directory entries.
@@ -502,7 +502,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getdents.2.html
 
----
+
 
 ### Getdents64
 > Get directory entries (64-bit version).
@@ -523,7 +523,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getdents64.2.html
 
----
+
 
 ### Lookup_dcookie
 > Return a directory entry's path.
@@ -562,7 +562,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/link.2.html
 
----
+
 
 ### Linkat
 > Create a hard link to a file relative to directory file descriptors.
@@ -585,7 +585,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/linkat.2.html
 
----
+
 
 ### Symlink
 > Create a symbolic link to a file.
@@ -605,7 +605,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/symlink.2.html
 
----
+
 
 ### Symlinkat
 > Create a symbolic link to a file relative to a directory file descriptor.
@@ -627,7 +627,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/symlinkat.2.html
 
----
+
 
 ### Unlink
 > Delete a name and possibly the file it refers to.
@@ -646,7 +646,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/unlink.2.html
 
----
+
 
 ### Unlinkat
 > Delete a name and possibly the file it refers to relative to a directory file descriptor.
@@ -668,7 +668,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/unlinkat.2.html
 
----
+
 
 ### Readlink
 > Read value of a symbolic link.
@@ -689,7 +689,7 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/readlink.2.html
 
----
+
 
 ### Readlinkat
 > Read value of a symbolic link relative to a directory file descriptor.
@@ -711,6 +711,390 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/readlinkat.2.html
+
+## Basic file attributes
+### Umask
+> Set file mode creation mask.
+
+파일 모드 생성 마스크를 설정합니다.
+
+**LIBRARY**:
+- `#include <sys/types.h>`
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `mode_t mask`: 새로운 파일 모드 마스크.
+
+**Return Value**:
+- 이전의 마스크 값을 반환합니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/umask.2.html
+
+
+
+### Stat
+> Get file metadata.
+
+파일의 메타데이터를 가져옵니다.
+
+**LIBRARY**:
+- `#include <sys/types.h>`
+- `#include <sys/stat.h>`
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 메타데이터를 가져올 파일 경로.
+- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/stat.2.html
+
+
+
+### Lstat
+> Get link metadata.
+
+심볼릭 링크의 메타데이터를 가져옵니다.
+
+**LIBRARY**:
+- `#include <sys/types.h>`
+- `#include <sys/stat.h>`
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 메타데이터를 가져올 링크 경로.
+- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/lstat.2.html
+
+
+
+### Fstat
+> Get file metadata using a file descriptor.
+
+파일 디스크립터를 사용하여 파일의 메타데이터를 가져옵니다.
+
+**LIBRARY**:
+- `#include <sys/types.h>`
+- `#include <sys/stat.h>`
+- `#include <unistd.h>`
+
+**Arguments**:
+- `int fd`: 메타데이터를 가져올 파일 디스크립터.
+- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fstat.2.html
+
+
+
+### Fstatat
+> Get file metadata relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일 메타데이터를 가져옵니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 메타데이터를 가져올 파일 경로.
+- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fstatat.2.html
+
+
+
+### Chmod
+> Change permissions of a file.
+
+파일의 권한을 변경합니다.
+
+**LIBRARY**:
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `const char *pathname`: 권한을 변경할 파일 경로.
+- `mode_t mode`: 새 권한 모드.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/chmod.2.html
+
+
+
+### Fchmod
+> Change permissions of a file using a file descriptor.
+
+파일 디스크립터를 사용하여 파일의 권한을 변경합니다.
+
+**LIBRARY**:
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `int fd`: 권한을 변경할 파일 디스크립터.
+- `mode_t mode`: 새 권한 모드.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fchmod.2.html
+
+
+
+### Fchmodat
+> Change permissions of a file relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일의 권한을 변경합니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 권한을 변경할 파일 경로.
+- `mode_t mode`: 새 권한 모드.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fchmodat.2.html
+
+
+
+### Chown
+> Change ownership of a file.
+
+파일의 소유자를 변경합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 소유자를 변경할 파일 경로.
+- `uid_t owner`: 새 소유자의 사용자 ID.
+- `gid_t group`: 새 소유자의 그룹 ID.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/chown.2.html
+
+
+
+### Lchown
+> Change ownership of a link.
+
+심볼릭 링크의 소유자를 변경합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 소유자를 변경할 링크 경로.
+- `uid_t owner`: 새 소유자의 사용자 ID.
+- `gid_t group`: 새 소유자의 그룹 ID.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/lchown.2.html
+
+
+
+### Fchown
+> Change ownership of a file using a file descriptor.
+
+파일 디스크립터를 사용하여 파일의 소유자를 변경합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `int fd`: 소유자를 변경할 파일 디스크립터.
+- `uid_t owner`: 새 소유자의 사용자 ID.
+- `gid_t group`: 새 소유자의 그룹 ID.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fchown.2.html
+
+
+
+### Fchownat
+> Change ownership of a file relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일의 소유자를 변경합니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 소유자를 변경할 파일 경로.
+- `uid_t owner`: 새 소유자의 사용자 ID.
+- `gid_t group`: 새 소유자의 그룹 ID.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/fchownat.2.html
+
+
+
+### Utime
+> Change file last access and modification times.
+
+파일의 마지막 접근 및 수정 시간을 변경합니다.
+
+**LIBRARY**:
+- `#include <utime.h>`
+
+**Arguments**:
+- `const char *filename`: 시간을 변경할 파일 경로.
+- `const struct utimbuf *times`: 새 접근 및 수정 시간을 담고 있는 구조체.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/utime.2.html
+
+
+
+### Utimes
+> Change file last access and modification times with microsecond precision.
+
+파일의 마지막 접근 및 수정 시간을 마이크로초 단위로 변경합니다.
+
+**LIBRARY**:
+- `#include <sys/time.h>`
+
+**Arguments**:
+- `const char *filename`: 시간을 변경할 파일 경로.
+- `const struct timeval times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/utimes.2.html
+
+
+
+### Futimesat
+> Change timestamps of a file relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일의 시간을 변경합니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+- `#include <sys/time.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 시간을 변경할 파일 경로.
+- `const struct timeval times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/futimesat.2.html
+
+
+
+### Utimensat
+> Change file timestamps with nanosecond precision.
+
+나노초 단위로 파일의 시간을 변경합니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+- `#include <sys/stat.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 시간을 변경할 파일 경로.
+- `const struct timespec times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/utimensat.2.html
+
+
+
+### Access
+> Check real user's permissions for a file.
+
+파일에 대해 실제 사용자의 권한을 확인합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 권한을 확인할 파일 경로.
+- `int mode`: 확인할 권한 모드.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/access.2.html
+
+
+
+### Faccessat
+> Check real user's permissions for a file relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일에 대한 실제 사용자의 권한을 확인합니다.
+
+**LIBRARY**:
+- `#include <fcntl.h>`
+
+**Arguments**:
+- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `const char *pathname`: 권한을 확인할 파일 경로.
+- `int mode`: 확인할 권한 모드.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/faccessat.2.html
 
 
 > [!WARNING]
