@@ -544,6 +544,173 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/lookup_dcookie.2.html
 
+### Link
+> Create a hard link to a file.
+
+파일에 대한 하드 링크를 생성합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *oldpath`: 기존 파일의 경로.
+- `const char *newpath`: 생성할 하드 링크의 경로.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/link.2.html
+
+---
+
+### Linkat
+> Create a hard link to a file relative to directory file descriptors.
+
+디렉토리 파일 디스크립터를 기준으로 파일에 대한 하드 링크를 생성합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `int olddirfd`: 기존 파일 디렉토리 파일 디스크립터.
+- `const char *oldpath`: 기존 파일의 경로.
+- `int newdirfd`: 새 하드 링크 디렉토리 파일 디스크립터.
+- `const char *newpath`: 생성할 하드 링크의 경로.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/linkat.2.html
+
+---
+
+### Symlink
+> Create a symbolic link to a file.
+
+파일에 대한 심볼릭 링크를 생성합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *target`: 심볼릭 링크가 가리킬 파일의 경로.
+- `const char *linkpath`: 생성할 심볼릭 링크의 경로.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/symlink.2.html
+
+---
+
+### Symlinkat
+> Create a symbolic link to a file relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일에 대한 심볼릭 링크를 생성합니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+- `#include <fcntl.h>`
+
+**Arguments**:
+- `const char *target`: 심볼릭 링크가 가리킬 파일의 경로.
+- `int newdirfd`: 심볼릭 링크가 생성될 디렉토리 파일 디스크립터.
+- `const char *linkpath`: 생성할 심볼릭 링크의 경로.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/symlinkat.2.html
+
+---
+
+### Unlink
+> Delete a name and possibly the file it refers to.
+
+파일 이름을 삭제하고, 해당 이름이 참조하는 파일도 삭제할 수 있습니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 삭제할 파일 이름의 경로.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/unlink.2.html
+
+---
+
+### Unlinkat
+> Delete a name and possibly the file it refers to relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 파일 이름을 삭제하고, 해당 이름이 참조하는 파일도 삭제할 수 있습니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+- `#include <fcntl.h>`
+
+**Arguments**:
+- `int dirfd`: 파일 이름이 속한 디렉토리의 파일 디스크립터.
+- `const char *pathname`: 삭제할 파일 이름의 경로.
+- `int flags`: 플래그 옵션.
+
+**Return Value**:
+- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/unlinkat.2.html
+
+---
+
+### Readlink
+> Read value of a symbolic link.
+
+심볼릭 링크가 가리키는 값을 읽습니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**:
+- `const char *pathname`: 심볼릭 링크의 경로.
+- `char *buf`: 값을 저장할 버퍼.
+- `size_t bufsiz`: 버퍼 크기.
+
+**Return Value**:
+- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/readlink.2.html
+
+---
+
+### Readlinkat
+> Read value of a symbolic link relative to a directory file descriptor.
+
+디렉토리 파일 디스크립터를 기준으로 심볼릭 링크가 가리키는 값을 읽습니다.
+
+**LIBRARY**:
+- `#include <unistd.h>`
+- `#include <fcntl.h>`
+
+**Arguments**:
+- `int dirfd`: 심볼릭 링크가 속한 디렉토리 파일 디스크립터.
+- `const char *pathname`: 심볼릭 링크의 경로.
+- `char *buf`: 값을 저장할 버퍼.
+- `size_t bufsiz`: 버퍼 크기.
+
+**Return Value**:
+- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+
+**manual page**:
+- http://man7.org/linux/man-pages/man2/readlinkat.2.html
 
 
 > [!WARNING]
