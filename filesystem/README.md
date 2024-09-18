@@ -9,3 +9,8 @@
 2. [tracepoint](./tracepoint.md): tracepoint 별 사용하는 syscall을 정리해둔 문서
 3. [lsm_hook](./lsm_hook.md): lsm hook 별 사용하는 syscall을 정리해둔 문서
 4. [kprobe](./kprobe.md): kprobe 별 사용하는 syscall을 정리해둔 문서
+
+Reference:
+https://linasm.sourceforge.net/docs/syscalls/index.php
+https://www.kernel.org/doc/html/next/core-api/kernel-api.html
+https://github.com/torvalds/linux/blob/master/include/linux/lsm_hook_defs.h
