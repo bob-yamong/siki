@@ -1,175 +1,484 @@
-# 네트워크 tracepoint
+# Network-Related tracepoint in Linux
+네트워크 조작과 관련된 tracepoint 정리 문서
 
-생성자: 창현 이
-ID: ASSET-55
-태그: eBPF, 내부자료
-최종 편집 일시: 2024년 9월 18일 오전 1:35
+## Syscalls
+
+### socket
+
+> Create an endpoint for communication
+
+통신을 위한 엔드포인트 생성
+
+**Use Case**: 네트워크 연결이 필요한 모든 행위가 시작할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int domain` 
+- `int type`
+- `int protocol`
+
+**Return Value**:
+- File descriptor for the new socket on success
+- -1 on failure
 
 ---
 
-# SYSCALLS
+### socketpair
 
-## 소켓 생성
+> Create a pair of connected sockets
 
-| [SOCKET](http://man7.org/linux/man-pages/man2/socket.2.html) | 41 | Create an endpoint for communication |
-| --- | --- | --- |
-| [SOCKETPAIR](http://man7.org/linux/man-pages/man2/socketpair.2.html) | 53 | Create a pair of connected sockets |
-| [SETSOCKOPT](http://man7.org/linux/man-pages/man2/setsockopt.2.html) | 54 | Set options on sockets |
-| [GETSOCKOPT](http://man7.org/linux/man-pages/man2/getsockopt.2.html) | 55 | Get options on sockets |
-| [GETSOCKNAME](http://man7.org/linux/man-pages/man2/getsockname.2.html) | 51 | Get socket name |
-| [GETPEERNAME](http://man7.org/linux/man-pages/man2/getpeername.2.html) | 52 | Get name of connected peer socket |
-| [BIND](http://man7.org/linux/man-pages/man2/bind.2.html) | 49 | Bind a name to a socket |
-| [LISTEN](http://man7.org/linux/man-pages/man2/listen.2.html) | 50 | Listen for connections on a socket |
-| [ACCEPT](http://man7.org/linux/man-pages/man2/accept.2.html) | 43 | Accept a connection on a socket |
-| [ACCEPT4](http://man7.org/linux/man-pages/man2/accept4.2.html) | 288 | Accept a connection on a socket |
-| [CONNECT](http://man7.org/linux/man-pages/man2/connect.2.html) | 42 | Initiate a connection on a socket |
-| [SHUTDOWN](http://man7.org/linux/man-pages/man2/shutdown.2.html) | 48 | Shut down part of a full-duplex connection |
-1. tracepoint/syscalls/sys_enter_socket
-    1. 역할
-        
-        통신을 위한 엔드포인트 생성
-        
-    2. 인자
-    int socket(int domain, int type, int protocol)
-    3. 사용자 행위
-        
-        네트워크 연결이 필요한 모든 행동이 시작할 때
-        
-    4. return 값
-        
-        새 소켓에 대한 파일 디스크립터를 반환 → 이를 통해 소켓에 대한 입출력 작업 수행 가능
-        
-    
-2. tracepoint/syscalls/sys_enter_socketpair
-    1. 역할
-        
-        연결된 소켓 쌍을 생성
-        
-    2. 인자
-    int socketpair(int domain, int type, int protocol, int sv[2])
-    3. 사용자 행위
-        
-        프로세스간 통신(IPC)를 위한 연결된 소켓을 생성
-        
-        탐지를 피해 내부통신을 수행할 때
-        
-    
-3. tracepoint/syscalls/sys_enter_setsockopt
-    1. 역할
-        
-        소켓 옵션 설정
-        
-    2. 인자
-    int setsockopt(int sockfd, int level, int optname, const void optval[.optlen], socklen_t optlen)
-    1. 사용자 행위
-    
-4. tracepoint/syscalls/sys_enter_getsockopt
-    1. 역할
-        
-        소켓 옵션 가져오기
-        
-    2. 인자
-        
-        int getsockopt(int sockfd, int level, int optname, void optval[restrict *.optlen], socklen_t *restrict optlen)
-        
-    3. 사용자 행위
-        
-        현재 네트워크 설정을 확인할 때
-        
-        ex) 수신 버퍼 크기 확인, TCP keep-alive 설정 확인 
-        
+연결된 소켓 쌍을 생성
 
-1. tracepoint/syscalls/sys_enter_getsockname
-    1. 역할
-        
-        소켓 이름 가져오기(소켓이 바인딩 된 로컬 네트워크 정보를 얻기)
-        
-    2. 인자
-    int getsockname(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict addrlen)
-    3. 사용자 행위
-        
-        시스템의 네트워크 구성을 파악하려 할 때
-        
-        ex)  IP주소나 바인딩 된 포트를 알 수 있음
-        
+**Use Case**: 프로세스간 통신(IPC)을 하거나 내부 통신을 수행할 때
 
-1. tracepoint/syscalls/sys_enter_getpeername
-    1. 역할
-        
-        연결된 피어 소켓의 이름 가져오기(연결된 peer의 네트워크 정보 얻기)
-        
-    2. 인자
-    int getpeername(int sockfd, struct sockaddr *restrict addr, socklen_t *restrict addrlen)
-    3. 사용자 행위
-        
-        peer 시스템의 네트워크 구성을 파악하려 할 때
-        
-        ex) IP주소나 바인딩 된 포트를 알 수 있음
-        
+**LIBRARY**: libc/sys/socket.h
 
-1. tracepoint/syscalls/sys_enter_bind
-    1. 역할 
-        
-        네트워크 연결이 이루어지기 직전에 소켓을 특정 IP와 포트에 바인딩하기 위해 호출
-        
-    2. 인자
-    int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
-    3. 사용자 행위
-        
-        모든 네트워크 연결을 필요로 하는 행위를 할 때
-        
-    
-2. tracepoint/syscalls/sys_enter_listen
-    1. 역할
-        
-        소켓 연결 요청을 수신
-        
-    2. 인자
-    int listen(int sockfd, int backlog)
-    3. 사용자 행위
-        
-        네트워크 연결을 하려 할 때 요청을 받는 쪽이 이 요청을 수신
-        
+**Arguments**: 
+- `int domain`
+- `int type`
+- `int protocol`
+- `int sv[2]`
 
-1. tracepoint/syscalls/sys_enter_accept
-    1. 역할
-        
-        소켓 연결을 수락
-        
-    2. 인자
-    int accept(int sockfd, struct sockaddr *_Nullable restrict addr, socklen_t *_Nullable restrict addrlen)
-    3. 사용자 행위
-        
-        네트워크 연결을 하려 할 때 네트워크 연결 요청을 수락
-        
+**Return Value**:
+- 0 on success
+- -1 on failure
 
-1. tracepoint/syscalls/sys_enter_accept4
-    1. 역할
-    소켓 연결을 수락
-    2. 인자
-    int accept4(int sockfd, struct sockaddr *_Nullable restrict addr, socklen_t *_Nullable restrict addrlen, int flags)
-    3. 사용자 행위
-        
-        네트워크 연결을 하려 할 때 네트워크 연결 요청을 수락
-        
+---
 
-1. tracepoint/syscalls/sys_enter_connect
-    1. 역할
-    소켓 연결을 시작
-    2. 인자
-    int connect(int sockfd, const struct sockaddr * addr, socklen_t addrlen)
-    3. 사용자 행위
-    외부 서버와 연결을 시도할 때
+### setsockopt
 
-1. tracepoint/syscalls/sys_enter_shutdown
-    1. 역할
-    소켓 연결의 일부나 전부를 종료
-    2. 인자
-    int shutdown(int sockfd, int how);
-    3. 사용자 행위
-    네트워크 통신을 끝낼 때
+> Set options on sockets
 
-사용 예시(커널에서 정의된 구조체를 사용하기 위해서는 vmlinux.h을 참조해야 됨)
+소켓 옵션 설정
+
+**Use Case**: 현재 네트워크 설정을 변경할 때(버퍼 크기 변경, 브로드캐스트 허용, 보안 설정 비활성화 등)
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `int level`
+- `int optname` 
+- `const void optval[.optlen]`
+- `socklen_t optlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### getsockopt
+
+> Get options on sockets
+
+소켓 옵션 가져오기
+
+**Use Case**: 현재 네트워크 설정을 확인할 때(수신 버퍼 크기 확인, TCP keep-alive 설정 확인)
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `int level`
+- `int optname` 
+- `void optval[restrict *.optlen]`
+- `socklen_t *restrict optlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### getsockname
+
+> Get socket name
+
+소켓 이름 가져오기(소켓이 바인딩 된 로컬 네트워크 정보 얻기)
+
+**Use Case**: 시스템의 네트워크 구성을 파악하려 할 때(IP 주소나 바인딩 된 포트를 알 수 있음)
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct sockaddr *restrict addr`
+- `socklen_t *restrict addrlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### getpeername
+
+> Get name of connected peer socket
+
+연결된 피어 소켓의 이름 가져오기(연결된 peer의 네트워크 정보 얻기)
+
+**Use Case**: Peer 시스템의 네트워크 구성을 파악하려 할 때(peer의 IP 주소나 바인딩 된 포트를 알 수 있음)
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct sockaddr *restrict addr`
+- `socklen_t *restrict addrlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### bind
+
+> Bind a name to a socket
+
+네트워크 연결이 이루어지기 직전에 소켓을 특정 IP와 포트에 바인딩하기 위해 호출
+
+**Use Case**: 네트워크 연결을 필요로 하는 모든 행위를 할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `const struct sockaddr *addr`
+- `socklen_t addrlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### listen
+
+> Listen for connections on a socket
+
+소켓 연결 요청을 수신
+
+**Use Case**: 네트워크 연결을 위한 요청을 받을 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `int backlog`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### accept
+
+> Accept a connection on a socket
+
+소켓 연결을 수락
+
+**Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct sockaddr *_Nullable restrict addr`
+- `socklen_t *_Nullable restrict addrlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### accept4
+
+> Accept a connection on a socket
+
+소켓 연결을 수락
+
+**Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct sockaddr *_Nullable restrict addr`
+- `socklen_t *_Nullable restrict addrlen`
+- `int flags`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### connect
+
+> Initiate a connection on a socket
+
+소켓 연결을 시작
+
+**Use Case**: 네트워크 연결을 시도할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `const struct sockaddr * addr` 
+- `socklen_t addrlen`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### shutdown
+
+> Shut down part of a full-duplex connection
+
+소켓 연결의 일부나 전부를 종료
+
+**Use Case**: 네트워크 통신을 종료할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `int how`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### recv
+
+> Receive a message from a socket
+
+소켓에서 메시지(데이터) 받기 → 송신자에 대한 정보 모름
+
+**Use Case**: 연결지향형 통신(TCP 통신)할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `void buf[.len]`
+- `size_t len`
+- `int flags`
+
+**Return Value**:
+- 0 or number of bytes received on success
+- -1 on failure
+
+---
+
+### recvfrom
+
+> Receive a message from a socket
+
+소켓에서 메시지(데이터) 받기 → 송신자 정보 포함
+
+**Use Case**: 비연결지향형 통신(UDP 통신)할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `void buf[restrict .len]`
+- `size_t len`
+- `int flags`
+- `struct sockaddr *_Nullable restrict src_addr`
+- `socklen_t *_Nullable restrict addrlen`
+
+**Return Value**:
+- 0 or number of bytes received on success
+- -1 on failure
+
+---
+
+### recvmsg
+
+> Receive a message from a socket
+
+소켓에서 메시지(데이터) 받기 → 부가적인 제어 정보 및 복잡한 정보를 같이 수신 가능
+
+**Use Case**: 상세한 네트워크 활동을 분석할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct msghdr *msg`
+- `int flags`
+
+**Return Value**:
+- 0 or number of bytes received on success
+- -1 on failure
+
+---
+
+### recvmmsg
+
+> Receive multiple messages on a socket
+
+소켓에서 여러개의 메시지(데이터) 받기 → recvmsg의 확장 버전
+
+**Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct mmsghdr *msgvec`
+- `unsigned int vlen`
+- `int flags`
+- `struct timespec *timeout`
+
+**Return Value**:
+- Number of messages received in msgvec on success
+- -1 on failure
+
+---
+
+### send
+
+> Send a message on a socket
+
+소켓에 메시지(데이터) 보내기 → 이미 연결된 소켓에서
+
+**Use Case**: 연결지향형 통신(TCP 통신)할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `const void buf[.len]`
+- `size_t len`
+- `int flags`
+
+**Return Value**:
+- Number of bytes sent on success
+- -1 on failure
+
+---
+
+### sendto
+
+> Send a message on a socket
+
+소켓에 메시지(데이터) 보내기 → 데이터와 함께 목적지 설정 가능
+
+**Use Case**: 비연결지향형 통신(UDP 통신)할 때
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `const void buf[.len]`
+- `size_t len`
+- `int flags`
+- `const struct sockaddr *dest_addr`
+- `socklen_t addrlen`
+
+**Return Value**:
+- Number of bytes sent on success
+- -1 on failure
+
+---
+
+### sendmsg
+
+> Send a message on a socket
+
+소켓에 메시지(데이터) 보내기 → 여러 버퍼의 데이터를 한번에 전송할 수 있음
+
+**Use Case**: 파일 데이터와 메타 데이터를 같이 전송할 때, DB 시스템이 복잡한 쿼리문을 전달할 때 등
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `const struct msghdr *msg`
+- `int flags`
+
+**Return Value**:
+- Number of bytes sent on success
+- -1 on failure
+
+---
+
+### sendmmsg
+
+> Send multiple messages on a socket
+
+소켓에 여러개의 메시지(데이터) 보내기 → sendmsg의 확장버전
+
+**Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
+
+**LIBRARY**: libc/sys/socket.h
+
+**Arguments**: 
+- `int sockfd`
+- `struct mmsghdr *msgvec`
+- `unsigned int vlen`
+- `int flags`
+
+**Return Value**:
+- Number of messages sent in msgvec on success
+- -1 on failure
+
+---
+
+### sethostname
+
+> Set hostname
+
+시스템의 호스트 이름을 설정할 때 사용
+
+**Use Case**: 시스템 관리자가 호스트 이름을 변경할 때, 새로운 가상머신이나 컨테이너를 생성할 때 등
+
+**LIBRARY**: libc/unistd.h
+
+**Arguments**: 
+- `const char *name`
+- `size_t len`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+### setdomainname
+
+> Set NIS domain name
+
+시스템의 NIS(Network Information Service) 도메인 이름을 설정할 때 사용
+
+**Use Case**: 시스템 관리자가 네트워크 구성을 변경하면서 도메인 이름을 변경하거나 NIS 환경을 변경할 때, 새로운 가상머신이나 컨테이너를 생성할 때 등
+
+**LIBRARY**: libc/unistd.h
+
+**Arguments**: 
+- `const char *name`
+- `size_t len`
+
+**Return Value**:
+- 0 on success
+- -1 on failure
+
+---
+
+## Usage
 
 ```c
 SEC("tracepoint/syscalls/sys_enter_socket")
@@ -196,37 +505,3 @@ int trace_sys_exit_socket(struct trace_event_raw_sys_exit *ctx)
     
     return 0;
 }
-
-```
-
-## 송수신
-
-| [RECVFROM](http://man7.org/linux/man-pages/man2/recvfrom.2.html) | 45 | Receive a message from a socket |
-| --- | --- | --- |
-| [RECVMSG](http://man7.org/linux/man-pages/man2/recvmsg.2.html) | 47 | Receive a message from a socket |
-| [RECVMMSG](http://man7.org/linux/man-pages/man2/recvmmsg.2.html) | 299 | Receive multiple messages from a socket |
-| [SENDTO](http://man7.org/linux/man-pages/man2/sendto.2.html) | 44 | Send a message on a socket |
-| [SENDMSG](http://man7.org/linux/man-pages/man2/sendmsg.2.html) | 46 | Send a message on a socket |
-| [SENDMMSG](http://man7.org/linux/man-pages/man2/sendmmsg.2.html) | 307 | Send multiple messages on a socket |
-
-## 네이밍
-
-| [SETHOSTNAME](http://man7.org/linux/man-pages/man2/sethostname.2.html) | 170 | Set hostname |
-| --- | --- | --- |
-| [SETDOMAINNAME](http://man7.org/linux/man-pages/man2/setdomainname.2.html) | 171 | Set NIS domain name |
-
-# NET
-
-# SOCK
-
-# TCP
-
-# XDP
-
-# SKB
-
-# 참고
-
-[https://linasm.sourceforge.net/docs/syscalls/network.php#socket](https://linasm.sourceforge.net/docs/syscalls/network.php#socket)
-
----
