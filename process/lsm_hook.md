@@ -9,7 +9,11 @@
 ### task_alloc
 > 새 태스크 구조체 할당 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *task
 - `unsigned long` clone_flags
 
@@ -281,6 +285,10 @@ struct task_struct {
 };
 ```
 
+**Use Case** : 
+- 새로운 프로세스나 스레드 생성 시 보안 컨텍스트 초기화
+- 프로세스 생성 제한 또는 모니터링
+
 **Return(default_value)** :
 - `int` 0
 
@@ -288,8 +296,16 @@ struct task_struct {
 ### task_free
 > 태스크 구조체 해제 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *task
+
+**Use Case** : 
+- 프로세스 종료 시 보안 리소스 정리
+- 프로세스 종료 이벤트 로깅
 
 **Return(default_value)** :
 - `void` LSM_RET_VOID
@@ -298,7 +314,11 @@ struct task_struct {
 ### task_fix_setuid
 > setuid 작업 수행 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/cred.h>
+
+**Arguments** :
 - `struct cred` *new
 - `const struct cred` *old 
 - `int` flags
@@ -340,16 +360,28 @@ struct cred {
 };
 ```
 
+**Use Case** : 
+- setuid 작업 시 권한 변경 검증
+- 권한 상승 시도 감지 및 제어
+
 **Return(default_value)** :
 - `int` 0
 
 ### task_fix_setgid
 > setgid 작업 수행 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/cred.h>
+
+**Arguments** :
 - `struct cred` *new
 - `const struct cred` * old
 - `int` flags
+
+**Use Case** : 
+- setgid 작업 시 그룹 권한 변경 검증
+- 그룹 권한 상승 시도 감지 및 제어
 
 **Return(default_value)** :
 - `int` 0
@@ -357,9 +389,17 @@ struct cred {
 ### task_fix_setgroups
 > setgroups 작업 수행 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/cred.h>
+
+**Arguments** :
 - `struct cred` *new 
 - `const struct cred` *old
+
+**Use Case** : 
+- 프로세스의 보조 그룹 목록 변경 검증
+- 그룹 멤버십 변경 모니터링
 
 **Return(default_value)** :
 - `int` 0
@@ -368,8 +408,16 @@ struct cred {
 ### task_setscheduler
 > 스케줄러 정책 설정 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- 프로세스 스케줄링 정책 변경 제어
+- 특정 프로세스의 스케줄링 우선순위 제한
 
 **Return(default_value)** :
 - `int` 0
@@ -377,8 +425,16 @@ struct cred {
 ### task_getscheduler
 > 스케줄러 정책 조회 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- 프로세스 스케줄링 정책 조회 권한 검증
+- 스케줄링 정보 접근 감사
 
 **Return(default_value)** :
 - `int` 0
@@ -386,9 +442,17 @@ struct cred {
 ### task_setnice
 > 프로세스 nice 값 설정 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *p
 - `int` nice
+
+**Use Case** : 
+- 프로세스 우선순위 변경 제어
+- 리소스 사용 조절을 위한 nice 값 설정 제한
 
 **Return(default_value)** :
 - `int` 0
@@ -397,9 +461,17 @@ struct cred {
 ### task_setioprio
 > 프로세스 I/O 우선순위 설정 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/ioprio.h>
+
+**Arguments** :
 - `struct task_struct` *p
 - `int` ioprio
+
+**Use Case** : 
+- I/O 우선순위 변경 권한 검증
+- 특정 프로세스의 I/O 사용량 제어
 
 **Return(default_value)** :
 - `int` 0
@@ -407,8 +479,16 @@ struct cred {
 ### task_getioprio
 > 프로세스 I/O 우선순위 조회 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/ioprio.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- I/O 우선순위 정보 접근 권한 검증
+- I/O 우선순위 조회 감사
 
 **Return(default_value)** :
 - `int` 0
@@ -416,10 +496,18 @@ struct cred {
 ### task_prlimit
 > 리소스 제한 설정 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/resource.h>
+
+**Arguments** :
 - `const struct cred` *cred
 - `const struct cred` *tcred
 - `unsigned int` flags
+
+**Use Case** : 
+- 프로세스 리소스 제한 변경 권한 검증
+- 리소스 사용량 제어 정책 적용
 
 **Return(default_value)** :
 - `int` 0
@@ -427,7 +515,11 @@ struct cred {
 ### task_setrlimit
 > 리소스 제한 설정 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/resource.h>
+
+**Arguments** :
 - `struct task_struct` *p
 - `unsigned int` resource
 - `struct rlimit` *new_rlim
@@ -439,14 +531,26 @@ struct rlimit {
 };
 ```
 
+**Use Case** : 
+- 특정 리소스에 대한 제한 설정 제어
+- 리소스 제한 변경 감사
+
 **Return(default_value)** :
 - `int` 0
 
 ### task_movememory
 > 메모리 이동 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/mm.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- 프로세스 메모리 이동 작업 검증
+- 메모리 조작 시도 탐지
 
 **Return(default_value)** :
 - `int` 0
@@ -454,9 +558,18 @@ struct rlimit {
 ## 6. 그 외
 ### task_setpgid
 > 프로세스 그룹 ID 설정 시 호출
-  LSM_HOOK(int, 0, task_setpgid, struct task_struct *p, pid_t pgid)
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
+- struct task_struct *p
+- pid_t pgid
+
+**Use Case** : 
+- 프로세스 그룹 변경 권한 검증
+- 프로세스 그룹 관리 감사
 
 **Return(default_value)** :
 - `int` 0
@@ -464,8 +577,16 @@ struct rlimit {
 ### task_getpgid
 > 프로세스 그룹 ID 조회 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- 프로세스 그룹 정보 접근 권한 검증
+- 프로세스 그룹 조회 로깅
 
 **Return(default_value)** :
 - `int` 0
@@ -473,8 +594,16 @@ struct rlimit {
 ### task_getsid
 > 세션 ID 조회 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched.h>
+
+**Arguments** :
 - `struct task_struct` *p
+
+**Use Case** : 
+- 세션 ID 접근 권한 검증
+- 세션 관리 감사
 
 **Return(default_value)** :
 - `int` 0
@@ -482,7 +611,11 @@ struct rlimit {
 ### task_kill
 > 시그널 전송 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/sched/signal.h>
+
+**Arguments** :
 - `struct task_struct` *p
 - `struct kernel_siginfo` *info
 - `int` sig
@@ -499,28 +632,48 @@ struct kernel_siginfo {
 };
 ```
 
+**Use Case** : 
+- 시그널 전송 권한 검증
+- 악의적인 프로세스 종료 시도 탐지
+
 **Return(default_value)** :
 - `int` 0
 
 ### task_prctl
 > prctl 시스템 콜 호출 시 호출
 
-**Param** :
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/prctl.h>
+
+**Arguments** :
 - `int` option
 - `unsigned long` arg2
 - `unsigned long` arg3
 - `unsigned long` arg4
 - `unsigned long` arg5
 
+**Use Case** : 
+- prctl 작업 수행 권한 검증
+- 특정 prctl 작업 제한 또는 감사
+
 **Return(default_value)** :
 - `int` -ENOSYS
 
 ### task_to_inode
 > 태스크를 inode로 변환 시 호출
-  
-**Param** :
+
+**LIBRARY**: 
+- #include <linux/security.h>
+- #include <linux/fs.h>
+
+**Arguments** :
 - `struct task_struct` *p 
 - `struct inode` *inode
+
+**Use Case** : 
+- 프로세스 정보를 파일 시스템 inode로 변환 시 보안 속성 설정
+- 프로세스 정보 노출 제어
 
 **Return(default_value)** :
 - `void` LSM_RET_VOID
