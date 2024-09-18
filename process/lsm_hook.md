@@ -1,12 +1,12 @@
 # Process-Related LSM Hooks in Linux
 
 > [!NOTE]
-> This document is based on linux repository[^1].
+> This document is based on linux repository(v.6.8)[^1].
 >
-> 이 문서는 리눅스 레포[^1]를 참고 하였음.
+> 이 문서는 리눅스 레포(v.6.8)[^1]를 기준으로 작성 하였음.
 
 ## 1. 생성
-## task_alloc
+### task_alloc
 > 새 태스크 구조체 할당 시 호출
 
 **Param** :
@@ -285,7 +285,7 @@ struct task_struct {
 - `int` 0
 
 ## 2. 종료
-## task_free
+### task_free
 > 태스크 구조체 해제 시 호출
 
 **Param** :
@@ -295,7 +295,7 @@ struct task_struct {
 - `void` LSM_RET_VOID
 
 ## 3. 권한 변경
-## task_fix_setuid
+### task_fix_setuid
 > setuid 작업 수행 시 호출
 
 **Param** :
@@ -343,7 +343,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_fix_setgid
+### task_fix_setgid
 > setgid 작업 수행 시 호출
 
 **Param** :
@@ -354,7 +354,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_fix_setgroups
+### task_fix_setgroups
 > setgroups 작업 수행 시 호출
 
 **Param** :
@@ -365,7 +365,7 @@ struct cred {
 - `int` 0
 
 ## 4. 스케줄링
-## task_setscheduler
+### task_setscheduler
 > 스케줄러 정책 설정 시 호출
 
 **Param** :
@@ -374,7 +374,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_getscheduler
+### task_getscheduler
 > 스케줄러 정책 조회 시 호출
 
 **Param** :
@@ -383,7 +383,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_setnice
+### task_setnice
 > 프로세스 nice 값 설정 시 호출
 
 **Param** :
@@ -394,7 +394,7 @@ struct cred {
 - `int` 0
 
 ## 5. 리소스 관리
-## task_setioprio
+### task_setioprio
 > 프로세스 I/O 우선순위 설정 시 호출
 
 **Param** :
@@ -404,7 +404,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_getioprio
+### task_getioprio
 > 프로세스 I/O 우선순위 조회 시 호출
 
 **Param** :
@@ -413,7 +413,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_prlimit
+### task_prlimit
 > 리소스 제한 설정 시 호출
 
 **Param** :
@@ -424,7 +424,7 @@ struct cred {
 **Return(default_value)** :
 - `int` 0
 
-## task_setrlimit
+### task_setrlimit
 > 리소스 제한 설정 시 호출
 
 **Param** :
@@ -442,7 +442,7 @@ struct rlimit {
 **Return(default_value)** :
 - `int` 0
 
-## task_movememory
+### task_movememory
 > 메모리 이동 시 호출
 
 **Param** :
@@ -452,7 +452,7 @@ struct rlimit {
 - `int` 0
 
 ## 6. 그 외
-## task_setpgid
+### task_setpgid
 > 프로세스 그룹 ID 설정 시 호출
   LSM_HOOK(int, 0, task_setpgid, struct task_struct *p, pid_t pgid)
 
@@ -461,7 +461,7 @@ struct rlimit {
 **Return(default_value)** :
 - `int` 0
 
-## task_getpgid
+### task_getpgid
 > 프로세스 그룹 ID 조회 시 호출
 
 **Param** :
@@ -470,7 +470,7 @@ struct rlimit {
 **Return(default_value)** :
 - `int` 0
 
-## task_getsid
+### task_getsid
 > 세션 ID 조회 시 호출
 
 **Param** :
@@ -479,7 +479,7 @@ struct rlimit {
 **Return(default_value)** :
 - `int` 0
 
-## task_kill
+### task_kill
 > 시그널 전송 시 호출
 
 **Param** :
@@ -502,7 +502,7 @@ struct kernel_siginfo {
 **Return(default_value)** :
 - `int` 0
 
-## task_prctl
+### task_prctl
 > prctl 시스템 콜 호출 시 호출
 
 **Param** :
@@ -515,7 +515,7 @@ struct kernel_siginfo {
 **Return(default_value)** :
 - `int` -ENOSYS
 
-## task_to_inode
+### task_to_inode
 > 태스크를 inode로 변환 시 호출
   
 **Param** :
