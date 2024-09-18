@@ -4,15 +4,27 @@
 
 자식 프로세스 생성
 
-**LIBRARY**: libc (`unistd.h`)
+**LIBRARY**: 
 
-**Arguments**: None
+- libc (`unistd.h`)
+
+**Arguments**: 
+
+- 없음 
+
+**Use Case**: 
+
+- Null
 
 **Return Value**:
 
 - **Parent Process**: On success, returns the Process ID (PID) of the child.
 - **Child Process**: Returns 0.
 - **Failure**: Returns -1 in the parent process; no child is created.
+
+**manual page**:
+
+- Null
 
 ---
 
