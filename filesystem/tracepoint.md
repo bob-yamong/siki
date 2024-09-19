@@ -1,18 +1,18 @@
 # Filesystem-Related Tracepoint in Linux
 
 ## Table of Content
-- [File operations (파일 작업)](#file-operations)
-- [Directory operations (디렉토리 작업)](#directory-operations)
-- [Link operations (링크 작업)](#link-operations)
-- [Basic file attributes (기본 파일 속성)](#basic-file-attributes)
-- [Extended file attributes (확장 파일 속성)](#extended-file-attributes)
-- [File descriptor manipulations (파일 디스크립터 조작)](#file-descriptor-manipulations)
-- [Read/Write (읽기/쓰기)](#readwrite)
-- [Synchronized I/O (동기화된 I/O)](#synchronized-io)
-- [Asynchronous I/O (비동기 I/O)](#asynchronous-io)
-- [Multiplexed I/O (다중화된 I/O)](#multiplexed-io)
-- [Monitoring file events (파일 이벤트 모니터링)](#monitoring-file-events)
-- [Miscellaneous (기타)](#miscellaneous)
+1. [File operations (파일 작업)](#file-operations)
+2. [Directory operations (디렉토리 작업)](#directory-operations)
+3. [Link operations (링크 작업)](#link-operations)
+4. [Basic file attributes (기본 파일 속성)](#basic-file-attributes)
+5. [Extended file attributes (확장 파일 속성)](#extended-file-attributes)
+6. [File descriptor manipulations (파일 디스크립터 조작)](#file-descriptor-manipulations)
+7. [Read/Write (읽기/쓰기)](#readwrite)
+8. [Synchronized I/O (동기화된 I/O)](#synchronized-io)
+9. [Asynchronous I/O (비동기 I/O)](#asynchronous-io)
+10. [Multiplexed I/O (다중화된 I/O)](#multiplexed-io)
+11. [Monitoring file events (파일 이벤트 모니터링)](#monitoring-file-events)
+12. [Miscellaneous (기타)](#miscellaneous)
 
 ## File operations
 
@@ -35,6 +35,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/close.2.html
 
+---
+
 ### Creat
 > 파일을 열거나 존재하지 않을 시 생성합니다.
 
@@ -54,6 +56,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/creat.2.html
+
+---
 
 ### Open
 > 파일을 열거나, 필요 시 생성합니다.
@@ -76,6 +80,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/open.2.html
 
+---
+
 ### Openat
 > 디렉터리 파일 디스크립터를 기준으로 파일을 열거나 생성합니다.
 
@@ -97,6 +103,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/openat.2.html
+
+---
 
 ### Name_to_handle_at
 > 경로명을 기반으로 파일 핸들을 얻습니다.
@@ -121,6 +129,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/name_to_handle_at.2.html
 
+---
+
 ### Open_by_handle_at
 > 핸들을 사용해 파일을 엽니다.
 
@@ -142,6 +152,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/open_by_handle_at.2.html
 
+---
+
 ### Memfd_create
 > 익명 파일을 생성합니다.
 
@@ -161,6 +173,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/memfd_create.2.html
+
+---
 
 ### Mknod
 > 특수 파일 또는 일반 파일을 생성합니다.
@@ -182,6 +196,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/mknod.2.html
+
+---
 
 ### Mknodat
 > 디렉터리 파일 디스크립터를 기준으로 특수 파일 또는 일반 파일을 생성합니다.
@@ -205,6 +221,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/mknodat.2.html
 
+---
+
 ### Rename
 > 파일의 이름을 변경합니다.
 
@@ -224,6 +242,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/rename.2.html
+
+---
 
 ### Renameat
 > 디렉터리 파일 디스크립터를 기준으로 파일 이름을 변경합니다.
@@ -246,6 +266,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/renameat.2.html
+
+---
 
 ### Renameat2
 > 디렉터리 파일 디스크립터를 기준으로 파일 이름을 플래그와 함께 변경합니다.
@@ -270,6 +292,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/renameat2.2.html
 
+---
+
 ### Truncate
 > 파일을 지정된 길이로 잘라냅니다.
 
@@ -290,6 +314,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/truncate.2.html
 
+---
+
 ### Ftruncate
 > 열린 파일을 지정된 길이로 잘라냅니다.
 
@@ -309,6 +335,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/ftruncate.2.html
+
+---
 
 ### Fallocate
 > 파일 공간을 조작합니다.
@@ -334,6 +362,8 @@
 
 ## Directory operations
 
+---
+
 ### Mkdir
 > 디렉터리를 생성합니다.
 
@@ -353,6 +383,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/mkdir.2.html
+
+---
 
 ### Mkdirat
 > 디렉터리 파일 디스크립터를 기준으로 디렉터리를 생성합니다.
@@ -375,6 +407,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/mkdirat.2.html
 
+---
+
 ### Rmdir
 > 디렉터리를 삭제합니다.
 
@@ -393,6 +427,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/rmdir.2.html
+
+---
 
 ### Getcwd
 > 현재 작업 중인 디렉터리의 경로를 반환합니다.
@@ -414,6 +450,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/getcwd.2.html
 
+---
+
 ### Chdir
 > 현재 작업 중인 디렉터리를 변경합니다.
 
@@ -432,6 +470,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/chdir.2.html
+
+---
 
 ### Fchdir
 > 파일 디스크립터를 사용해 현재 작업 중인 디렉터리를 변경합니다.
@@ -452,6 +492,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fchdir.2.html
 
+---
+
 ### Chroot
 > 루트 디렉터리를 변경합니다.
 
@@ -470,6 +512,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/chroot.2.html
+
+---
 
 ### Getdents
 > 디렉터리의 엔트리를 가져옵니다.
@@ -492,6 +536,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/getdents.2.html
 
+---
+
 ### Getdents64
 > 64비트 시스템에서 디렉터리의 엔트리를 가져옵니다.
 
@@ -512,6 +558,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/getdents64.2.html
+
+---
 
 ### Lookup_dcookie
 > 디렉터리 엔트리의 경로를 반환합니다.
@@ -536,6 +584,8 @@
 
 ## Link operations
 
+---
+
 ### Link
 > 파일에 하드 링크를 만듭니다.
 
@@ -555,6 +605,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/link.2.html
+
+---
 
 ### Linkat
 > 디렉터리 파일 디스크립터를 기준으로 파일에 하드 링크를 만듭니다.
@@ -579,6 +631,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/linkat.2.html
 
+---
+
 ### Symlink
 > 파일에 심볼릭 링크를 만듭니다.
 
@@ -598,6 +652,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/symlink.2.html
+
+---
 
 ### Symlinkat
 > 디렉터리 파일 디스크립터를 기준으로 파일에 심볼릭 링크를 만듭니다.
@@ -620,6 +676,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/symlinkat.2.html
 
+---
+
 ### Unlink
 > 파일 이름을 삭제하고, 필요 시 파일 자체도 삭제합니다.
 
@@ -638,6 +696,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/unlink.2.html
+
+---
 
 ### Unlinkat
 > 디렉터리 파일 디스크립터를 기준으로 파일 이름을 삭제하고, 필요 시 파일 자체도 삭제합니다.
@@ -660,6 +720,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/unlinkat.2.html
 
+---
+
 ### Readlink
 > 심볼릭 링크의 값을 읽습니다.
 
@@ -680,6 +742,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/readlink.2.html
+
+---
 
 ### Readlinkat
 > 디렉터리 파일 디스크립터를 기준으로 심볼릭 링크의 값을 읽습니다.
@@ -708,6 +772,8 @@
 
 ## Basic file attributes
 
+---
+
 ### Umask
 > 파일 생성 시 기본 권한을 제한하는 마스크를 설정합니다.
 
@@ -726,6 +792,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/umask.2.html
+
+---
 
 ### Stat
 > 파일의 메타데이터를 가져옵니다.
@@ -747,6 +815,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/stat.2.html
 
+---
+
 ### Lstat
 > 심볼릭 링크의 메타데이터를 가져옵니다.
 
@@ -767,6 +837,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/lstat.2.html
 
+---
+
 ### Fstat
 > 열린 파일의 메타데이터를 가져옵니다.
 
@@ -786,6 +858,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/fstat.2.html
+
+---
 
 ### Fstatat
 > 디렉터리 파일 디스크립터를 기준으로 파일의 메타데이터를 가져옵니다.
@@ -809,6 +883,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fstatat.2.html
 
+---
+
 ### Chmod
 > 파일의 권한을 변경합니다.
 
@@ -829,6 +905,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/chmod.2.html
 
+---
+
 ### Fchmod
 > 열린 파일의 권한을 변경합니다.
 
@@ -848,6 +926,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/fchmod.2.html
+
+---
 
 ### Fchmodat
 > 디렉터리 파일 디스크립터를 기준으로 파일의 권한을 변경합니다.
@@ -871,6 +951,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fchmodat.2.html
 
+---
+
 ### Chown
 > 파일의 소유자와 그룹을 변경합니다.
 
@@ -891,6 +973,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/chown.2.html
+
+---
 
 ### Lchown
 > 심볼릭 링크의 소유자와 그룹을 변경합니다.
@@ -913,6 +997,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/lchown.2.html
 
+---
+
 ### Fchown
 > 열린 파일의 소유자와 그룹을 변경합니다.
 
@@ -933,6 +1019,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/fchown.2.html
+
+---
 
 ### Fchownat
 > 디렉터리 파일 디스크립터를 기준으로 파일의 소유자와 그룹을 변경합니다.
@@ -957,6 +1045,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fchownat.2.html
 
+---
+
 ### Utime
 > 파일의 마지막 접근 시간과 수정 시간을 변경합니다.
 
@@ -976,6 +1066,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/utime.2.html
+
+---
 
 ### Utimes
 > 파일의 마지막 접근 시간과 수정 시간을 마이크로초 단위로 변경합니다.
@@ -997,6 +1089,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/utimes.2.html
 
+---
+
 ### Futimesat
 > 디렉터리 파일 디스크립터를 기준으로 파일의 마지막 접근 시간과 수정 시간을 변경합니다.
 
@@ -1017,6 +1111,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/futimesat.2.html
+
+---
 
 ### Utimensat
 > 파일의 마지막 접근 시간과 수정 시간을 나노초 단위로 변경합니다.
@@ -1040,6 +1136,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/utimensat.2.html
 
+---
+
 ### Access
 > 실제 사용자의 파일 접근 권한을 확인합니다.
 
@@ -1059,6 +1157,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/access.2.html
+
+---
 
 ### Faccessat
 > 디렉터리 파일 디스크립터를 기준으로 실제 사용자의 파일 접근 권한을 확인합니다.
@@ -1084,6 +1184,8 @@
 
 ## Extended file attributes
 
+---
+
 ### Setxattr
 > 확장 속성 값을 설정합니다.
 
@@ -1106,6 +1208,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/setxattr.2.html
+
+---
 
 ### Lsetxattr
 > 심볼릭 링크의 확장 속성 값을 설정합니다.
@@ -1130,6 +1234,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/lsetxattr.2.html
 
+---
+
 ### Fsetxattr
 > 열린 파일의 확장 속성 값을 설정합니다.
 
@@ -1153,6 +1259,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fsetxattr.2.html
 
+---
+
 ### Getxattr
 > 확장 속성 값을 가져옵니다.
 
@@ -1174,6 +1282,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/getxattr.2.html
+
+---
 
 ### Lgetxattr
 > 심볼릭 링크의 확장 속성 값을 가져옵니다.
@@ -1197,6 +1307,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/lgetxattr.2.html
 
+---
+
 ### Fgetxattr
 > 열린 파일의 확장 속성 값을 가져옵니다.
 
@@ -1219,6 +1331,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fgetxattr.2.html
 
+---
+
 ### Listxattr
 > 확장 속성 이름들의 목록을 가져옵니다.
 
@@ -1239,6 +1353,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/listxattr.2.html
+
+---
 
 ### Llistxattr
 > 심볼릭 링크의 확장 속성 이름들의 목록을 가져옵니다.
@@ -1261,6 +1377,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/llistxattr.2.html
 
+---
+
 ### Flistxattr
 > 열린 파일의 확장 속성 이름들의 목록을 가져옵니다.
 
@@ -1282,6 +1400,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/flistxattr.2.html
 
+---
+
 ### Removexattr
 > 파일의 확장 속성을 제거합니다.
 
@@ -1302,6 +1422,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/removexattr.2.html
 
+---
+
 ### Lremovexattr
 > 심볼릭 링크의 확장 속성을 제거합니다.
 
@@ -1321,6 +1443,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/lremovexattr.2.html
+
+---
 
 ### Fremovexattr
 > 열린 파일의 확장 속성을 제거합니다.
@@ -1344,6 +1468,8 @@
 
 ## File descriptor manipulations
 
+---
+
 ### Ioctl
 > 장치 제어 명령을 수행합니다.
 
@@ -1364,6 +1490,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/ioctl.2.html
+
+---
 
 ### Fcntl
 > 파일 디스크립터를 조작합니다.
@@ -1386,6 +1514,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fcntl.2.html
 
+---
+
 ### Dup
 > 파일 디스크립터를 복제합니다.
 
@@ -1404,6 +1534,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/dup.2.html
+
+---
 
 ### Dup2
 > 기존 파일 디스크립터를 지정된 파일 디스크립터로 복제합니다.
@@ -1425,6 +1557,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/dup2.2.html
 
+---
+
 ### Dup3
 > 기존 파일 디스크립터를 지정된 파일 디스크립터로 복제하며, 플래그를 설정할 수 있습니다.
 
@@ -1445,6 +1579,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/dup3.2.html
+
+---
 
 ### Flock
 > 열린 파일에 대한 조언적 잠금을 설정하거나 해제합니다.
@@ -1468,6 +1604,8 @@
 
 ## Read/Write
 
+---
+
 ### Read
 > 파일 디스크립터에서 데이터를 읽어옵니다.
 
@@ -1489,6 +1627,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/read.2.html
 
+---
+
 ### Readv
 > 데이터를 여러 버퍼에 나누어 읽어옵니다.
 
@@ -1509,6 +1649,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/readv.2.html
+
+---
 
 ### Pread
 > 파일 디스크립터의 지정된 오프셋에서 데이터를 읽어옵니다.
@@ -1532,6 +1674,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/pread.2.html
 
+---
+
 ### Preadv
 > 여러 버퍼에 나누어 데이터를 지정된 오프셋에서 읽어옵니다.
 
@@ -1554,6 +1698,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/preadv.2.html
 
+---
+
 ### Write
 > 파일 디스크립터에 데이터를 씁니다.
 
@@ -1575,6 +1721,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/write.2.html
 
+---
+
 ### Writev
 > 여러 버퍼에 있는 데이터를 파일 디스크립터에 씁니다.
 
@@ -1595,6 +1743,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/writev.2.html
+
+---
 
 ### Pwrite
 > 파일 디스크립터의 지정된 오프셋에 데이터를 씁니다.
@@ -1618,6 +1768,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/pwrite.2.html
 
+---
+
 ### Pwritev
 > 여러 버퍼에 있는 데이터를 지정된 오프셋에 씁니다.
 
@@ -1640,6 +1792,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/pwritev.2.html
 
+---
+
 ### Lseek
 > 파일 오프셋을 재조정합니다.
 
@@ -1660,6 +1814,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/lseek.2.html
+
+---
 
 ### Sendfile
 > 두 파일 디스크립터 간 데이터를 전송합니다.
@@ -1685,6 +1841,8 @@
 
 ## Synchronized I/O
 
+---
+
 ### Fdatasync
 > 파일의 메모리 상의 데이터를 스토리지 장치에 동기화합니다.
 
@@ -1704,6 +1862,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/fdatasync.2.html
 
+---
+
 ### Fsync
 > 파일의 메모리 상의 데이터를 스토리지 장치에 동기화합니다.
 
@@ -1722,6 +1882,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/fsync.2.html
+
+---
 
 ### Msync
 > 메모리 맵핑된 파일의 내용을 디스크와 동기화합니다.
@@ -1743,6 +1905,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/msync.2.html
+
+---
 
 ### Sync_file_range
 > 파일의 특정 구간을 디스크와 동기화합니다.
@@ -1766,6 +1930,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/sync_file_range.2.html
 
+---
+
 ### Sync
 > 버퍼 캐시의 내용을 디스크에 커밋합니다.
 
@@ -1783,6 +1949,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/sync.2.html
+
+---
 
 ### Syncfs
 > 파일 시스템의 버퍼 캐시를 디스크에 커밋합니다.
@@ -1805,6 +1973,8 @@
 
 ## Asynchronous I/O
 
+---
+
 ### Io_setup
 > 비동기 I/O 컨텍스트를 생성합니다.
 
@@ -1825,6 +1995,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/io_setup.2.html
 
+---
+
 ### Io_destroy
 > 비동기 I/O 컨텍스트를 제거합니다.
 
@@ -1843,6 +2015,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/io_destroy.2.html
+
+---
 
 ### Io_submit
 > 비동기 I/O 블록을 제출합니다.
@@ -1865,6 +2039,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/io_submit.2.html
 
+---
+
 ### Io_cancel
 > 처리 중인 비동기 I/O 작업을 취소합니다.
 
@@ -1885,6 +2061,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/io_cancel.2.html
+
+---
 
 ### Io_getevents
 > 완료된 비동기 I/O 작업 이벤트를 읽어옵니다.
@@ -1911,6 +2089,8 @@
 
 ## Multiplexed I/O
 
+---
+
 ### Select
 > 동기식 I/O 멀티플렉싱을 수행합니다.
 
@@ -1933,6 +2113,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/select.2.html
+
+---
 
 ### Pselect6
 > 동기식 I/O 멀티플렉싱을 수행하며, 신호 마스크를 설정합니다.
@@ -1958,6 +2140,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/pselect6.2.html
 
+---
+
 ### Poll
 > 파일 디스크립터의 이벤트를 기다립니다.
 
@@ -1978,6 +2162,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/poll.2.html
+
+---
 
 ### Ppoll
 > 파일 디스크립터의 이벤트를 기다리며, 신호 마스크를 설정합니다.
@@ -2001,6 +2187,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/ppoll.2.html
 
+---
+
 ### Epoll_create
 > epoll 파일 디스크립터를 생성합니다.
 
@@ -2020,6 +2208,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/epoll_create.2.html
 
+---
+
 ### Epoll_create1
 > epoll 파일 디스크립터를 생성하며, 플래그를 설정합니다.
 
@@ -2038,6 +2228,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/epoll_create1.2.html
+
+---
 
 ### Epoll_ctl
 > epoll 파일 디스크립터에 대한 제어 인터페이스를 제공합니다.
@@ -2061,6 +2253,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/epoll_ctl.2.html
 
+---
+
 ### Epoll_wait
 > epoll 파일 디스크립터에서 I/O 이벤트를 기다립니다.
 
@@ -2082,6 +2276,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/epoll_wait.2.html
+
+---
 
 ### Epoll_pwait
 > epoll 파일 디스크립터에서 I/O 이벤트를 기다리며, 시그널 마스크를 설정합니다.
@@ -2108,6 +2304,8 @@
 
 ## Monitoring file events
 
+---
+
 ### Inotify_init
 > Inotify 인스턴스를 초기화합니다.
 
@@ -2127,6 +2325,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/inotify_init.2.html
 
+---
+
 ### Inotify_init1
 > Inotify 인스턴스를 초기화하며 플래그를 설정합니다.
 
@@ -2145,6 +2345,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/inotify_init1.2.html
+
+---
 
 ### Inotify_add_watch
 > Inotify 인스턴스에 감시 항목을 추가합니다.
@@ -2167,6 +2369,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/inotify_add_watch.2.html
 
+---
+
 ### Inotify_rm_watch
 > Inotify 인스턴스에서 감시 항목을 제거합니다.
 
@@ -2187,6 +2391,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/inotify_rm_watch.2.html
 
+---
+
 ### Fanotify_init
 > Fanotify 그룹을 생성하고 초기화합니다.
 
@@ -2206,6 +2412,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/fanotify_init.2.html
+
+---
 
 ### Fanotify_mark
 > Fanotify 마크를 파일 시스템 객체에 추가, 수정 또는 제거합니다.
@@ -2232,6 +2440,8 @@
 
 ## Miscellaneous
 
+---
+
 ### Fadvise64
 > 파일 데이터에 대한 접근 패턴을 미리 선언합니다.
 
@@ -2254,6 +2464,8 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/posix_fadvise.2.html
 
+---
+
 ### Readahead
 > 파일 데이터를 페이지 캐시로 미리 로드합니다.
 
@@ -2274,6 +2486,8 @@
 
 **manual page**
 - http://man7.org/linux/man-pages/man2/readahead.2.html
+
+---
 
 ### Getrandom
 > 난수 바이트 시퀀스를 얻습니다.
@@ -2296,6 +2510,7 @@
 **manual page**
 - http://man7.org/linux/man-pages/man2/getrandom.2.html
 
+---
 
 # END
 > [!WARNING]
