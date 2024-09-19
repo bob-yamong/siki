@@ -1,4 +1,4 @@
-# Document
+# Document - eBPF
 LSM hook, syscall, Kprobe의 용도와 eBPF에서의 사용 방법을 정리한 문서
 
 ## kprobe__sys_execve
