@@ -4,16 +4,16 @@
 ## Table of Content
 
 **1. System calls**
-- Socket operations
-- Send/Receive
-- Naming
+- [Socket operations](#socket-operations)
+- [Send/Receive](#sendreceive)
+- [Naming](#naming)
 
 **2. Sub system**
-- Net
-- Sock
-- TCP
-- UDP
-- XDP
+- [Net](#net)
+- [Sock](#sock)
+- [TCP](#tcp)
+- [UDP](#udp)
+- [XDP](#xdp)
 
 **3. Usage**
 
