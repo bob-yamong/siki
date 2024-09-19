@@ -3,19 +3,19 @@
 
 ## Table of Content
 
-### 1. System calls
+**1. System calls**
 - Socket operations
 - Send/Receive
 - Naming
 
-### 2. Sub system
+**2. Sub system**
 - Net
 - Sock
 - TCP
 - UDP
 - XDP
 
-### 3. Usage
+**3. Usage**
 
 ## Socket operations
 
