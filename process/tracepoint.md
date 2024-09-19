@@ -1851,5 +1851,674 @@
 - 성공 시 `0` 반환
 - 실패 시 `-1` 반환하고 `errno` 설정
 
+---
+
+## Sched
+
+### sched_kthread_stop
+
+> 커널 스레드가 중지될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **t**: 중지되는 커널 스레드의 태스크 구조체
+
+**Use Case**:
+
+- 커널 스레드의 중지 이벤트를 추적하여 시스템 상태를 모니터링합니다.
+- 스레드 관리 및 자원 해제를 분석하는 데 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_kthread_stop_ret
+
+> 커널 스레드의 중지 요청에 대한 반환 값을 확인할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `int` **ret**: 커널 스레드의 중지 함수 반환 값
+
+**Use Case**:
+
+- 커널 스레드 중지 결과를 검토하여 오류 여부를 확인합니다.
+- 시스템 안정성 및 스레드 관리에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_kthread_work_execute_start
+
+> 커널 스레드 워크가 실행을 시작할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/kthread.h>`
+
+**Arguments**:
+
+- `struct kthread_work *` **work**: 실행되는 워크의 구조체
+
+**Use Case**:
+
+- 커널 스레드 워크의 실행 흐름을 추적합니다.
+- 작업 큐의 처리 상태를 모니터링하여 성능 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_kthread_work_execute_end
+
+> 커널 스레드 워크의 실행이 종료될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/kthread.h>`
+
+**Arguments**:
+
+- `struct kthread_work *` **work**: 종료된 워크의 구조체
+
+**Use Case**:
+
+- 워크 실행 완료 시간을 측정하여 성능 최적화를 도모합니다.
+- 워크 실행 결과를 검토하여 오류를 파악합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_kthread_work_queue_work
+
+> 커널 스레드 워크가 작업 큐에 추가될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/kthread.h>`
+
+**Arguments**:
+
+- `struct kthread_worker *` **worker**: 워크를 관리하는 워커 구조체
+- `struct kthread_work *` **work**: 큐에 추가된 워크의 구조체
+
+**Use Case**:
+
+- 작업 큐에 워크가 추가되는 시점을 추적하여 시스템 부하를 모니터링합니다.
+- 워크 스케줄링 및 처리량을 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_migrate_task
+
+> 프로세스가 다른 CPU로 마이그레이션될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 마이그레이션되는 프로세스의 태스크 구조체
+- `int` **orig_cpu**: 원래 CPU 번호
+- `int` **dest_cpu**: 대상 CPU 번호
+
+**Use Case**:
+
+- CPU 간의 프로세스 이동을 추적하여 로드 밸런싱 상태를 모니터링합니다.
+- NUMA 환경에서의 성능 최적화에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_move_numa
+
+> NUMA 노드 간에 프로세스가 이동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 이동되는 프로세스의 태스크 구조체
+- `int` **src_nid**: 원래 NUMA 노드 ID
+- `int` **dst_nid**: 대상 NUMA 노드 ID
+
+**Use Case**:
+
+- NUMA 시스템에서 프로세스의 메모리 접근 패턴을 최적화하기 위해 이동을 추적합니다.
+- 메모리 및 CPU의 지역성을 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_pi_setprio
+
+> 우선순위 상속 프로토콜에 따라 프로세스의 우선순위가 변경될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 우선순위가 변경되는 프로세스의 태스크 구조체
+- `int` **newprio**: 새로운 우선순위 값
+
+**Use Case**:
+
+- 동기화 객체에 의한 우선순위 변화를 추적하여 인버전 문제를 분석합니다.
+- 실시간 시스템에서의 우선순위 관리에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_exec
+
+> 프로세스가 새로운 프로그램으로 `exec`될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 실행된 프로세스의 태스크 구조체
+- `pid_t` **old_pid**: 이전 프로세스의 PID
+
+**Use Case**:
+
+- 프로세스의 프로그램 교체 이벤트를 추적하여 보안 및 감사에 활용합니다.
+- 새로운 프로그램의 실행 정보를 수집합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_exit
+
+> 프로세스가 종료될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 종료된 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스 종료 이벤트를 모니터링하여 자원 해제 및 시스템 상태를 추적합니다.
+- 로그 기록 및 시스템 안정성 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_fork
+
+> 프로세스가 새로운 자식 프로세스를 생성할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **parent**: 부모 프로세스의 태스크 구조체
+- `struct task_struct *` **child**: 생성된 자식 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스 생성 이벤트를 추적하여 프로세스 트리를 분석합니다.
+- 시스템 부하 관리 및 보안 감시에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_free
+
+> 프로세스의 태스크 구조체가 완전히 해제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 해제되는 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 메모리 관리 및 프로세스 자원 해제를 모니터링합니다.
+- 메모리 누수 및 자원 해제 지연 문제를 파악합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_hang
+
+> 프로세스가 응답하지 않고 정지 상태로 판정될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 정지된 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스의 비정상 상태를 감지하여 장애 대응에 활용합니다.
+- 시스템 안정성 모니터링 및 문제 해결에 사용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_process_wait
+
+> 프로세스가 다른 프로세스를 기다릴 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 대기 중인 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스 간의 대기 및 동기화 상태를 모니터링합니다.
+- 성능 분석 및 동시성 이슈 해결에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_skip_vma_numa
+
+> NUMA 노드에서 메모리 영역의 이동을 건너뛸 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct vm_area_struct *` **vma**: 대상 메모리 영역의 구조체
+
+**Use Case**:
+
+- NUMA 시스템에서 메모리 최적화 과정을 모니터링합니다.
+- 메모리 이동이 생략되는 원인을 파악하여 성능 개선에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stat_blocked
+
+> 프로세스가 블록된 상태로 있는 시간을 기록할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 블록된 프로세스의 태스크 구조체
+- `u64` **delay**: 블록된 시간(ns)
+
+**Use Case**:
+
+- 프로세스의 블록 시간 통계를 수집하여 성능 병목을 분석합니다.
+- 자원 대기 시간 최적화에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stat_iowait
+
+> 프로세스가 I/O 대기 상태로 있는 시간을 기록할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: I/O 대기 중인 프로세스의 태스크 구조체
+- `u64` **delay**: I/O 대기 시간(ns)
+
+**Use Case**:
+
+- I/O 대기에 의한 성능 저하를 분석하여 시스템 최적화에 활용합니다.
+- 디스크 또는 네트워크 I/O 병목을 파악합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stat_runtime
+
+> 프로세스의 실제 실행 시간을 기록할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 실행 시간을 측정하는 프로세스의 태스크 구조체
+- `u64` **runtime**: 실행 시간(ns)
+
+**Use Case**:
+
+- 프로세스의 CPU 사용량을 정확히 측정하여 자원 할당을 최적화합니다.
+- 스케줄링 정책 및 우선순위 조정을 위한 데이터로 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stat_sleep
+
+> 프로세스가 수면 상태로 있는 시간을 기록할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 수면 상태의 프로세스의 태스크 구조체
+- `u64` **delay**: 수면 시간(ns)
+
+**Use Case**:
+
+- 프로세스의 대기 시간을 분석하여 응답성을 향상시킵니다.
+- 수면 상태의 원인을 파악하여 성능 최적화에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stat_wait
+
+> 프로세스가 실행 대기열에서 기다린 시간을 기록할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 대기 중인 프로세스의 태스크 구조체
+- `u64` **delay**: 대기 시간(ns)
+
+**Use Case**:
+
+- 프로세스의 스케줄링 지연을 분석하여 시스템 응답성을 개선합니다.
+- 우선순위 및 스케줄링 정책의 효과를 평가합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_stick_numa
+
+> 프로세스가 NUMA 노드에 고정될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `int` **src_nid**: 원래 NUMA 노드 ID
+- `int` **dst_nid**: 고정될 NUMA 노드 ID
+
+**Use Case**:
+
+- NUMA 환경에서 프로세스의 메모리 및 CPU 지역성을 강화합니다.
+- 성능 최적화를 위한 프로세스 배치를 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_swap_numa
+
+> NUMA 노드 간에 프로세스의 실행을 교환할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 교환되는 프로세스의 태스크 구조체
+- `int` **src_cpu**: 원래 CPU 번호
+- `int` **dst_cpu**: 대상 CPU 번호
+
+**Use Case**:
+
+- NUMA 시스템에서 프로세스의 효율적인 배치를 위해 교환 동작을 추적합니다.
+- 메모리 접근 패턴 및 CPU 활용도를 최적화합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_switch
+
+> 프로세스 간의 컨텍스트 스위치가 발생할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `bool` **preempt**: 선점 여부 (0: 자발적 스위치, 1: 선점 스위치)
+- `struct task_struct *` **prev**: 이전 프로세스의 태스크 구조체
+- `struct task_struct *` **next**: 다음 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- CPU 스케줄링 동작을 상세히 추적하여 성능 분석에 활용합니다.
+- 프로세스 우선순위 및 스케줄링 정책의 영향을 평가합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_wait_task
+
+> 프로세스가 대기 상태로 전환될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 대기 상태로 전환되는 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스의 대기 원인과 시간을 분석하여 성능 최적화를 돕습니다.
+- 자원 사용 패턴 및 동시성 이슈를 파악합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_wake_idle_without_ipi
+
+> 인터럽트 없이 아이들 상태의 CPU에서 프로세스를 깨울 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `int` **cpu**: 깨우는 대상 CPU 번호
+
+**Use Case**:
+
+- CPU의 전력 효율성과 응답성을 개선하기 위한 메커니즘을 모니터링합니다.
+- 인터럽트 오버헤드를 줄이는 효과를 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_wakeup
+
+> 수면 상태의 프로세스가 깨어날 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 깨어나는 프로세스의 태스크 구조체
+- `int` **success**: 깨어나기 성공 여부
+- `int` **target_cpu**: 프로세스가 실행될 예정인 CPU 번호
+
+**Use Case**:
+
+- 프로세스의 대기 및 깨어남 이벤트를 모니터링하여 응답 시간을 측정합니다.
+- 시스템 성능 분석 및 병목 현상 파악에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_wakeup_new
+
+> 새로운 프로세스가 생성되어 처음으로 실행 대기열에 추가될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 새롭게 생성된 프로세스의 태스크 구조체
+- `int` **success**: 대기열 추가 성공 여부
+- `int` **target_cpu**: 프로세스가 실행될 예정인 CPU 번호
+
+**Use Case**:
+
+- 프로세스 생성 이후의 스케줄링 동작을 추적합니다.
+- 신규 프로세스의 초기 상태를 모니터링하여 시스템 부하를 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sched_waking
+
+> 수면 상태의 프로세스를 깨우기 직전에 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/sched.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **p**: 깨울 프로세스의 태스크 구조체
+
+**Use Case**:
+
+- 프로세스 깨우기 이벤트를 사전에 감지하여 선제적 대응을 합니다.
+- 스케줄링 지연이나 문제점을 파악하는 데 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
 
 [^1]: [Linux manual pages](https://man7.org/linux/man-pages/dir_section_2.html)
