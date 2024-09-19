@@ -2531,11 +2531,537 @@
 
 ## Task
 
+---
+
+### task_newtask
+
+> 새로운 태스크(프로세스)가 생성될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/task.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 생성된 태스크의 구조체
+- `unsigned long` **clone_flags**: `clone` 시스템 호출에서 사용된 플래그
+
+**Use Case**:
+
+- 시스템에서 프로세스 생성 이벤트를 모니터링합니다.
+- 프로세스 생성 패턴을 분석하여 디버깅이나 성능 튜닝에 활용합니다.
+- 새로운 프로세스의 자원 사용을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### task_rename
+
+> 태스크(프로세스)의 이름이 변경될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/task.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 이름이 변경되는 태스크의 구조체
+- `const char *` **comm**: 새로운 태스크 이름 (커맨드)
+
+**Use Case**:
+
+- 프로세스의 이름 변경을 추적하여 감사(auditing)나 모니터링에 활용합니다.
+- 디버깅 시 프로세스가 언제, 왜 이름이 변경되었는지 파악하는 데 도움이 됩니다.
+- 동적으로 이름이 업데이트되는 태스크를 연관 지어 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
 ## Raw_syscalls
+
+---
+
+### sys_enter
+
+> 시스템 호출에 진입할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/raw_syscalls.h>`
+
+**Arguments**:
+
+- `long` **id**: 시스템 호출 번호 (System Call Number)
+- `unsigned long` **args[6]**: 시스템 호출에 전달된 최대 6개의 인자 배열
+
+**Use Case**:
+
+- 프로세스가 어떤 시스템 호출을 실행하는지 실시간으로 추적합니다.
+- 시스템 호출의 인자 값을 모니터링하여 디버깅이나 감사(audit)에 활용합니다.
+- 보안 분석을 위해 프로세스의 시스템 호출 활동을 기록하고 이상 행위를 탐지합니다.
+- 시스템 호출 패턴을 분석하여 성능 최적화에 도움을 줍니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sys_exit
+
+> 시스템 호출이 종료될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/raw_syscalls.h>`
+
+**Arguments**:
+
+- `long` **id**: 시스템 호출 번호 (System Call Number)
+- `long` **ret**: 시스템 호출의 반환 값
+
+**Use Case**:
+
+- 시스템 호출의 결과를 모니터링하여 오류를 추적하고 처리합니다.
+- 프로세스의 시스템 호출 활동과 그 결과를 분석하여 디버깅에 활용합니다.
+- 보안 및 성능 분석을 위해 시스템 호출의 반환 값을 기록합니다.
+- 실패한 시스템 호출을 탐지하여 시스템 안정성을 개선합니다.
+
+**Return Value**:
+
+- N/A
+
+---
 
 ## Cgroup
 
+---
+
+### cgroup_setup_root
+
+> 새로운 cgroup 루트가 설정될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 설정된 cgroup 루트의 구조체
+
+**Use Case**:
+
+- 새로운 cgroup 계층 구조가 생성될 때 이를 모니터링합니다.
+- 시스템에서 cgroup 서브시스템의 초기화 과정을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_destroy_root
+
+> cgroup 루트가 파괴될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 파괴되는 cgroup 루트의 구조체
+
+**Use Case**:
+
+- cgroup 계층 구조의 해체를 추적합니다.
+- 리소스 정리 및 메모리 해제를 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_remount
+
+> cgroup 루트가 재마운트될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 재마운트되는 cgroup 루트의 구조체
+
+**Use Case**:
+
+- cgroup 파일 시스템의 재설정을 추적합니다.
+- 마운트 옵션 변경 등을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_mkdir
+
+> 새로운 cgroup 디렉토리가 생성될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 생성된 cgroup의 구조체
+- `const char *` **path**: 생성된 cgroup의 경로
+
+**Use Case**:
+
+- 새로운 cgroup의 생성 이벤트를 모니터링합니다.
+- cgroup 계층 구조의 변경 사항을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_rmdir
+
+> cgroup 디렉토리가 삭제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 삭제되는 cgroup의 구조체
+- `const char *` **path**: 삭제되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 제거 이벤트를 모니터링합니다.
+- 리소스 정리 및 관련 프로세스의 상태를 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_release
+
+> cgroup에 연결된 모든 프로세스가 종료되어 cgroup이 해제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 해제되는 cgroup의 구조체
+- `const char *` **path**: 해제되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 수명 주기를 모니터링합니다.
+- 프로세스 종료 후 cgroup의 정리 과정을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_rename
+
+> cgroup의 이름이 변경될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 이름이 변경되는 cgroup의 구조체
+- `const char *` **path**: 변경된 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 이름 변경 이벤트를 추적합니다.
+- cgroup 계층 구조의 변경 사항을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_freeze
+
+> cgroup이 동결될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 동결되는 cgroup의 구조체
+- `const char *` **path**: 동결되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 동결 상태 변화를 모니터링합니다.
+- 리소스 사용량 제어나 시스템 응답성 향상을 위한 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_unfreeze
+
+> 동결된 cgroup이 해동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 해동되는 cgroup의 구조체
+- `const char *` **path**: 해동되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 동결 해제 이벤트를 추적합니다.
+- 프로세스 실행 재개 시점을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_attach_task
+
+> 프로세스가 새로운 cgroup으로 이동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **dst_cgrp**: 이동할 대상 cgroup의 구조체
+- `const char *` **path**: 대상 cgroup의 경로
+- `struct task_struct *` **task**: 이동하는 프로세스의 태스크 구조체
+- `bool` **threadgroup**: 스레드 그룹 전체 이동 여부 (`true`면 전체 이동)
+
+**Use Case**:
+
+- 프로세스의 cgroup 이동 이벤트를 모니터링합니다.
+- 리소스 제약 및 프로세스 관리를 위한 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_transfer_tasks
+
+> 여러 프로세스가 다른 cgroup으로 이동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **dst_cgrp**: 이동할 대상 cgroup의 구조체
+- `const char *` **path**: 대상 cgroup의 경로
+- `struct task_struct *` **task**: 이동하는 프로세스의 태스크 구조체 중 하나
+- `bool` **threadgroup**: 스레드 그룹 전체 이동 여부
+
+**Use Case**:
+
+- 다수의 프로세스가 한꺼번에 cgroup을 이동하는 상황을 추적합니다.
+- 시스템 리소스 재분배나 정책 변경 시 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_notify_populated
+
+> cgroup에 프로세스가 추가되거나 모두 제거되어 비워질 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 변경이 발생한 cgroup의 구조체
+- `const char *` **path**: 해당 cgroup의 경로
+- `int` **val**: cgroup의 현재 상태 (1이면 프로세스가 존재, 0이면 비어 있음)
+
+**Use Case**:
+
+- cgroup의 프로세스 수 변화를 모니터링합니다.
+- 자동화된 리소스 관리나 모니터링 도구에서 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_notify_frozen
+
+> cgroup이 동결되거나 해동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 상태 변화가 발생한 cgroup의 구조체
+- `const char *` **path**: 해당 cgroup의 경로
+- `int` **val**: cgroup의 동결 상태 (1이면 동결됨, 0이면 해동됨)
+
+**Use Case**:
+
+- cgroup의 동결 및 해동 상태 변화를 추적합니다.
+- 시스템 자원 관리 및 성능 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
 ## Mmap
+
+---
+
+### vm_unmapped_area
+
+> 가상 메모리에서 특정 영역을 할당하려 할 때 적절한 주소를 찾지 못한 경우 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `unsigned long` **addr**: 할당하려는 가상 주소
+- `struct vm_unmapped_area_info *` **info**: 메모리 영역 할당에 대한 정보 구조체
+
+**Use Case**:
+
+- 메모리 할당 실패 원인을 분석하기 위해 사용됩니다.
+- 가상 메모리 주소 공간의 상태를 모니터링하여 메모리 부족 문제를 진단합니다.
+- 메모리 매핑 시 주소 충돌이나 정렬 문제를 디버깅합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### vma_mas_szero
+
+> VMA(Maple Tree)에서 특정 범위의 엔트리를 제거하거나 초기화할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct maple_tree *` **mt**: 대상 Maple Tree 구조체 포인터
+- `unsigned long` **start**: 제거하거나 초기화할 시작 주소
+- `unsigned long` **end**: 제거하거나 초기화할 끝 주소
+
+**Use Case**:
+
+- 프로세스의 가상 메모리 영역(VMA)을 제거하거나 초기화할 때 사용됩니다.
+- 메모리 맵 관련 오류를 디버깅하고 메모리 관리 동작을 분석합니다.
+- 메모리 누수나 잘못된 메모리 해제 문제를 진단합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### vma_store
+
+> Maple Tree에 새로운 VMA를 저장하거나 업데이트할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct maple_tree *` **mt**: 대상 Maple Tree 구조체 포인터
+- `struct vm_area_struct *` **vma**: 저장할 VMA 구조체 포인터
+
+**Use Case**:
+
+- 새로운 메모리 매핑이 생성되거나 기존 매핑이 변경될 때 이를 추적합니다.
+- VMA 관리 동작을 모니터링하고 메모리 관리 문제를 진단합니다.
+- 메모리 할당 및 해제 과정에서 발생하는 오류를 디버깅합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### exit_mmap
+
+> 프로세스의 모든 메모리 맵이 해제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct mm_struct *` **mm**: 메모리 관리 구조체
+  - 프로세스의 메모리 관리 정보를 담고 있습니다.
+
+**Use Case**:
+
+- 프로세스 종료 시 메모리 해제 과정을 추적합니다.
+- 메모리 누수나 해제되지 않은 메모리 영역을 진단합니다.
+- 메모리 관리자의 동작을 분석하여 성능 최적화에 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
 
 ## Mmap_lock
 ### mmap_lock_acquire_returned*
