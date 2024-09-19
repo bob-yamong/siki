@@ -21,13 +21,11 @@
 
 ### socket
 
-> Create an endpoint for communication
-
-통신을 위한 엔드포인트 생성
+> 통신을 위한 엔드포인트 생성
 
 **Use Case**: 네트워크 연결이 필요한 모든 행위가 시작할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -43,13 +41,11 @@
 
 ### socketpair
 
-> Create a pair of connected sockets
-
 연결된 소켓 쌍을 생성
 
 **Use Case**: 프로세스간 통신(IPC)을 하거나 내부 통신을 수행할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -66,13 +62,11 @@
 
 ### setsockopt
 
-> Set options on sockets
-
-소켓 옵션 설정
+> 소켓 옵션 설정
 
 **Use Case**: 현재 네트워크 설정을 변경할 때(버퍼 크기 변경, 브로드캐스트 허용, 보안 설정 비활성화 등)
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -90,13 +84,11 @@
 
 ### getsockopt
 
-> Get options on sockets
-
-소켓 옵션 조회
+> 소켓 옵션 조회
 
 **Use Case**: 현재 네트워크 설정을 확인할 때(수신 버퍼 크기 확인, TCP keep-alive 설정 확인)
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -114,13 +106,11 @@
 
 ### getsockname
 
-> Get socket name
-
-소켓 이름 조회(소켓이 바인딩 된 로컬 네트워크 정보 얻기)
+> 소켓 이름 조회(소켓이 바인딩 된 로컬 네트워크 정보 얻기)
 
 **Use Case**: 시스템의 네트워크 구성을 파악하려 할 때(IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -136,13 +126,11 @@
 
 ### getpeername
 
-> Get name of connected peer socket
-
-연결된 피어 소켓의 이름 조회(연결된 피어의 네트워크 정보 얻기)
+> 연결된 피어 소켓의 이름 조회(연결된 피어의 네트워크 정보 얻기)
 
 **Use Case**: 피어 시스템의 네트워크 구성을 파악하려 할 때(피어의 IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -158,13 +146,11 @@
 
 ### bind
 
-> Bind a name to a socket
-
-네트워크 연결이 이루어지기 직전에 소켓을 특정 IP와 포트에 바인딩하기 위해 호출
+> 네트워크 연결이 이루어지기 직전에 소켓을 특정 IP와 포트에 바인딩하기 위해 호출
 
 **Use Case**: 네트워크 연결을 필요로 하는 모든 행위를 할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -180,13 +166,11 @@
 
 ### listen
 
-> Listen for connections on a socket
-
-소켓 연결 요청을 수신
+> 소켓 연결 요청을 수신
 
 **Use Case**: 네트워크 연결을 위한 요청을 받을 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -201,13 +185,11 @@
 
 ### accept
 
-> Accept a connection on a socket
-
-소켓 연결을 수락
+> 소켓 연결을 수락
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -223,13 +205,11 @@
 
 ### accept4
 
-> Accept a connection on a socket
-
-소켓 연결을 수락
+> 소켓 연결을 수락
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -246,13 +226,11 @@
 
 ### connect
 
-> Initiate a connection on a socket
-
-소켓 연결을 시작
+> 소켓 연결을 시작
 
 **Use Case**: 네트워크 연결을 시도할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -268,13 +246,11 @@
 
 ### shutdown
 
-> Shut down part of a full-duplex connection
-
-소켓 연결의 일부나 전부를 종료
+> 소켓 연결의 일부나 전부를 종료
 
 **Use Case**: 네트워크 통신을 종료할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -291,13 +267,11 @@
 
 ### recv
 
-> Receive a message from a socket
-
-소켓에서 메시지(데이터) 받기 → 송신자에 대한 정보 모름
+> 소켓에서 메시지(데이터) 받기 → 송신자에 대한 정보 모름
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -314,13 +288,11 @@
 
 ### recvfrom
 
-> Receive a message from a socket
-
-소켓에서 메시지(데이터) 받기 → 송신자 정보 포함
+> 소켓에서 메시지(데이터) 받기 → 송신자 정보 포함
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -339,13 +311,11 @@
 
 ### recvmsg
 
-> Receive a message from a socket
-
-소켓에서 메시지(데이터) 받기 → 부가적인 제어 정보 및 복잡한 정보를 같이 수신 가능
+> 소켓에서 메시지(데이터) 받기 → 부가적인 제어 정보 및 복잡한 정보를 같이 수신 가능
 
 **Use Case**: 상세한 네트워크 활동을 분석할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -361,13 +331,11 @@
 
 ### recvmmsg
 
-> Receive multiple messages on a socket
-
-소켓에서 여러개의 메시지(데이터) 받기 → recvmsg의 확장 버전
+> 소켓에서 여러개의 메시지(데이터) 받기 → recvmsg의 확장 버전
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -385,13 +353,11 @@
 
 ### send
 
-> Send a message on a socket
-
-소켓에 메시지(데이터) 보내기 → 이미 연결된 소켓에서
+> 소켓에 메시지(데이터) 보내기 → 이미 연결된 소켓에서
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -408,13 +374,11 @@
 
 ### sendto
 
-> Send a message on a socket
-
-소켓에 메시지(데이터) 보내기 → 데이터와 함께 목적지 설정 가능
+> 소켓에 메시지(데이터) 보내기 → 데이터와 함께 목적지 설정 가능
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -433,13 +397,11 @@
 
 ### sendmsg
 
-> Send a message on a socket
-
-소켓에 메시지(데이터) 보내기 → 여러 버퍼의 데이터를 한번에 전송할 수 있음
+> 소켓에 메시지(데이터) 보내기 → 여러 버퍼의 데이터를 한번에 전송할 수 있음
 
 **Use Case**: 파일 데이터와 메타 데이터를 같이 전송할 때, DB 시스템이 복잡한 쿼리문을 전달할 때 등
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -455,13 +417,11 @@
 
 ### sendmmsg
 
-> Send multiple messages on a socket
-
-소켓에 여러개의 메시지(데이터) 보내기 → sendmsg의 확장버전
+> 소켓에 여러개의 메시지(데이터) 보내기 → sendmsg의 확장버전
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc
+**LIBRARY**:
 - `#include <sys/socket.h>`
 
 **Arguments**: 
@@ -480,13 +440,12 @@
 
 ### sethostname
 
-> Set hostname
-
-시스템의 호스트 이름을 설정할 때 사용
+> 시스템의 호스트 이름을 설정할 때 사용
 
 **Use Case**: 시스템 관리자가 호스트 이름을 변경할 때, 새로운 가상머신이나 컨테이너를 생성할 때 등
 
-**LIBRARY**: libc/unistd.h
+**LIBRARY**:
+- `#include <unistd.h>`
 
 **Arguments**: 
 - `const char *name`: 새로운 호스트 이름을 담고 있는 문자열
@@ -500,13 +459,12 @@
 
 ### setdomainname
 
-> Set NIS domain name
-
-시스템의 NIS(Network Information Service) 도메인 이름을 설정할 때 사용
+> 시스템의 NIS(Network Information Service) 도메인 이름을 설정할 때 사용
 
 **Use Case**: 시스템 관리자가 네트워크 구성을 변경하면서 도메인 이름을 변경하거나 NIS 환경을 변경할 때, 새로운 가상머신이나 컨테이너를 생성할 때 등
 
-**LIBRARY**: libc/unistd.h
+**LIBRARY**:
+- `#include <unistd.h>`
 
 **Arguments**: 
 - `const char *name`: 새로운 도메인 이름을 담고 있는 문자열
@@ -519,6 +477,41 @@
 ---
 
 ## Net
+
+### net_dev_start_xmit
+
+> 네트워크 디바이스(인터페이스) 패킷 전송 시작
+
+**Use Case**: 네트워크 스택이 패킷을 실제 네트워크 인터페이스로 전달하여 전송을 시작할 때
+
+**KERNEL**: Linux Kernel Networking Subsystem
+
+**Arguments**: 
+- `const struct sk_buff *skb`: 전송할 패킷 정보가 담긴 소켓 버퍼
+- `const struct net_device *dev`: 패킷을 전송할 네트워크 디바이스(인터페이스)
+
+**Traced Information**:
+- name: 네트워크 인터페이스의 이름
+- queue_mapping: 패킷이 전송될 하드웨어 큐의 인덱스
+- skbaddr: 소켓 버퍼(sk_buff) 구조체의 메모리 주소를 가리키는 포인터
+- vlan_tagged: VLAN 태그가 있는지 여부를 나타내는 불리언 값
+- vlan_proto: VLAN 프로토콜 타입
+- vlan_tci: VLAN Tag Control Information(우선순위, VLAN ID 등 포함)
+- protocol: 네트워크 계층 프로토콜 타입
+- ip_summed: IP 체크섬 상태
+- len: 패킷의 총 길이
+- data_len: 패킷의 비선형 데이터 부분의 길이
+- network_offset: 네트워크 계층 헤더의 시작 오프셋
+- transport_offset_valid: 전송 계층 오프셋이 유효한지 여부
+- transport_offset: 전송 계층 헤더의 시작 오프셋
+- tx_flags: 전송 관련 플래그
+- gso_size: GSO(Generic Segmentation Offload)에서 사용할 세그먼트 크기
+- gso_segs: GSO에서 생성될 세그먼트의 수
+- gso_type: GSO 유형
+
+**Context**: 
+- 일반적으로 send, sendto, sendmsg 등의 시스템 콜이 최종적으로 이 지점까지 패킷을 전달했을 때 호출됨
+- 네트워크 성능 분석, 디버깅, 모니터링에 중요한 정보를 제공
 
 ## Sock
 
