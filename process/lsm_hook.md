@@ -316,7 +316,7 @@ struct task_struct {
 - 새로운 프로세스나 스레드 생성 시 보안 컨텍스트 초기화
 - 프로세스 생성 제한 또는 모니터링
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 2. 종료
@@ -333,7 +333,7 @@ struct task_struct {
 - 프로세스 종료 시 보안 리소스 정리
 - 프로세스 종료 이벤트 로깅
 
-**Return(default_value)** :
+**Return** :
 - `void` LSM_RET_VOID
 
 ## 3. 권한 변경
@@ -389,7 +389,7 @@ struct cred {
 - setuid 작업 시 권한 변경 검증
 - 권한 상승 시도 감지 및 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_fix_setgid
@@ -407,7 +407,7 @@ struct cred {
 - setgid 작업 시 그룹 권한 변경 검증
 - 그룹 권한 상승 시도 감지 및 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_fix_setgroups
@@ -424,7 +424,7 @@ struct cred {
 - 프로세스의 보조 그룹 목록 변경 검증
 - 그룹 멤버십 변경 모니터링
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 4. 스케줄링
@@ -441,7 +441,7 @@ struct cred {
 - 프로세스 스케줄링 정책 변경 제어
 - 특정 프로세스의 스케줄링 우선순위 제한
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getscheduler
@@ -457,7 +457,7 @@ struct cred {
 - 프로세스 스케줄링 정책 조회 권한 검증
 - 스케줄링 정보 접근 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_setnice
@@ -474,7 +474,7 @@ struct cred {
 - 프로세스 우선순위 변경 제어
 - 리소스 사용 조절을 위한 nice 값 설정 제한
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 5. 리소스 관리
@@ -492,7 +492,7 @@ struct cred {
 - I/O 우선순위 변경 권한 검증
 - 특정 프로세스의 I/O 사용량 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getioprio
@@ -508,7 +508,7 @@ struct cred {
 - I/O 우선순위 정보 접근 권한 검증
 - I/O 우선순위 조회 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_prlimit
@@ -526,7 +526,7 @@ struct cred {
 - 프로세스 리소스 제한 변경 권한 검증
 - 리소스 사용량 제어 정책 적용
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_setrlimit
@@ -551,7 +551,7 @@ struct rlimit {
 - 특정 리소스에 대한 제한 설정 제어
 - 리소스 제한 변경 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_movememory
@@ -567,7 +567,7 @@ struct rlimit {
 - 프로세스 메모리 이동 작업 검증
 - 메모리 조작 시도 탐지
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 6. 그 외
@@ -585,7 +585,7 @@ struct rlimit {
 - 프로세스 그룹 변경 권한 검증
 - 프로세스 그룹 관리 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getpgid
@@ -601,7 +601,7 @@ struct rlimit {
 - 프로세스 그룹 정보 접근 권한 검증
 - 프로세스 그룹 조회 로깅
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getsid
@@ -617,7 +617,7 @@ struct rlimit {
 - 세션 ID 접근 권한 검증
 - 세션 관리 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_kill
@@ -647,7 +647,7 @@ struct kernel_siginfo {
 - 시그널 전송 권한 검증
 - 악의적인 프로세스 종료 시도 탐지
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_prctl
@@ -667,7 +667,7 @@ struct kernel_siginfo {
 - prctl 작업 수행 권한 검증
 - 특정 prctl 작업 제한 또는 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` -ENOSYS
 
 ### task_to_inode
@@ -684,7 +684,7 @@ struct kernel_siginfo {
 - 프로세스 정보를 파일 시스템 inode로 변환 시 보안 속성 설정
 - 프로세스 정보 노출 제어
 
-**Return(default_value)** :
+**Return** :
 - `void` LSM_RET_VOID
 
 
