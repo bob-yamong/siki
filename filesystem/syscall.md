@@ -29,11 +29,8 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 
 ## File operations
 
-
 ### Close
-> Close a file descriptor.
-
-파일 디스크립터를 닫습니다.
+> 파일 디스크립터를 닫습니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
@@ -41,306 +38,298 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **Arguments**:
 - `int fd`: 닫을 파일 디스크립터.
 
+**Use Case**:
+- 파일을 다 사용한 후, 리소스 해제를 위해 파일 디스크립터를 닫는 데 사용됩니다. 특히 파일을 읽기 또는 쓰기 작업이 완료된 후 시스템 리소스를 절약하기 위해 사용됩니다.
+
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/close.2.html
 
-
-
 ### Creat
-> Open and possibly create a file.
-
-파일을 열거나, 필요 시 파일을 생성합니다.
+> 파일을 열거나 존재하지 않을 시 생성합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `const char *pathname`: 열 파일의 경로.
-- `mode_t mode`: 생성할 파일의 권한 (파일이 생성될 때만 사용).
+- `const char *pathname`: 열거나 생성할 파일 경로.
+- `mode_t mode`: 파일 권한 설정 (예: `S_IRUSR | S_IWUSR`).
+
+**Use Case**:
+- 파일이 존재하지 않을 때, 새 파일을 생성하며, 주로 로그 파일이나 데이터를 저장할 파일을 동적으로 생성하는 경우에 사용됩니다.
 
 **Return Value**:
-- 성공 시 파일 디스크립터, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 새 파일에 대한 파일 디스크립터를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/creat.2.html
 
-
-
 ### Open
-> Open and possibly create a file.
-
-파일을 열거나, 필요 시 파일을 생성합니다.
+> 파일을 열거나, 필요 시 생성합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
 - `const char *pathname`: 열 파일의 경로.
-- `int flags`: 파일 열기 옵션.
-- `mode_t mode`: 파일 생성 시 권한 (필요할 경우).
+- `int flags`: 파일 열기 동작을 정의하는 플래그들 (예: `O_RDONLY`, `O_WRONLY`, `O_RDWR`).
+- `mode_t mode` (선택 사항): 파일을 새로 생성할 때 권한을 설정하는 값.
+
+**Use Case**:
+- 파일을 읽거나 쓰기 위해 열 때 사용됩니다. 파일이 존재하지 않는 경우에는, 선택적으로 새로운 파일을 생성할 수 있습니다.
 
 **Return Value**:
-- 성공 시 파일 디스크립터, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 파일 디스크립터를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/open.2.html
 
-
-
 ### Openat
-> Open and possibly create a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일을 열거나, 필요 시 생성합니다.
+> 파일 경로를 기준으로 특정 디렉터리 내의 파일을 열거나 생성합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 열 파일의 경로.
-- `int flags`: 파일 열기 옵션.
-- `mode_t mode`: 파일 생성 시 권한 (필요할 경우).
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 디렉터리 내에서 열거나 생성할 파일 경로.
+- `int flags`: 파일 열기 동작을 정의하는 플래그들.
+- `mode_t mode` (선택 사항): 파일을 새로 생성할 때 권한을 설정하는 값.
+
+**Use Case**:
+- 특정 디렉터리 내에서 파일을 상대적으로 열거나 생성할 때 사용되며, 특히 보안 상의 이유로 안전한 파일 접근이 필요한 경우에 사용됩니다.
 
 **Return Value**:
-- 성공 시 파일 디스크립터, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 파일 디스크립터를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/openat.2.html
 
-
-
 ### Name_to_handle_at
-> Obtain handle for a pathname.
-
-파일 경로의 핸들을 가져옵니다.
+> 경로명에 대한 파일 핸들을 가져옵니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 핸들을 얻을 경로.
-- `struct file_handle *handle`: 파일 핸들을 받을 구조체.
-- `int *mount_id`: 마운트 ID를 받을 포인터.
-- `int flags`: 플래그 옵션.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 핸들을 얻고자 하는 파일의 경로.
+- `struct file_handle *handle`: 파일 핸들에 대한 정보를 저장하는 구조체.
+- `int *mount_id`: 마운트 ID를 저장하는 포인터.
+- `int flags`: 동작을 정의하는 플래그.
+
+**Use Case**:
+- 파일 핸들을 사용하여 파일 시스템 내에서 파일을 고유하게 식별하고, 파일에 대한 핸들 기반 접근이 필요한 경우에 사용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/name_to_handle_at.2.html
 
-
-
 ### Open_by_handle_at
-> Open file via a handle.
-
-핸들을 사용해 파일을 엽니다.
+> 핸들을 통해 파일을 엽니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int mount_fd`: 파일이 마운트된 디렉토리의 파일 디스크립터.
-- `struct file_handle *handle`: 열 파일의 핸들.
-- `int flags`: 파일 열기 옵션.
+- `int mount_fd`: 마운트 포인트의 파일 디스크립터.
+- `struct file_handle *handle`: 열 파일에 대한 핸들.
+- `int flags`: 파일 열기 동작을 정의하는 플래그들.
+
+**Use Case**:
+- 기존에 얻은 파일 핸들을 통해 파일을 여는 데 사용됩니다. 특히, 핸들 기반 접근 방식을 사용하는 시스템에서 파일에 접근할 때 유용합니다.
 
 **Return Value**:
-- 성공 시 파일 디스크립터, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 파일 디스크립터를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/open_by_handle_at.2.html
 
-
-
 ### Memfd_create
-> Create an anonymous file.
-
-익명 파일을 생성합니다.
+> 익명 파일을 생성합니다.
 
 **LIBRARY**:
 - `#include <sys/mman.h>`
 
 **Arguments**:
 - `const char *name`: 익명 파일의 이름.
-- `unsigned int flags`: 파일 생성 플래그.
+- `unsigned int flags`: 생성 동작을 정의하는 플래그들 (예: `MFD_CLOEXEC`).
+
+**Use Case**:
+- 메모리 내에서 익명 파일을 생성하여, 파일 시스템에 저장하지 않고 메모리 공유 또는 IPC(Inter-Process Communication) 용도로 사용됩니다.
 
 **Return Value**:
-- 성공 시 파일 디스크립터, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 파일 디스크립터를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/memfd_create.2.html
 
 ### Mknod
-> Create a special or ordinary file.
-
-특수 파일 또는 일반 파일을 생성합니다.
+> 특수 파일 또는 일반 파일을 생성합니다.
 
 **LIBRARY**:
 - `#include <sys/stat.h>`
 
 **Arguments**:
 - `const char *pathname`: 생성할 파일의 경로.
-- `mode_t mode`: 파일 유형 및 권한.
-- `dev_t dev`: 장치 번호 (특수 파일일 경우).
+- `mode_t mode`: 파일 유형 및 접근 권한을 지정합니다 (예: `S_IFREG`, `S_IFCHR`).
+- `dev_t dev`: 파일이 특수 장치 파일일 경우, 장치 번호를 설정합니다.
+
+**Use Case**:
+- 주로 장치 파일 또는 파이프와 같은 특수 파일을 생성하는 데 사용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mknod.2.html
 
-
-
 ### Mknodat
-> Create a special or ordinary file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 특수 파일 또는 일반 파일을 생성합니다.
+> 디렉터리 파일 디스크립터를 기준으로 특수 파일 또는 일반 파일을 생성합니다.
 
 **LIBRARY**:
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
 - `const char *pathname`: 생성할 파일의 경로.
-- `mode_t mode`: 파일 유형 및 권한.
-- `dev_t dev`: 장치 번호 (특수 파일일 경우).
+- `mode_t mode`: 파일 유형 및 접근 권한을 지정합니다.
+- `dev_t dev`: 장치 파일일 경우 장치 번호를 설정합니다.
+
+**Use Case**:
+- 특정 디렉터리를 기준으로 장치 파일, 파이프 또는 일반 파일을 생성할 때 사용되며, 보안이 중요한 환경에서 유용합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mknodat.2.html
 
-
-
 ### Rename
-> Rename a file.
-
-파일의 이름을 변경합니다.
+> 파일 이름을 변경합니다.
 
 **LIBRARY**:
-- `#include <stdio.h>`
+- `#include <unistd.h>`
 
 **Arguments**:
-- `const char *oldpath`: 현재 파일 경로.
+- `const char *oldpath`: 기존 파일 경로.
 - `const char *newpath`: 새 파일 경로.
 
+**Use Case**:
+- 파일 또는 디렉터리의 이름을 변경하거나 파일을 다른 디렉터리로 이동할 때 사용됩니다.
+
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/rename.2.html
 
-
-
 ### Renameat
-> Rename a file relative to directory file descriptors.
-
-디렉토리 파일 디스크립터를 기준으로 파일 이름을 변경합니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일 이름을 변경합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int olddirfd`: 기존 파일 디렉토리 파일 디스크립터.
+- `int olddirfd`: 기존 파일의 디렉터리 파일 디스크립터.
 - `const char *oldpath`: 기존 파일 경로.
-- `int newdirfd`: 새 파일 디렉토리 파일 디스크립터.
+- `int newdirfd`: 새 파일의 디렉터리 파일 디스크립터.
 - `const char *newpath`: 새 파일 경로.
 
+**Use Case**:
+- 보안이 중요한 상황에서 파일 또는 디렉터리의 이름을 변경하거나 파일을 다른 디렉터리로 이동할 때 사용됩니다.
+
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/renameat.2.html
 
-
-
 ### Renameat2
-> Rename a file relative to directory file descriptors with additional flags.
-
-디렉토리 파일 디스크립터를 기준으로 추가 플래그와 함께 파일 이름을 변경합니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일 이름을 플래그와 함께 변경합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int olddirfd`: 기존 파일 디렉토리 파일 디스크립터.
+- `int olddirfd`: 기존 파일의 디렉터리 파일 디스크립터.
 - `const char *oldpath`: 기존 파일 경로.
-- `int newdirfd`: 새 파일 디렉토리 파일 디스크립터.
+- `int newdirfd`: 새 파일의 디렉터리 파일 디스크립터.
 - `const char *newpath`: 새 파일 경로.
-- `unsigned int flags`: 플래그 옵션.
+- `unsigned int flags`: 이름 변경 동작을 제어하는 플래그들 (예: `RENAME_NOREPLACE`, `RENAME_EXCHANGE`).
+
+**Use Case**:
+- 파일 이름을 변경할 때 추가적인 제어가 필요할 때 사용됩니다. 예를 들어, 파일 교환이나 중복 이름 방지를 위해 사용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/renameat2.2.html
 
-
-
 ### Truncate
-> Truncate a file to a specified length.
-
-파일을 지정된 길이로 자릅니다.
+> 파일을 지정된 길이로 자릅니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *path`: 파일 경로.
-- `off_t length`: 새 파일 길이.
+- `const char *path`: 길이를 조정할 파일의 경로.
+- `off_t length`: 파일을 자를 길이.
+
+**Use Case**:
+- 파일의 내용을 일부 잘라내거나 확장할 때 사용됩니다. 주로 로그 파일이나 임시 파일을 관리할 때 사용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/truncate.2.html
 
-
-
 ### Ftruncate
-> Truncate a file to a specified length.
-
-파일 디스크립터를 사용하여 파일을 지정된 길이로 자릅니다.
+> 열린 파일을 지정된 길이로 자릅니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `int fd`: 파일 디스크립터.
-- `off_t length`: 새 파일 길이.
+- `int fd`: 길이를 조정할 파일의 디스크립터.
+- `off_t length`: 파일을 자를 길이.
+
+**Use Case**:
+- 열린 파일의 내용을 일부 잘라내거나 확장할 때 사용됩니다. 주로 파일의 크기를 조절하거나 내용을 덮어쓸 때 유용합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/ftruncate.2.html
 
-
-
 ### Fallocate
-> Manipulate file space.
-
-파일 공간을 할당하거나 관리합니다.
+> 파일 공간을 조작합니다.
 
 **LIBRARY**:
 - `#include <fcntl.h>`
 
 **Arguments**:
-- `int fd`: 파일 디스크립터.
-- `int mode`: 할당 옵션 플래그.
+- `int fd`: 조작할 파일의 디스크립터.
+- `int mode`: 파일 할당 모드를 설정하는 플래그 (예: `FALLOC_FL_KEEP_SIZE`).
 - `off_t offset`: 할당할 시작 위치.
-- `off_t len`: 할당할 바이트 길이.
+- `off_t len`: 할당할 파일 크기.
+
+**Use Case**:
+- 파일에 물리적인 공간을 미리 할당하여, 디스크 공간을 예약하거나 파일 확장을 준비할 때 사용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fallocate.2.html
+
 
 ## Directory Operations
 
@@ -1097,6 +1086,8 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 - http://man7.org/linux/man-pages/man2/faccessat.2.html
 
 
+
+# END
 > [!WARNING]
 > This part of the docs is incomplete, contributions are very welcome
 > 
