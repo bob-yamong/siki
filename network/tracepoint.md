@@ -3,19 +3,19 @@
 
 ## Table of Content
 
-**1. System calls**
-- [Socket operations](#socket-operations)
-- [Send/Receive](#sendreceive)
-- [Naming](#naming)
+1. **System calls**
+    - [Socket operations](#socket-operations)
+    - [Send/Receive](#sendreceive)
+    - [Naming](#naming)
 
-**2. Sub system**
-- [Net](#net)
-- [Sock](#sock)
-- [TCP](#tcp)
-- [UDP](#udp)
-- [XDP](#xdp)
+2. **Sub system**
+    - [Net](#net)
+    - [Sock](#sock)
+    - [TCP](#tcp)
+    - [UDP](#udp)
+    - [XDP](#xdp)
 
-**3. Usage**
+3. **Usage**
 
 ## Socket operations
 
@@ -480,11 +480,12 @@
 
 ### net_dev_start_xmit
 
-> 네트워크 디바이스(인터페이스) 패킷 전송 시작
+> 네트워크 디바이스(인터페이스)에서 패킷 전송 시작
 
-**Use Case**: 네트워크 스택이 패킷을 실제 네트워크 인터페이스로 전달하여 전송을 시작할 때
+**Use Case**: 네트워크 스택이 패킷을 실제 네트워크 인터페이스를 통해 전송을 시작할 때
 
-**KERNEL**: Linux Kernel Networking Subsystem
+**KERNEL**: 
+- Linux Kernel Networking Subsystem
 
 **Arguments**: 
 - `const struct sk_buff *skb`: 전송할 패킷 정보가 담긴 소켓 버퍼
@@ -511,7 +512,34 @@
 
 **Context**: 
 - 일반적으로 send, sendto, sendmsg 등의 시스템 콜이 최종적으로 이 지점까지 패킷을 전달했을 때 호출됨
-- 네트워크 성능 분석, 디버깅, 모니터링에 중요한 정보를 제공
+
+---
+
+### net_dev_xmit
+
+> 패킷 전송 완료 후 결과
+
+**Use Case**: 네트워크 디바이스(인터페이스)가 패킷 전송을 시도한 후, 그 결과를 추적할 때 사용
+
+**Kernel**: 
+- Linux Kernel Networking Subsystem
+
+**Arguments**:
+- `struct sk_buff *skb`: 전송된 패킷의 소켓 버퍼
+- `int rc`: 전송 시도의 결과 코드
+- `struct net_device *dev`: 패킷을 전송한 네트워크 디바이스
+- `unsigned int skb_len`: 전송된 패킷의 길이
+
+**Traced Information**:
+- `skbaddr`: 전송된 소켓 버퍼의 메모리 주소
+- `len`: 전송된 패킷의 길이
+- `rc`: 전송 시도의 결과 코드(성공 또는 오류 코드)
+- `name`: 패킷을 전송한 네트워크 디바이스의 이름
+
+**Context**:
+- 패킷 전송 시도 직후에 호출되어 전송 성공 여부, 전송된 데이터의 크기, 사용된 네트워크 인터페이스 등 중요한 정보를 제공함
+
+---
 
 ## Sock
 
