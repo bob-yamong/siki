@@ -1,18 +1,20 @@
 # Filesystem-Related Tracepoint in Linux
 
 ## Table of Content
-1. [File operations (파일 작업)](#file-operations)
-2. [Directory operations (디렉토리 작업)](#directory-operations)
-3. [Link operations (링크 작업)](#link-operations)
-4. [Basic file attributes (기본 파일 속성)](#basic-file-attributes)
-5. [Extended file attributes (확장 파일 속성)](#extended-file-attributes)
-6. [File descriptor manipulations (파일 디스크립터 조작)](#file-descriptor-manipulations)
-7. [Read/Write (읽기/쓰기)](#readwrite)
-8. [Synchronized I/O (동기화된 I/O)](#synchronized-io)
-9. [Asynchronous I/O (비동기 I/O)](#asynchronous-io)
-10. [Multiplexed I/O (다중화된 I/O)](#multiplexed-io)
-11. [Monitoring file events (파일 이벤트 모니터링)](#monitoring-file-events)
-12. [Miscellaneous (기타)](#miscellaneous)
+
+1. **System calls**
+    - [File operations (파일 작업)](#file-operations)
+    - [Directory operations (디렉토리 작업)](#directory-operations)
+    - [Link operations (링크 작업)](#link-operations)
+    - [Basic file attributes (기본 파일 속성)](#basic-file-attributes)
+    - [Extended file attributes (확장 파일 속성)](#extended-file-attributes)
+    - [File descriptor manipulations (파일 디스크립터 조작)](#file-descriptor-manipulations)
+    - [Read/Write (읽기/쓰기)](#readwrite)
+    - [Synchronized I/O (동기화된 I/O)](#synchronized-io)
+    - [Asynchronous I/O (비동기 I/O)](#asynchronous-io)
+    - [Multiplexed I/O (다중화된 I/O)](#multiplexed-io)
+    - [Monitoring file events (파일 이벤트 모니터링)](#monitoring-file-events)
+    - [Miscellaneous (기타)](#miscellaneous)
 
 ## File operations
 
