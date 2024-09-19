@@ -688,39 +688,37 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 
 
 ## Basic file attributes
-### Umask
-> Set file mode creation mask.
 
-파일 모드 생성 마스크를 설정합니다.
+### Umask
+> 파일 생성 시 기본 권한을 제한하는 마스크를 설정합니다.
 
 **LIBRARY**:
-- `#include <sys/types.h>`
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `mode_t mask`: 새로운 파일 모드 마스크.
+- `mode_t mask`: 새로 생성되는 파일의 권한에서 제외할 비트 값을 지정합니다.
+
+**Use Case**:
+- 파일이나 디렉터리 생성 시 기본 권한을 제한하고 싶을 때 사용됩니다. 예를 들어, 그룹 또는 다른 사용자가 새로 생성된 파일에 접근할 수 없도록 설정할 때 유용합니다.
 
 **Return Value**:
-- 이전의 마스크 값을 반환합니다.
+- 이전의 `umask` 값을 반환합니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/umask.2.html
 
-
-
 ### Stat
-> Get file metadata.
-
-파일의 메타데이터를 가져옵니다.
+> 파일의 메타데이터를 가져옵니다.
 
 **LIBRARY**:
-- `#include <sys/types.h>`
 - `#include <sys/stat.h>`
-- `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 메타데이터를 가져올 파일 경로.
-- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+- `const char *pathname`: 파일의 경로.
+- `struct stat *statbuf`: 파일 메타데이터를 저장할 버퍼.
+
+**Use Case**:
+- 파일의 크기, 권한, 생성 및 수정 시간 등 파일 메타데이터를 조회할 때 사용됩니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -728,21 +726,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/stat.2.html
 
-
-
 ### Lstat
-> Get link metadata.
-
-심볼릭 링크의 메타데이터를 가져옵니다.
+> 심볼릭 링크의 메타데이터를 가져옵니다.
 
 **LIBRARY**:
-- `#include <sys/types.h>`
 - `#include <sys/stat.h>`
-- `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 메타데이터를 가져올 링크 경로.
-- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+- `const char *pathname`: 심볼릭 링크의 경로.
+- `struct stat *statbuf`: 심볼릭 링크의 메타데이터를 저장할 버퍼.
+
+**Use Case**:
+- 심볼릭 링크의 정보를 얻고 싶을 때 사용됩니다. `stat` 시스템 호출과는 달리, 링크 자체의 메타데이터를 반환합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -750,21 +745,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/lstat.2.html
 
-
-
 ### Fstat
-> Get file metadata using a file descriptor.
-
-파일 디스크립터를 사용하여 파일의 메타데이터를 가져옵니다.
+> 열린 파일의 메타데이터를 가져옵니다.
 
 **LIBRARY**:
-- `#include <sys/types.h>`
 - `#include <sys/stat.h>`
-- `#include <unistd.h>`
 
 **Arguments**:
-- `int fd`: 메타데이터를 가져올 파일 디스크립터.
-- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
+- `int fd`: 메타데이터를 가져올 파일의 파일 디스크립터.
+- `struct stat *statbuf`: 파일 메타데이터를 저장할 버퍼.
+
+**Use Case**:
+- 파일이 이미 열려 있을 때 해당 파일의 메타데이터를 얻는 데 사용됩니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -772,22 +764,20 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fstat.2.html
 
-
-
 ### Fstatat
-> Get file metadata relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일 메타데이터를 가져옵니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일의 메타데이터를 가져옵니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
 - `const char *pathname`: 메타데이터를 가져올 파일 경로.
-- `struct stat *statbuf`: 메타데이터를 저장할 버퍼.
-- `int flags`: 플래그 옵션.
+- `struct stat *statbuf`: 파일 메타데이터를 저장할 버퍼.
+- `int flags`: 파일을 어떻게 처리할지에 대한 플래그 (예: `AT_SYMLINK_NOFOLLOW`).
+
+**Use Case**:
+- 보안이 중요한 환경에서, 디렉터리 파일 디스크립터를 기준으로 파일의 메타데이터를 조회할 때 사용됩니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -795,19 +785,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fstatat.2.html
 
-
-
 ### Chmod
-> Change permissions of a file.
-
-파일의 권한을 변경합니다.
+> 파일의 권한을 변경합니다.
 
 **LIBRARY**:
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `const char *pathname`: 권한을 변경할 파일 경로.
-- `mode_t mode`: 새 권한 모드.
+- `const char *pathname`: 권한을 변경할 파일의 경로.
+- `mode_t mode`: 새로 설정할 파일 권한 (예: `S_IRUSR | S_IWUSR`).
+
+**Use Case**:
+- 파일 또는 디렉터리의 접근 권한을 변경할 때 사용됩니다. 예를 들어, 파일을 읽기 전용 또는 읽기-쓰기로 변경할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -815,19 +804,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chmod.2.html
 
-
-
 ### Fchmod
-> Change permissions of a file using a file descriptor.
-
-파일 디스크립터를 사용하여 파일의 권한을 변경합니다.
+> 열린 파일의 권한을 변경합니다.
 
 **LIBRARY**:
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int fd`: 권한을 변경할 파일 디스크립터.
-- `mode_t mode`: 새 권한 모드.
+- `int fd`: 권한을 변경할 파일의 파일 디스크립터.
+- `mode_t mode`: 새로 설정할 파일 권한.
+
+**Use Case**:
+- 파일이 이미 열려 있는 상태에서 해당 파일의 권한을 변경할 때 사용됩니다. 주로 파일을 수정할 때 권한을 일시적으로 변경하는 경우에 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -835,22 +823,20 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fchmod.2.html
 
-
-
 ### Fchmodat
-> Change permissions of a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일의 권한을 변경합니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일의 권한을 변경합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 권한을 변경할 파일 경로.
-- `mode_t mode`: 새 권한 모드.
-- `int flags`: 플래그 옵션.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 권한을 변경할 파일의 경로.
+- `mode_t mode`: 새로 설정할 파일 권한.
+- `int flags`: 심볼릭 링크 처리 방식을 제어하는 플래그 (예: `AT_SYMLINK_NOFOLLOW`).
+
+**Use Case**:
+- 보안이 중요한 환경에서, 특정 디렉터리 파일 디스크립터를 기준으로 파일의 권한을 변경할 때 사용됩니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -858,20 +844,19 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fchmodat.2.html
 
-
-
 ### Chown
-> Change ownership of a file.
-
-파일의 소유자를 변경합니다.
+> 파일의 소유자 및 그룹을 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 소유자를 변경할 파일 경로.
-- `uid_t owner`: 새 소유자의 사용자 ID.
-- `gid_t group`: 새 소유자의 그룹 ID.
+- `const char *pathname`: 소유자를 변경할 파일의 경로.
+- `uid_t owner`: 새로 설정할 파일 소유자 ID.
+- `gid_t group`: 새로 설정할 파일 그룹 ID.
+
+**Use Case**:
+- 파일 또는 디렉터리의 소유자나 그룹을 변경할 때 사용됩니다. 주로 파일 권한 및 접근 제어를 관리할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -879,20 +864,19 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chown.2.html
 
-
-
 ### Lchown
-> Change ownership of a link.
-
-심볼릭 링크의 소유자를 변경합니다.
+> 심볼릭 링크의 소유자 및 그룹을 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 소유자를 변경할 링크 경로.
-- `uid_t owner`: 새 소유자의 사용자 ID.
-- `gid_t group`: 새 소유자의 그룹 ID.
+- `const char *pathname`: 소유자를 변경할 심볼릭 링크의 경로.
+- `uid_t owner`: 새로 설정할 링크 소유자 ID.
+- `gid_t group`: 새로 설정할 링크 그룹 ID.
+
+**Use Case**:
+- 심볼릭 링크 자체의 소유자와 그룹을 변경할 때 사용됩니다. 심볼릭 링크가 참조하는 파일이 아닌 링크 자체의 속성을 수정할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -900,43 +884,41 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/lchown.2.html
 
-
-
 ### Fchown
-> Change ownership of a file using a file descriptor.
-
-파일 디스크립터를 사용하여 파일의 소유자를 변경합니다.
+> 열린 파일의 소유자 및 그룹을 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `int fd`: 소유자를 변경할 파일 디스크립터.
-- `uid_t owner`: 새 소유자의 사용자 ID.
-- `gid_t group`: 새 소유자의 그룹 ID.
+- `int fd`: 소유자를 변경할 파일의 파일 디스크립터.
+- `uid_t owner`: 새로 설정할 파일 소유자 ID.
+- `gid_t group`: 새로 설정할 파일 그룹 ID.
+
+**Use Case**:
+- 이미 열린 파일의 소유자 및 그룹을 변경할 때 사용됩니다. 파일을 작업하는 중에 소유자를 변경해야 할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
-- http://man7.org/linux/man-pages/man2/fchown.2.html
-
-
+- http://man7.org/linux/man
 
 ### Fchownat
-> Change ownership of a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일의 소유자를 변경합니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일의 소유자 및 그룹을 변경합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
+- `#include <unistd.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
 - `const char *pathname`: 소유자를 변경할 파일 경로.
-- `uid_t owner`: 새 소유자의 사용자 ID.
-- `gid_t group`: 새 소유자의 그룹 ID.
-- `int flags`: 플래그 옵션.
+- `uid_t owner`: 새로 설정할 파일 소유자 ID.
+- `gid_t group`: 새로 설정할 파일 그룹 ID.
+- `int flags`: 동작을 제어하는 플래그 (예: `AT_SYMLINK_NOFOLLOW`).
+
+**Use Case**:
+- 특정 디렉터리 파일 디스크립터를 기준으로 파일의 소유자 및 그룹을 변경할 때 사용됩니다. 보안이 중요한 환경에서 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -944,19 +926,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fchownat.2.html
 
-
-
 ### Utime
-> Change file last access and modification times.
-
-파일의 마지막 접근 및 수정 시간을 변경합니다.
+> 파일의 마지막 접근 시간과 수정 시간을 변경합니다.
 
 **LIBRARY**:
 - `#include <utime.h>`
 
 **Arguments**:
-- `const char *filename`: 시간을 변경할 파일 경로.
-- `const struct utimbuf *times`: 새 접근 및 수정 시간을 담고 있는 구조체.
+- `const char *filename`: 시간을 변경할 파일의 경로.
+- `const struct utimbuf *times`: 설정할 접근 및 수정 시간.
+
+**Use Case**:
+- 파일의 마지막 접근 시간과 수정 시간을 변경할 때 사용됩니다. 주로 파일 백업 또는 동기화 작업에서 파일 타임스탬프를 수정할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -964,19 +945,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/utime.2.html
 
-
-
 ### Utimes
-> Change file last access and modification times with microsecond precision.
-
-파일의 마지막 접근 및 수정 시간을 마이크로초 단위로 변경합니다.
+> 파일의 마지막 접근 시간과 수정 시간을 마이크로초 단위로 변경합니다.
 
 **LIBRARY**:
 - `#include <sys/time.h>`
 
 **Arguments**:
-- `const char *filename`: 시간을 변경할 파일 경로.
-- `const struct timeval times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
+- `const char *filename`: 시간을 변경할 파일의 경로.
+- `const struct timeval times[2]`: 접근 시간과 수정 시간을 저장하는 배열.
+
+**Use Case**:
+- 더 정밀한 단위로 파일의 마지막 접근 시간과 수정 시간을 변경할 때 사용됩니다. 주로 파일 백업 또는 동기화에서 세밀한 타임스탬프 관리가 필요할 때 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -984,21 +964,19 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/utimes.2.html
 
-
-
 ### Futimesat
-> Change timestamps of a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일의 시간을 변경합니다.
+> 디렉터리 파일 디스크립터를 기준으로 파일의 마지막 접근 시간과 수정 시간을 변경합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
 - `#include <sys/time.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 시간을 변경할 파일 경로.
-- `const struct timeval times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 시간을 변경할 파일의 경로.
+- `const struct timeval times[2]`: 접근 시간과 수정 시간을 저장하는 배열.
+
+**Use Case**:
+- 특정 디렉터리 파일 디스크립터를 기준으로 파일의 접근 및 수정 시간을 변경할 때 사용됩니다. 보안이 중요한 환경에서 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -1006,22 +984,20 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/futimesat.2.html
 
-
-
 ### Utimensat
-> Change file timestamps with nanosecond precision.
-
-나노초 단위로 파일의 시간을 변경합니다.
+> 파일의 마지막 접근 시간과 수정 시간을 나노초 단위로 변경합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 시간을 변경할 파일 경로.
-- `const struct timespec times[2]`: 접근 및 수정 시간을 담고 있는 구조체 배열.
-- `int flags`: 플래그 옵션.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 시간을 변경할 파일의 경로.
+- `const struct timespec times[2]`: 나노초 단위로 접근 및 수정 시간을 저장하는 배열.
+- `int flags`: 심볼릭 링크 처리 방식을 제어하는 플래그.
+
+**Use Case**:
+- 나노초 단위로 파일의 마지막 접근 시간과 수정 시간을 변경해야 하는 상황에서 사용됩니다. 주로 고정밀 타임스탬프 관리가 필요한 경우에 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -1029,19 +1005,18 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/utimensat.2.html
 
-
-
 ### Access
-> Check real user's permissions for a file.
-
-파일에 대해 실제 사용자의 권한을 확인합니다.
+> 파일에 대한 실제 사용자의 접근 권한을 확인합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 권한을 확인할 파일 경로.
-- `int mode`: 확인할 권한 모드.
+- `const char *pathname`: 접근 권한을 확인할 파일의 경로.
+- `int mode`: 접근 권한을 확인할 방법 (예: `R_OK`, `W_OK`, `X_OK`).
+
+**Use Case**:
+- 특정 파일에 대해 실제 사용자가 읽기, 쓰기 또는 실행 권한을 가지고 있는지 확인할 때 사용됩니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
@@ -1049,28 +1024,26 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 **manual page**:
 - http://man7.org/linux/man-pages/man2/access.2.html
 
-
-
 ### Faccessat
-> Check real user's permissions for a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일에 대한 실제 사용자의 권한을 확인합니다.
+> 디렉터리 파일 디스크립터를 기준으로 실제 사용자의 파일 접근 권한을 확인합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
+- `#include <unistd.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 권한을 확인할 파일 경로.
-- `int mode`: 확인할 권한 모드.
-- `int flags`: 플래그 옵션.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 접근 권한을 확인할 파일의 경로.
+- `int mode`: 접근 권한을 확인할 방법 (예: `R_OK`, `W_OK`, `X_OK`).
+- `int flags`: 심볼릭 링크 처리 방식을 제어하는 플래그 (옵션).
+
+**Use Case**:
+- 특정 디렉터리 파일 디스크립터를 기준으로 실제 사용자의 파일 접근 권한을 확인할 때 사용됩니다. 보안이 중요한 환경에서 유용합니다.
 
 **Return Value**:
 - 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/faccessat.2.html
-
 
 
 # END
