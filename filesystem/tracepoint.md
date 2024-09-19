@@ -1,6 +1,5 @@
 # Filesystem-Related Tracepoint in Linux
 
-
 ## Table of Content
 - [File operations (파일 작업)](#file-operations)
 - [Directory operations (디렉토리 작업)](#directory-operations)
