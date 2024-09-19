@@ -1,17 +1,44 @@
 # Process-Related LSM Hooks in Linux
+프로세스 조작과 관련된 tracepoint 정리 문서
 
 > [!NOTE]
 > This document is based on linux repository(v.6.8)[^1].
 >
 > 이 문서는 리눅스 레포(v.6.8)[^1]를 기준으로 작성 하였음.
 
+## Table of Content
+1. 생성
+	- [task_alloc](#task_alloc)
+2. 종료
+	- [task_free](#task_free)
+3. 권한 변경
+	- [task_fix_setuid](#task_fix_setuid)
+	- [task_fix_setgid](#task_fix_setgid)
+	- [task_fix_setgroups](#task_fix_setgroups)
+4. 스케줄링
+	- [task_setscheduler](#task_setscheduler)
+	- [task_getscheduler](#task_getscheduler)
+	- [task_setnice](#task_setnice)
+5. 리소스 관리
+	- [task_setioprio](#task_setioprio)
+	- [task_getioprio](#task_getioprio)
+	- [task_prlimit](#task_prlimit)
+	- [task_setrlimit](#task_setrlimit)
+	- [task_movememory](#task_movememory)
+6. 그 외
+	- [task_setpgid](#task_setpgid)
+	- [task_getpgid](#task_getpgid)
+	- [task_getsid](#task_getsid)
+	- [task_kill](#task_kill)
+	- [task_prctl](#task_prctl)
+	- [task_to_inode](#task_to_inode)
+
 ## 1. 생성
 ### task_alloc
 > 새 태스크 구조체 할당 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *task: 새로 할당된 태스크(프로세스 또는 스레드) 구조체를 가리키는 포인터. 이 구조체는 새로운 프로세스나 스레드의 모든 정보를 포함
@@ -289,7 +316,7 @@ struct task_struct {
 - 새로운 프로세스나 스레드 생성 시 보안 컨텍스트 초기화
 - 프로세스 생성 제한 또는 모니터링
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 2. 종료
@@ -297,8 +324,7 @@ struct task_struct {
 > 태스크 구조체 해제 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *task: 해제될 태스크 구조체를 가리키는 포인터. 이 구조체는 종료되는 프로세스나 스레드의 정보를 포함.
@@ -307,7 +333,7 @@ struct task_struct {
 - 프로세스 종료 시 보안 리소스 정리
 - 프로세스 종료 이벤트 로깅
 
-**Return(default_value)** :
+**Return** :
 - `void` LSM_RET_VOID
 
 ## 3. 권한 변경
@@ -315,8 +341,7 @@ struct task_struct {
 > setuid 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
@@ -364,15 +389,14 @@ struct cred {
 - setuid 작업 시 권한 변경 검증
 - 권한 상승 시도 감지 및 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_fix_setgid
 > setgid 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
@@ -383,15 +407,14 @@ struct cred {
 - setgid 작업 시 그룹 권한 변경 검증
 - 그룹 권한 상승 시도 감지 및 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_fix_setgroups
 > setgroups 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 보조 그룹 목록을 포함하는 자격 증명 구조체 포인터
@@ -401,7 +424,7 @@ struct cred {
 - 프로세스의 보조 그룹 목록 변경 검증
 - 그룹 멤버십 변경 모니터링
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 4. 스케줄링
@@ -409,8 +432,7 @@ struct cred {
 > 스케줄러 정책 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 스케줄링 정책이 변경될 태스크의 구조체 포인터
@@ -419,15 +441,14 @@ struct cred {
 - 프로세스 스케줄링 정책 변경 제어
 - 특정 프로세스의 스케줄링 우선순위 제한
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getscheduler
 > 스케줄러 정책 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 스케줄링 정책을 조회할 태스크의 구조체 포인터
@@ -436,15 +457,14 @@ struct cred {
 - 프로세스 스케줄링 정책 조회 권한 검증
 - 스케줄링 정보 접근 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_setnice
 > 프로세스 nice 값 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: nice 값이 변경될 태스크의 구조체 포인터
@@ -454,7 +474,7 @@ struct cred {
 - 프로세스 우선순위 변경 제어
 - 리소스 사용 조절을 위한 nice 값 설정 제한
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 5. 리소스 관리
@@ -462,8 +482,7 @@ struct cred {
 > 프로세스 I/O 우선순위 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/ioprio.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: I/O 우선순위가 변경될 태스크의 구조체 포인터
@@ -473,15 +492,14 @@ struct cred {
 - I/O 우선순위 변경 권한 검증
 - 특정 프로세스의 I/O 사용량 제어
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getioprio
 > 프로세스 I/O 우선순위 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/ioprio.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: I/O 우선순위를 조회할 태스크의 구조체 포인터
@@ -490,15 +508,14 @@ struct cred {
 - I/O 우선순위 정보 접근 권한 검증
 - I/O 우선순위 조회 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_prlimit
 > 리소스 제한 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/resource.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `const struct cred` *cred: 작업을 수행하는 프로세스의 자격 증명 구조체 포인터
@@ -509,15 +526,14 @@ struct cred {
 - 프로세스 리소스 제한 변경 권한 검증
 - 리소스 사용량 제어 정책 적용
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_setrlimit
 > 리소스 제한 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/resource.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 리소스 제한이 변경될 태스크의 구조체 포인터
@@ -535,15 +551,14 @@ struct rlimit {
 - 특정 리소스에 대한 제한 설정 제어
 - 리소스 제한 변경 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_movememory
 > 메모리 이동 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/mm.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 메모리 이동 작업이 수행될 태스크의 구조체 포인터
@@ -552,7 +567,7 @@ struct rlimit {
 - 프로세스 메모리 이동 작업 검증
 - 메모리 조작 시도 탐지
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ## 6. 그 외
@@ -560,8 +575,7 @@ struct rlimit {
 > 프로세스 그룹 ID 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 프로세스 그룹 ID가 변경될 태스크의 구조체 포인터
@@ -571,15 +585,14 @@ struct rlimit {
 - 프로세스 그룹 변경 권한 검증
 - 프로세스 그룹 관리 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getpgid
 > 프로세스 그룹 ID 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 프로세스 그룹 ID를 조회할 태스크의 구조체 포인터
@@ -588,15 +601,14 @@ struct rlimit {
 - 프로세스 그룹 정보 접근 권한 검증
 - 프로세스 그룹 조회 로깅
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_getsid
 > 세션 ID 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 세션 ID를 조회할 태스크의 구조체 포인터
@@ -605,15 +617,14 @@ struct rlimit {
 - 세션 ID 접근 권한 검증
 - 세션 관리 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_kill
 > 시그널 전송 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched/signal.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 시그널을 받을 대상 태스크의 구조체 포인터
@@ -636,15 +647,14 @@ struct kernel_siginfo {
 - 시그널 전송 권한 검증
 - 악의적인 프로세스 종료 시도 탐지
 
-**Return(default_value)** :
+**Return** :
 - `int` 0
 
 ### task_prctl
 > prctl 시스템 콜 호출 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/prctl.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `int` option: 수행할 prctl 작업의 옵션
@@ -657,15 +667,14 @@ struct kernel_siginfo {
 - prctl 작업 수행 권한 검증
 - 특정 prctl 작업 제한 또는 감사
 
-**Return(default_value)** :
+**Return** :
 - `int` -ENOSYS
 
 ### task_to_inode
 > 태스크를 inode로 변환 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/fs.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: inode로 변환될 태스크의 구조체 포인터 
@@ -675,7 +684,7 @@ struct kernel_siginfo {
 - 프로세스 정보를 파일 시스템 inode로 변환 시 보안 속성 설정
 - 프로세스 정보 노출 제어
 
-**Return(default_value)** :
+**Return** :
 - `void` LSM_RET_VOID
 
 
