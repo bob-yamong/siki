@@ -491,23 +491,23 @@
 - `const struct net_device *dev`: 패킷을 전송할 네트워크 디바이스(인터페이스)
 
 **Traced Information**:
-- name: 네트워크 인터페이스의 이름
-- queue_mapping: 패킷이 전송될 하드웨어 큐의 인덱스
-- skbaddr: 소켓 버퍼(sk_buff) 구조체의 메모리 주소를 가리키는 포인터
-- vlan_tagged: VLAN 태그가 있는지 여부를 나타내는 불리언 값
-- vlan_proto: VLAN 프로토콜 타입
-- vlan_tci: VLAN Tag Control Information(우선순위, VLAN ID 등 포함)
-- protocol: 네트워크 계층 프로토콜 타입
-- ip_summed: IP 체크섬 상태
-- len: 패킷의 총 길이
-- data_len: 패킷의 비선형 데이터 부분의 길이
-- network_offset: 네트워크 계층 헤더의 시작 오프셋
-- transport_offset_valid: 전송 계층 오프셋이 유효한지 여부
-- transport_offset: 전송 계층 헤더의 시작 오프셋
-- tx_flags: 전송 관련 플래그
-- gso_size: GSO(Generic Segmentation Offload)에서 사용할 세그먼트 크기
-- gso_segs: GSO에서 생성될 세그먼트의 수
-- gso_type: GSO 유형
+- `name`: 네트워크 인터페이스의 이름
+- `queue_mapping`: 패킷이 전송될 하드웨어 큐의 인덱스
+- `skbaddr`: 소켓 버퍼(sk_buff) 구조체의 메모리 주소를 가리키는 포인터
+- `vlan_tagged`: VLAN 태그가 있는지 여부를 나타내는 불리언 값
+- `vlan_proto`: VLAN 프로토콜 타입
+- `vlan_tci`: VLAN Tag Control Information(우선순위, VLAN ID 등 포함)
+- `protocol`: 네트워크 계층 프로토콜 타입
+- `ip_summed`: IP 체크섬 상태
+- `len`: 패킷의 총 길이
+- `data_len`: 패킷의 비선형 데이터 부분의 길이
+- `network_offset`: 네트워크 계층 헤더의 시작 오프셋
+- `transport_offset_valid`: 전송 계층 오프셋이 유효한지 여부
+- `transport_offset`: 전송 계층 헤더의 시작 오프셋
+- `tx_flags`: 전송 관련 플래그
+- `gso_size`: GSO(Generic Segmentation Offload)에서 사용할 세그먼트 크기
+- `gso_segs`: GSO에서 생성될 세그먼트의 수
+- `gso_type`: GSO 유형
 
 **Context**: 
 - 일반적으로 send, sendto, sendmsg 등의 시스템 콜이 최종적으로 이 지점까지 패킷을 전달했을 때 호출됨
