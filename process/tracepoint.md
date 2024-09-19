@@ -3110,7 +3110,7 @@
 - **실패 시**: `void`
 
 
-## Kmem
+## Kmem[^2]
 ### kfree
 > kmalloc으로 이전에 할당된 메모리를 해제
 
@@ -3295,8 +3295,8 @@
 - **실패 시**: `void`
 
 
-## Oom
-### compact_retry
+## Oom[^3]
+### compact_retry*
 > OOM(Out Of Memory) 처리 중 메모리 압축이 재시도될 때를 추적
 
 **Use Case**: OOM 킬러 동작과 메모리 압축을 디버깅하는 데 사용
@@ -3311,7 +3311,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### finish_task_reaping
+### finish_task_reaping*
 > OOM 처리 중 태스크 정리 완료를 추적
 
 **Use Case**: OOM 킬러의 태스크 정리 프로세스를 모니터링하는 데 사용
@@ -3320,13 +3320,13 @@
 - `#include <linux/oom.h>`
 
 **Arguments**: 
-- int pid: 정리된 태스크의 프로세스 ID
+- `int` pid: 정리된 태스크의 프로세스 ID
 
 **Return Value**:
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mark_victim
+### mark_victim*
 > OOM 킬러에 의해 프로세스가 희생자로 표시될 때를 추적
 
 **Use Case**: OOM 킬러 결정을 디버깅하고 감사하는 데 사용
@@ -3358,7 +3358,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### reclaim_retry_zone
+### reclaim_retry_zone*
 > OOM 처리 중 특정 영역에 대한 메모리 회수가 재시도될 때를 추적
 
 **Use Case**: OOM 상황에서 영역별 메모리 회수 문제를 디버깅하는 데 사용
@@ -3374,7 +3374,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### skip_task_reaping
+### skip_task_reaping*
 >  OOM 처리 중 태스크 정리를 건너뛸 때를 추적
 
 **Use Case**: OOM 킬러가 태스크를 정리하지 않기로 결정한 시나리오를 디버깅하는 데 사용
@@ -3389,7 +3389,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### start_task_reaping
+### start_task_reaping*
 > OOM 처리 중 태스크 정리 시작을 추적
 
 **Use Case**: OOM 킬러의 태스크 정리 프로세스 시작을 모니터링하는 데 사용
@@ -3404,7 +3404,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### wake_reaper
+### wake_reaper*
 > OOM 리퍼 스레드가 깨어날 때를 추적
 
 **Use Case**: OOM 리퍼 활성화 및 타이밍을 디버깅하는 데 사용
@@ -3453,6 +3453,5 @@
 
 
 
-
-[^1]: [Linux manual pages](https://man7.org/linux/man-pages/dir_section_2.html)
-[^2]: [events-kmem](https://www.kernel.org/doc/Documentation/trace/events-kmem.)txt
+[^1]: [events-kmem](https://www.kernel.org/doc/Documentation/trace/events-kmem.txt)
+[^2]: [events-oom](https://github.com/torvalds/linux/blob/v6.8/include/trace/events/oom.h)
