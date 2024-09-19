@@ -334,372 +334,194 @@ In order to be accessed, a file must first be opened. Files can be opened for re
 ## Directory Operations
 
 ### Mkdir
-> Create a directory.
-
-디렉토리를 생성합니다.
+> 디렉터리를 생성합니다.
 
 **LIBRARY**:
 - `#include <sys/stat.h>`
-- `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 생성할 디렉토리 경로.
-- `mode_t mode`: 생성할 디렉토리의 권한.
+- `const char *pathname`: 생성할 디렉터리의 경로.
+- `mode_t mode`: 새 디렉터리의 접근 권한을 설정합니다 (예: `S_IRWXU`).
+
+**Use Case**:
+- 새로운 디렉터리를 생성할 때 사용됩니다. 주로 데이터 파일을 저장할 폴더나 프로젝트 구조를 구성할 때 활용됩니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mkdir.2.html
 
-
-
 ### Mkdirat
-> Create a directory relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 디렉토리를 생성합니다.
+> 디렉터리 파일 디스크립터를 기준으로 디렉터리를 생성합니다.
 
 **LIBRARY**:
-- `#include <fcntl.h>`
 - `#include <sys/stat.h>`
 
 **Arguments**:
-- `int dirfd`: 기준 디렉토리 파일 디스크립터.
-- `const char *pathname`: 생성할 디렉토리 경로.
-- `mode_t mode`: 생성할 디렉토리의 권한.
+- `int dirfd`: 기준이 되는 디렉터리의 파일 디스크립터.
+- `const char *pathname`: 생성할 디렉터리의 경로.
+- `mode_t mode`: 새 디렉터리의 접근 권한을 설정합니다.
+
+**Use Case**:
+- 특정 디렉터리를 기준으로 새 디렉터리를 생성하는 데 사용됩니다. 주로 보안이 중요한 환경에서 디렉터리 구조를 생성할 때 유용합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/mkdirat.2.html
 
-
-
 ### Rmdir
-> Delete a directory.
-
-디렉토리를 삭제합니다.
+> 디렉터리를 삭제합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *pathname`: 삭제할 디렉토리 경로.
+- `const char *pathname`: 삭제할 디렉터리의 경로.
+
+**Use Case**:
+- 빈 디렉터리를 삭제할 때 사용됩니다. 디렉터리가 비어 있어야만 삭제할 수 있으며, 비어 있지 않으면 실패합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/rmdir.2.html
 
-
-
 ### Getcwd
-> Get current working directory.
-
-현재 작업 디렉토리를 가져옵니다.
+> 현재 작업 중인 디렉터리 경로를 가져옵니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `char *buf`: 현재 작업 디렉토리를 저장할 버퍼.
+- `char *buf`: 현재 작업 중인 디렉터리 경로를 저장할 버퍼.
 - `size_t size`: 버퍼의 크기.
 
+**Use Case**:
+- 프로그램이 현재 작업 중인 디렉터리의 절대 경로를 가져올 때 사용됩니다. 파일 경로를 확인하거나 변경할 때 유용합니다.
+
 **Return Value**:
-- 성공 시 `buf`를 반환하고, 실패 시 `NULL`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 경로 문자열을 반환하고, 실패 시 `NULL`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getcwd.2.html
 
-
-
 ### Chdir
-> Change working directory.
-
-현재 작업 디렉토리를 변경합니다.
+> 현재 작업 중인 디렉터리를 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *path`: 변경할 작업 디렉토리 경로.
+- `const char *path`: 새로 설정할 디렉터리의 경로.
+
+**Use Case**:
+- 프로세스가 작업 중인 디렉터리를 변경할 때 사용됩니다. 특정 디렉터리에서 작업을 진행할 때 필수적입니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chdir.2.html
 
-
-
 ### Fchdir
-> Change working directory using a file descriptor.
-
-파일 디스크립터를 사용해 현재 작업 디렉토리를 변경합니다.
+> 파일 디스크립터를 사용해 현재 작업 중인 디렉터리를 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `int fd`: 작업 디렉토리로 사용할 파일 디스크립터.
+- `int fd`: 새로 설정할 디렉터리의 파일 디스크립터.
+
+**Use Case**:
+- 열린 디렉터리의 파일 디스크립터를 통해 작업 중인 디렉터리를 변경할 때 사용됩니다. 디렉터리를 미리 열어 놓고 작업할 경우 유용합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/fchdir.2.html
 
-
-
 ### Chroot
-> Change root directory.
-
-루트 디렉토리를 변경합니다.
+> 루트 디렉터리를 변경합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `const char *path`: 새 루트 디렉토리 경로.
+- `const char *path`: 새로 설정할 루트 디렉터리 경로.
+
+**Use Case**:
+- 주로 보안 환경에서 프로세스의 루트 디렉터리를 격리하기 위해 사용됩니다. 프로세스가 루트 경로에 접근하는 것을 제한할 때 유용합니다.
 
 **Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 `0`을 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/chroot.2.html
 
-
-
 ### Getdents
-> Get directory entries.
-
-디렉토리 엔트리를 가져옵니다.
+> 디렉터리 엔트리를 가져옵니다.
 
 **LIBRARY**:
 - `#include <dirent.h>`
 
 **Arguments**:
-- `unsigned int fd`: 디렉토리 파일 디스크립터.
-- `struct dirent *dirp`: 디렉토리 엔트리를 저장할 버퍼.
-- `unsigned int count`: 버퍼 크기.
+- `unsigned int fd`: 디렉터리의 파일 디스크립터.
+- `struct dirent *dirp`: 디렉터리 엔트리 정보를 저장할 버퍼.
+- `unsigned int count`: 읽을 바이트 수.
+
+**Use Case**:
+- 디렉터리의 엔트리를 읽어 파일 목록을 얻는 데 사용됩니다. 파일 시스템 탐색에 활용됩니다.
 
 **Return Value**:
-- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 읽은 바이트 수를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getdents.2.html
 
-
-
 ### Getdents64
-> Get directory entries (64-bit version).
-
-디렉토리 엔트리의 64비트 버전을 가져옵니다.
+> 64비트 환경에서 디렉터리 엔트리를 가져옵니다.
 
 **LIBRARY**:
 - `#include <dirent.h>`
 
 **Arguments**:
-- `unsigned int fd`: 디렉토리 파일 디스크립터.
-- `struct dirent64 *dirp`: 디렉토리 엔트리를 저장할 버퍼.
-- `unsigned int count`: 버퍼 크기.
+- `unsigned int fd`: 디렉터리의 파일 디스크립터.
+- `struct dirent64 *dirp`: 디렉터리 엔트리 정보를 저장할 버퍼.
+- `unsigned int count`: 읽을 바이트 수.
+
+**Use Case**:
+- 64비트 시스템에서 디렉터리의 엔트리를 읽어 파일 목록을 얻는 데 사용됩니다. 대용량 파일 시스템에서의 탐색에 유용합니다.
 
 **Return Value**:
-- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 읽은 바이트 수를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/getdents64.2.html
 
-
-
 ### Lookup_dcookie
-> Return a directory entry's path.
-
-디렉토리 엔트리의 경로를 반환합니다.
+> 디렉터리 엔트리의 경로를 반환합니다.
 
 **LIBRARY**:
 - `#include <unistd.h>`
 
 **Arguments**:
-- `u64 cookie`: 디렉토리 엔트리의 쿠키 값.
-- `char *buffer`: 결과 경로를 저장할 버퍼.
-- `size_t len`: 버퍼 크기.
+- `u64 cookie`: 특정 디렉터리 엔트리를 식별하는 쿠키.
+- `char *buffer`: 반환된 경로를 저장할 버퍼.
+- `size_t len`: 버퍼의 크기.
+
+**Use Case**:
+- 특정 디렉터리 엔트리에 대한 경로 정보를 얻는 데 사용됩니다. 주로 디버깅 또는 파일 시스템 관련 작업에서 활용됩니다.
 
 **Return Value**:
-- 성공 시 경로 길이를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
+- 성공 시 경로 문자열의 길이를 반환하며, 실패 시 `-1`을 반환하고 `errno`에 오류 코드가 설정됩니다.
 
 **manual page**:
 - http://man7.org/linux/man-pages/man2/lookup_dcookie.2.html
-
-### Link
-> Create a hard link to a file.
-
-파일에 대한 하드 링크를 생성합니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-
-**Arguments**:
-- `const char *oldpath`: 기존 파일의 경로.
-- `const char *newpath`: 생성할 하드 링크의 경로.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/link.2.html
-
-
-
-### Linkat
-> Create a hard link to a file relative to directory file descriptors.
-
-디렉토리 파일 디스크립터를 기준으로 파일에 대한 하드 링크를 생성합니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-
-**Arguments**:
-- `int olddirfd`: 기존 파일 디렉토리 파일 디스크립터.
-- `const char *oldpath`: 기존 파일의 경로.
-- `int newdirfd`: 새 하드 링크 디렉토리 파일 디스크립터.
-- `const char *newpath`: 생성할 하드 링크의 경로.
-- `int flags`: 플래그 옵션.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/linkat.2.html
-
-
-
-### Symlink
-> Create a symbolic link to a file.
-
-파일에 대한 심볼릭 링크를 생성합니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-
-**Arguments**:
-- `const char *target`: 심볼릭 링크가 가리킬 파일의 경로.
-- `const char *linkpath`: 생성할 심볼릭 링크의 경로.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/symlink.2.html
-
-
-
-### Symlinkat
-> Create a symbolic link to a file relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일에 대한 심볼릭 링크를 생성합니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-- `#include <fcntl.h>`
-
-**Arguments**:
-- `const char *target`: 심볼릭 링크가 가리킬 파일의 경로.
-- `int newdirfd`: 심볼릭 링크가 생성될 디렉토리 파일 디스크립터.
-- `const char *linkpath`: 생성할 심볼릭 링크의 경로.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/symlinkat.2.html
-
-
-
-### Unlink
-> Delete a name and possibly the file it refers to.
-
-파일 이름을 삭제하고, 해당 이름이 참조하는 파일도 삭제할 수 있습니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-
-**Arguments**:
-- `const char *pathname`: 삭제할 파일 이름의 경로.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/unlink.2.html
-
-
-
-### Unlinkat
-> Delete a name and possibly the file it refers to relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 파일 이름을 삭제하고, 해당 이름이 참조하는 파일도 삭제할 수 있습니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-- `#include <fcntl.h>`
-
-**Arguments**:
-- `int dirfd`: 파일 이름이 속한 디렉토리의 파일 디스크립터.
-- `const char *pathname`: 삭제할 파일 이름의 경로.
-- `int flags`: 플래그 옵션.
-
-**Return Value**:
-- 성공 시 `0`, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/unlinkat.2.html
-
-
-
-### Readlink
-> Read value of a symbolic link.
-
-심볼릭 링크가 가리키는 값을 읽습니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-
-**Arguments**:
-- `const char *pathname`: 심볼릭 링크의 경로.
-- `char *buf`: 값을 저장할 버퍼.
-- `size_t bufsiz`: 버퍼 크기.
-
-**Return Value**:
-- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/readlink.2.html
-
-
-
-### Readlinkat
-> Read value of a symbolic link relative to a directory file descriptor.
-
-디렉토리 파일 디스크립터를 기준으로 심볼릭 링크가 가리키는 값을 읽습니다.
-
-**LIBRARY**:
-- `#include <unistd.h>`
-- `#include <fcntl.h>`
-
-**Arguments**:
-- `int dirfd`: 심볼릭 링크가 속한 디렉토리 파일 디스크립터.
-- `const char *pathname`: 심볼릭 링크의 경로.
-- `char *buf`: 값을 저장할 버퍼.
-- `size_t bufsiz`: 버퍼 크기.
-
-**Return Value**:
-- 읽은 바이트 수를 반환하고, 실패 시 `-1`을 반환하며, `errno`에 오류 코드가 설정됩니다.
-
-**manual page**:
-- http://man7.org/linux/man-pages/man2/readlinkat.2.html
 
 ## Basic file attributes
 ### Umask
