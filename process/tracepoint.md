@@ -2960,6 +2960,109 @@
 
 ## Mmap
 
+---
+
+### vm_unmapped_area
+
+> 가상 메모리에서 특정 영역을 할당하려 할 때 적절한 주소를 찾지 못한 경우 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `unsigned long` **addr**: 할당하려는 가상 주소
+- `struct vm_unmapped_area_info *` **info**: 메모리 영역 할당에 대한 정보 구조체
+
+**Use Case**:
+
+- 메모리 할당 실패 원인을 분석하기 위해 사용됩니다.
+- 가상 메모리 주소 공간의 상태를 모니터링하여 메모리 부족 문제를 진단합니다.
+- 메모리 매핑 시 주소 충돌이나 정렬 문제를 디버깅합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### vma_mas_szero
+
+> VMA(Maple Tree)에서 특정 범위의 엔트리를 제거하거나 초기화할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct maple_tree *` **mt**: 대상 Maple Tree 구조체 포인터
+- `unsigned long` **start**: 제거하거나 초기화할 시작 주소
+- `unsigned long` **end**: 제거하거나 초기화할 끝 주소
+
+**Use Case**:
+
+- 프로세스의 가상 메모리 영역(VMA)을 제거하거나 초기화할 때 사용됩니다.
+- 메모리 맵 관련 오류를 디버깅하고 메모리 관리 동작을 분석합니다.
+- 메모리 누수나 잘못된 메모리 해제 문제를 진단합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### vma_store
+
+> Maple Tree에 새로운 VMA를 저장하거나 업데이트할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct maple_tree *` **mt**: 대상 Maple Tree 구조체 포인터
+- `struct vm_area_struct *` **vma**: 저장할 VMA 구조체 포인터
+
+**Use Case**:
+
+- 새로운 메모리 매핑이 생성되거나 기존 매핑이 변경될 때 이를 추적합니다.
+- VMA 관리 동작을 모니터링하고 메모리 관리 문제를 진단합니다.
+- 메모리 할당 및 해제 과정에서 발생하는 오류를 디버깅합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### exit_mmap
+
+> 프로세스의 모든 메모리 맵이 해제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/mmap.h>`
+
+**Arguments**:
+
+- `struct mm_struct *` **mm**: 메모리 관리 구조체
+  - 프로세스의 메모리 관리 정보를 담고 있습니다.
+
+**Use Case**:
+
+- 프로세스 종료 시 메모리 해제 과정을 추적합니다.
+- 메모리 누수나 해제되지 않은 메모리 영역을 진단합니다.
+- 메모리 관리자의 동작을 분석하여 성능 최적화에 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
 ## Mmap_lock
 
 ## Kmem
