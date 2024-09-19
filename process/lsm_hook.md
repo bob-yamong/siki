@@ -1,17 +1,44 @@
 # Process-Related LSM Hooks in Linux
+프로세스 조작과 관련된 tracepoint 정리 문서
 
 > [!NOTE]
 > This document is based on linux repository(v.6.8)[^1].
 >
 > 이 문서는 리눅스 레포(v.6.8)[^1]를 기준으로 작성 하였음.
 
+## Table of Content
+1. 생성
+	- task_alloc
+2. 종료
+	- task_free
+3. 권한 변경
+	- task_fix_setuid
+	- task_fix_setgid
+	- task_fix_setgroups
+4. 스케줄링
+	- task_setscheduler
+	- task_getscheduler
+	- task_setnice
+5. 리소스 관리
+	- task_setioprio
+	- task_getioprio
+	- task_prlimit
+	- task_setrlimit
+	- task_movememory
+6. 그 외
+	- task_setpgid
+	- task_getpgid
+	- task_getsid
+	- task_kill
+	- task_prctl
+	- task_to_inode
+
 ## 1. 생성
 ### task_alloc
 > 새 태스크 구조체 할당 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *task: 새로 할당된 태스크(프로세스 또는 스레드) 구조체를 가리키는 포인터. 이 구조체는 새로운 프로세스나 스레드의 모든 정보를 포함
@@ -297,8 +324,7 @@ struct task_struct {
 > 태스크 구조체 해제 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *task: 해제될 태스크 구조체를 가리키는 포인터. 이 구조체는 종료되는 프로세스나 스레드의 정보를 포함.
@@ -315,8 +341,7 @@ struct task_struct {
 > setuid 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
@@ -371,8 +396,7 @@ struct cred {
 > setgid 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
@@ -390,8 +414,7 @@ struct cred {
 > setgroups 작업 수행 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/cred.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct cred` *new: 새로운 보조 그룹 목록을 포함하는 자격 증명 구조체 포인터
@@ -409,8 +432,7 @@ struct cred {
 > 스케줄러 정책 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 스케줄링 정책이 변경될 태스크의 구조체 포인터
@@ -426,8 +448,7 @@ struct cred {
 > 스케줄러 정책 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 스케줄링 정책을 조회할 태스크의 구조체 포인터
@@ -443,8 +464,7 @@ struct cred {
 > 프로세스 nice 값 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: nice 값이 변경될 태스크의 구조체 포인터
@@ -462,8 +482,7 @@ struct cred {
 > 프로세스 I/O 우선순위 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/ioprio.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: I/O 우선순위가 변경될 태스크의 구조체 포인터
@@ -480,8 +499,7 @@ struct cred {
 > 프로세스 I/O 우선순위 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/ioprio.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: I/O 우선순위를 조회할 태스크의 구조체 포인터
@@ -497,8 +515,7 @@ struct cred {
 > 리소스 제한 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/resource.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `const struct cred` *cred: 작업을 수행하는 프로세스의 자격 증명 구조체 포인터
@@ -516,8 +533,7 @@ struct cred {
 > 리소스 제한 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/resource.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 리소스 제한이 변경될 태스크의 구조체 포인터
@@ -542,8 +558,7 @@ struct rlimit {
 > 메모리 이동 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/mm.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 메모리 이동 작업이 수행될 태스크의 구조체 포인터
@@ -560,8 +575,7 @@ struct rlimit {
 > 프로세스 그룹 ID 설정 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 프로세스 그룹 ID가 변경될 태스크의 구조체 포인터
@@ -578,8 +592,7 @@ struct rlimit {
 > 프로세스 그룹 ID 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 프로세스 그룹 ID를 조회할 태스크의 구조체 포인터
@@ -595,8 +608,7 @@ struct rlimit {
 > 세션 ID 조회 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 세션 ID를 조회할 태스크의 구조체 포인터
@@ -612,8 +624,7 @@ struct rlimit {
 > 시그널 전송 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/sched/signal.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: 시그널을 받을 대상 태스크의 구조체 포인터
@@ -643,8 +654,7 @@ struct kernel_siginfo {
 > prctl 시스템 콜 호출 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/prctl.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `int` option: 수행할 prctl 작업의 옵션
@@ -664,8 +674,7 @@ struct kernel_siginfo {
 > 태스크를 inode로 변환 시 호출
 
 **LIBRARY**: 
-- #include <linux/security.h>
-- #include <linux/fs.h>
+- #include <vmlinux.h>
 
 **Arguments** :
 - `struct task_struct` *p: inode로 변환될 태스크의 구조체 포인터 
