@@ -3120,7 +3120,7 @@
 - `#include <linux/slab.h>`
 
 **Arguments**: 
-- `const void *`objp: 해제할 메모리에 대한 포인터
+- `void *`p: 해제할 메모리에 대한 포인터
 
 **Return Value**:
 - **성공 시**: `void`
@@ -3139,8 +3139,8 @@
 - `gfp_t` flags: 할당 플래그.
 
 **Return Value**:
-- **성공 시**: 할당된 메모리에 대한 포인터
-- **실패 시**: 
+- **성공 시**: `void *` 할당된 메모리에 대한 포인터
+- **실패 시**: `NULL`
 
 ### kmem_cache_alloc
 > 특정 캐시에서 객체를 할당.
@@ -3161,7 +3161,7 @@
 ### kmem_cache_free
 > 특정 캐시에서 이전에 할당된 객체를 해제
 
-**Use Case**: 객체를 슬랩 할당자 캐시로 반환할 때 사용
+**Use Case**: 캐시에 있는 객체를 해제할 때 사용
 
 **LIBRARY**:
 - `#include <linux/slab.h>`
@@ -3174,7 +3174,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mm_page_alloc
+### mm_page_alloc*
 > 페이지 할당을 추적
 
 **Use Case**: 커널에서 페이지 할당을 디버깅하고 모니터링하는 데 사용
@@ -3192,7 +3192,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mm_page_alloc_extfrag
+### mm_page_alloc_extfrag*
 > 페이지 할당 중 외부 단편화를 추적
 
 **Use Case**: 메모리 단편화 문제를 모니터링하고 디버깅하는 데 사용
@@ -3211,7 +3211,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mm_page_alloc_zone_locked
+### mm_page_alloc_zone_locked*
 > 영역이 잠겨 있을 때 페이지 할당 시도를 추적
 
 **Use Case**: 영역별 페이지 할당 문제를 디버깅하는 데 사용
@@ -3228,7 +3228,7 @@
 - **성공 시**: `void` 
 - **실패 시**: `void` 
 
-### mm_page_free
+### mm_page_free*
 > 페이지 해제를 추적
 
 **Use Case**: 커널에서 페이지 해제를 디버깅하고 모니터링하는 데 사용
@@ -3244,7 +3244,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mm_page_free_batched
+### mm_page_free_batched*
 > 페이지가 배치로 프리 리스트에 추가될 때를 추적
 
 **Use Case**: 효율적인 페이지 해제 작업을 모니터링하는 데 사용
@@ -3260,7 +3260,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### mm_page_pcpu_drain
+### mm_page_pcpu_drain*
 > CPU별 페이지 할당자가 드레인될 때를 추적
 
 **Use Case**: CPU별 페이지 할당자의 성능을 디버깅하고 최적화하는 데 사용
@@ -3277,7 +3277,7 @@
 - **성공 시**: `void`
 - **실패 시**: `void`
 
-### rss_stat
+### rss_stat*
 > 프로세스의 상주 세트 크기(RSS) 변화를 추적
 
 **Use Case**: 프로세스의 메모리 사용량을 모니터링하는 데 사용
@@ -3455,3 +3455,4 @@
 
 
 [^1]: [Linux manual pages](https://man7.org/linux/man-pages/dir_section_2.html)
+[^2]: [events-kmem](https://www.kernel.org/doc/Documentation/trace/events-kmem.)txt
