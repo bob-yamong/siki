@@ -1,4 +1,4 @@
-# Network-Related tracepoint in Linux
+# Network-Related Tracepoint in Linux
 네트워크 조작과 관련된 tracepoint 정리 문서
 
 ## Syscalls
@@ -11,16 +11,16 @@
 
 **Use Case**: 네트워크 연결이 필요한 모든 행위가 시작할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int domain` 
-- `int type`
-- `int protocol`
+- `int domain`: 통신에 사용될 프로토콜
+- `int type`: 소켓 통신의 유형
+- `int protocol`: 특정 프로토콜을 지정(일반적인 경우에는 0으로 domain, type에 따름)
 
 **Return Value**:
-- File descriptor for the new socket on success
-- -1 on failure
+- **성공 시**: 새로운 소켓의 파일 디스크립터
+- **실패 시**: -1을 반환
 
 ---
 
@@ -32,17 +32,17 @@
 
 **Use Case**: 프로세스간 통신(IPC)을 하거나 내부 통신을 수행할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int domain`
-- `int type`
-- `int protocol`
-- `int sv[2]`
+- `int domain`: 통신에 사용될 프로토콜
+- `int type`: 소켓 통신의 유형
+- `int protocol`: 특정 프로토콜을 지정(일반적인 경우에는 0으로 domain, type에 따름)
+- `int sv[2]`: 생성된 소켓 쌍의 파일 디스크립터를 저장
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -54,18 +54,18 @@
 
 **Use Case**: 현재 네트워크 설정을 변경할 때(버퍼 크기 변경, 브로드캐스트 허용, 보안 설정 비활성화 등)
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `int level`
-- `int optname` 
-- `const void optval[.optlen]`
-- `socklen_t optlen`
+- `int sockfd`: 옵션을 설정할 소켓의 파일 디스크립터
+- `int level`: 옵션이 적용될 프로토콜 레벨
+- `int optname`: 설정할 옵션의 이름
+- `const void *optval`: 옵션에 설정할 값을 가리키는 포인터
+- `socklen_t optlen`: optval 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -73,22 +73,22 @@
 
 > Get options on sockets
 
-소켓 옵션 가져오기
+소켓 옵션 조회
 
 **Use Case**: 현재 네트워크 설정을 확인할 때(수신 버퍼 크기 확인, TCP keep-alive 설정 확인)
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `int level`
-- `int optname` 
-- `void optval[restrict *.optlen]`
-- `socklen_t *restrict optlen`
+- `int sockfd`: 옵션을 조회할 소켓의 파일 디스크립터
+- `int level`: 옵션이 적용된 프로토콜 레벨
+- `int optname`: 조회할 옵션의 이름
+- `void *optval`: 옵션 값을 저장할 버퍼를 가리키는 포인터
+- `socklen_t *optlen`: optval 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -96,20 +96,20 @@
 
 > Get socket name
 
-소켓 이름 가져오기(소켓이 바인딩 된 로컬 네트워크 정보 얻기)
+소켓 이름 조회(소켓이 바인딩 된 로컬 네트워크 정보 얻기)
 
 **Use Case**: 시스템의 네트워크 구성을 파악하려 할 때(IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct sockaddr *restrict addr`
-- `socklen_t *restrict addrlen`
+- `int sockfd`: 정보를 조회할 소켓의 파일 디스크립터
+- `struct sockaddr *addr`: 소켓 주소 정보를 저장할 구조체 포인터
+- `socklen_t *addrlen`: addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -117,20 +117,20 @@
 
 > Get name of connected peer socket
 
-연결된 피어 소켓의 이름 가져오기(연결된 peer의 네트워크 정보 얻기)
+연결된 피어 소켓의 이름 조회(연결된 피어의 네트워크 정보 얻기)
 
-**Use Case**: Peer 시스템의 네트워크 구성을 파악하려 할 때(peer의 IP 주소나 바인딩 된 포트를 알 수 있음)
+**Use Case**: 피어 시스템의 네트워크 구성을 파악하려 할 때(피어의 IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct sockaddr *restrict addr`
-- `socklen_t *restrict addrlen`
+- `int sockfd`: 정보를 조회할 소켓의 파일 디스크립터
+- `struct sockaddr *addr`: 피어 소켓 주소 정보를 저장할 구조체 포인터
+- `socklen_t *addrlen`: addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -142,16 +142,16 @@
 
 **Use Case**: 네트워크 연결을 필요로 하는 모든 행위를 할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `const struct sockaddr *addr`
-- `socklen_t addrlen`
+- `int sockfd`: 바인딩할 소켓의 파일 디스크립터
+- `const struct sockaddr *addr`: 바인딩할 주소 정보를 담은 구조체 포인터
+- `socklen_t addrlen`: addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -163,15 +163,15 @@
 
 **Use Case**: 네트워크 연결을 위한 요청을 받을 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `int backlog`
+- `int sockfd`: 리스닝할 소켓의 파일 디스크립터
+- `int backlog`: 대기 큐의 최대 길이
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -183,16 +183,16 @@
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct sockaddr *_Nullable restrict addr`
-- `socklen_t *_Nullable restrict addrlen`
+- `int sockfd`: 리스닝 중인 소켓의 파일 디스크립터
+- `struct sockaddr *addr`: 연결된 클라이언트의 주소 정보를 저장할 구조체 포인터
+- `socklen_t *addrlen`: addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 수락된 소켓의 파일 디스크립터를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -204,17 +204,17 @@
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct sockaddr *_Nullable restrict addr`
-- `socklen_t *_Nullable restrict addrlen`
-- `int flags`
+- `int sockfd`: 리스닝 중인 소켓의 파일 디스크립터
+- `struct sockaddr *addr`: 연결된 클라이언트의 주소 정보를 저장할 구조체 포인터
+- `socklen_t *addrlen`: addr 구조체의 크기를 가리키는 포인터
+- `int flags`: 추가적인 소켓 옵션
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 수락된 소켓의 파일 디스크립터를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -226,16 +226,16 @@
 
 **Use Case**: 네트워크 연결을 시도할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `const struct sockaddr * addr` 
-- `socklen_t addrlen`
+- `int sockfd`: 연결할 소켓의 파일 디스크립터
+- `const struct sockaddr * addr`: 연결할 서버의 주소 정보를 담은 구조체 포인터
+- `socklen_t addrlen`: addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -247,15 +247,15 @@
 
 **Use Case**: 네트워크 통신을 종료할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `int how`
+- `int sockfd`: 종료할 소켓의 파일 디스크립터
+- `int how`: 종료 모드
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -267,17 +267,17 @@
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `void buf[.len]`
-- `size_t len`
-- `int flags`
+- `int sockfd`: 수신할 소켓의 파일 디스크립터
+- `void *buf`: 수신한 데이터를 저장할 버퍼
+- `size_t len`: 버퍼의 크기
+- `int flags`: 수신 옵션
 
 **Return Value**:
-- 0 or number of bytes received on success
-- -1 on failure
+- **성공 시**: 0 또는 수신된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -289,19 +289,19 @@
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `void buf[restrict .len]`
-- `size_t len`
-- `int flags`
-- `struct sockaddr *_Nullable restrict src_addr`
-- `socklen_t *_Nullable restrict addrlen`
+- `int sockfd`: 수신할 소켓의 파일 디스크립터
+- `void *buf`: 수신한 데이터를 저장할 버퍼
+- `size_t len`: 버퍼의 크기
+- `int flags`: 수신 옵션
+- `struct sockaddr *src_addr`: 송신자의 주소 정보를 저장할 구조체 포인터
+- `socklen_t *addrlen`: src_addr 구조체의 크기를 가리키는 포인터
 
 **Return Value**:
-- 0 or number of bytes received on success
-- -1 on failure
+- **성공 시**: 0 또는 수신된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -313,16 +313,16 @@
 
 **Use Case**: 상세한 네트워크 활동을 분석할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct msghdr *msg`
-- `int flags`
+- `int sockfd`: 수신할 소켓의 파일 디스크립터
+- `struct msghdr *msg`: 메시지 헤더 구조체 포인터(수신 버퍼, 주소 정보, 제어 정보 등을 포함)
+- `int flags`: 수신 옵션
 
 **Return Value**:
-- 0 or number of bytes received on success
-- -1 on failure
+- **성공 시**: 0 또는 수신된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -334,18 +334,18 @@
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct mmsghdr *msgvec`
-- `unsigned int vlen`
-- `int flags`
-- `struct timespec *timeout`
+- `int sockfd`: 수신할 소켓의 파일 디스크립터
+- `struct mmsghdr *msgvec`: mmsghdr 구조체의 배열(각 구조체는 하나의 메시지에 대한 정보를 포함)
+- `unsigned int vlen`: msgvec 배열의 길이
+- `int flags`: 수신 옵션
+- `struct timespec *timeout`: 수신 대기 시간 제한
 
 **Return Value**:
-- Number of messages received in msgvec on success
-- -1 on failure
+- **성공 시**: msgvec 안의 수신된 메시지 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -357,17 +357,17 @@
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `const void buf[.len]`
-- `size_t len`
-- `int flags`
+- `int sockfd`: 송신할 소켓의 파일 디스크립터
+- `const void *buf`: 송신할 데이터가 저장된 버퍼
+- `size_t len`: 송신할 데이터의 길이
+- `int flags`: 송신 옵션
 
 **Return Value**:
-- Number of bytes sent on success
-- -1 on failure
+- **성공 시**: 전송된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -379,19 +379,19 @@
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `const void buf[.len]`
-- `size_t len`
-- `int flags`
-- `const struct sockaddr *dest_addr`
-- `socklen_t addrlen`
+- `int sockfd`: 송신할 소켓의 파일 디스크립터
+- `const void *buf`: 송신할 데이터가 저장된 버퍼
+- `size_t len`: 송신할 데이터의 길이
+- `int flags`: 송신 옵션
+- `const struct sockaddr *dest_addr`: 수신자의 주소 정보를 담은 구조체 포인터
+- `socklen_t addrlen`: dest_addr 구조체의 크기
 
 **Return Value**:
-- Number of bytes sent on success
-- -1 on failure
+- **성공 시**: 전송된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -403,16 +403,16 @@
 
 **Use Case**: 파일 데이터와 메타 데이터를 같이 전송할 때, DB 시스템이 복잡한 쿼리문을 전달할 때 등
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `const struct msghdr *msg`
-- `int flags`
+- `int sockfd`: 송신할 소켓의 파일 디스크립터
+- `const struct msghdr *msg`: 메시지 헤더 구조체 포인터(송신 버퍼, 주소 정보, 제어 정보 등을 포함)
+- `int flags`: 송신 옵션
 
 **Return Value**:
-- Number of bytes sent on success
-- -1 on failure
+- **성공 시**: 전송된 바이트 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -424,17 +424,17 @@
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc/sys/socket.h
+**LIBRARY**: libc, `#include <sys/socket.h>`
 
 **Arguments**: 
-- `int sockfd`
-- `struct mmsghdr *msgvec`
-- `unsigned int vlen`
-- `int flags`
+- `int sockfd`: 송신할 소켓의 파일 디스크립터
+- `struct mmsghdr *msgvec`: mmsghdr 구조체의 배열(각 구조체는 하나의 메시지에 대한 정보를 포함)
+- `unsigned int vlen`: msgvec 배열의 길이
+- `int flags`: 송신옵션
 
 **Return Value**:
-- Number of messages sent in msgvec on success
-- -1 on failure
+- **성공 시**: msgvec 안의 전송된 메시지 수를 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -449,12 +449,12 @@
 **LIBRARY**: libc/unistd.h
 
 **Arguments**: 
-- `const char *name`
-- `size_t len`
+- `const char *name`: 새로운 호스트 이름을 담고 있는 문자열
+- `size_t len`: name 문자열의 길이
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
 
@@ -469,14 +469,18 @@
 **LIBRARY**: libc/unistd.h
 
 **Arguments**: 
-- `const char *name`
-- `size_t len`
+- `const char *name`: 새로운 도메인 이름을 담고 있는 문자열
+- `size_t len`: name 문자열의 길이
 
 **Return Value**:
-- 0 on success
-- -1 on failure
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
 
 ---
+
+## Net
+
+
 
 ## Usage
 
