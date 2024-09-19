@@ -8,30 +8,30 @@
 
 ## Table of Content
 1. 생성
-	- task_alloc
+	- [task_alloc](#task_alloc)
 2. 종료
-	- task_free
+	- [task_free](#task_free)
 3. 권한 변경
-	- task_fix_setuid
-	- task_fix_setgid
-	- task_fix_setgroups
+	- [task_fix_setuid](#task_fix_setuid)
+	- [task_fix_setgid](#task_fix_setgid)
+	- [task_fix_setgroups](#task_fix_setgroups)
 4. 스케줄링
-	- task_setscheduler
-	- task_getscheduler
-	- task_setnice
+	- [task_setscheduler](#task_setscheduler)
+	- [task_getscheduler](#task_getscheduler)
+	- [task_setnice](#task_setnice)
 5. 리소스 관리
-	- task_setioprio
-	- task_getioprio
-	- task_prlimit
-	- task_setrlimit
-	- task_movememory
+	- [task_setioprio](#task_setioprio)
+	- [task_getioprio](#task_getioprio)
+	- [task_prlimit](#task_prlimit)
+	- [task_setrlimit](#task_setrlimit)
+	- [task_movememory](#task_movememory)
 6. 그 외
-	- task_setpgid
-	- task_getpgid
-	- task_getsid
-	- task_kill
-	- task_prctl
-	- task_to_inode
+	- [task_setpgid](#task_setpgid)
+	- [task_getpgid](#task_getpgid)
+	- [task_getsid](#task_getsid)
+	- [task_kill](#task_kill)
+	- [task_prctl](#task_prctl)
+	- [task_to_inode](#task_to_inode)
 
 ## 1. 생성
 ### task_alloc
