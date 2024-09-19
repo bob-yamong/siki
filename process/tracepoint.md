@@ -13,6 +13,14 @@
 
 **2. Sub system**
 - Sched
+- Task
+- Raw_syscalls
+- Cgroup
+- Mmap
+- Mmap_lock
+- Kmem
+- Oom
+- Context_tracking
 
 **3. Usage**
 
@@ -2520,5 +2528,23 @@
 - N/A
 
 ---
+
+## Task
+
+## Raw_syscalls
+
+## Cgroup
+
+## Mmap
+
+## Mmap_lock
+
+## Kmem
+
+## Oom
+
+## Context_tracking
+
+
 
 [^1]: [Linux manual pages](https://man7.org/linux/man-pages/dir_section_2.html)
