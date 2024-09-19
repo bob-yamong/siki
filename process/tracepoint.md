@@ -3064,50 +3064,72 @@
 ---
 
 ## Mmap_lock
-### mmap_lock_acquire_returned*
+### mmap_lock_acquire_returned
 > mmap_lock이 성공적으로 획득되었을 때 호출되는 함수
 
 **Use Case**: 커널에서 mmap_lock 획득을 디버깅하고 추적하는 데 사용됩니다.
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/mmap_lock.h>`
 
 **Arguments**: 
 - `struct mm_struct *`mm: 메모리 서술자 구조체에 대한 포인터
+- `const char *`memcg_path: 메모리 제어 그룹(memory cgroup)의 경로를 나타내는 문자열 포인터. 리소스 사용량 추적 및 제한에 사용
+- `bool` write: mmap_lock이 쓰기 모드로 획득되었는지 여부를 나타내는 부울 값. true이면 쓰기 모드, false이면 읽기 모드
+- `bool` success: mmap_lock 획득 시도가 성공했는지 여부를 나타내는 부울 값. true이면 성공, false이면 실패.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
-### mmap_lock_released*
-> mmap_lock이 해제되었을 때 호출되는 함수
+### mmap_lock_start_locking
 
-**Use Case**: 커널에서 mmap_lock 해제를 디버깅하고 추적하는 데 사용
+> 프로세스가 `mmap` 락을 획득하기 시작할 때 호출됩니다.
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
 
-**Arguments**: 
-- `struct mm_struct *`mm: 메모리 서술자 구조체에 대한 포인터
+- `#include <trace/events/mmap_lock.h>`
+
+**Arguments**:
+
+- `struct mm_struct *` **mm**: 프로세스의 메모리 관리 구조체
+- `const char *` **memcg_path**: 메모리 컨트롤 그룹의 경로
+- `bool` **write**: 락을 쓰기 모드로 획득하려는지 여부 (`true`면 쓰기, `false`면 읽기)
+
+**Use Case**:
+
+- 프로세스가 `mmap` 락을 획득하려는 시점을 모니터링합니다.
+- 락 획득 시도의 빈도나 지연 시간을 분석하여 성능 최적화에 활용합니다.
+- 메모리 매핑과 관련된 동기화 문제를 디버깅합니다.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
 
-### mmap_lock_start_locking*
->  mmap_lock 획득 과정이 시작될 때 호출되는 함수
+- N/A
 
-**Use Case**: 커널에서 mmap_lock 획득 시작을 디버깅하고 추적하는 데 사용
+---
+
+### mmap_lock_released
+
+> 프로세스가 `mmap` 락을 해제할 때 호출됩니다.
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
 
-**Arguments**: 
-- `struct mm_struct *`mm: 메모리 서술자 구조체에 대한 포인터
+- `#include <trace/events/mmap_lock.h>`
+
+**Arguments**:
+
+- `struct mm_struct *` **mm**: 프로세스의 메모리 관리 구조체
+- `const char *` **memcg_path**: 메모리 컨트롤 그룹의 경로
+- `bool` **write**: 락이 쓰기 모드로 해제되는지 여부 (`true`면 쓰기, `false`면 읽기)
+
+**Use Case**:
+
+- 프로세스가 `mmap` 락을 해제하는 시점을 추적합니다.
+- 락 보유 시간이나 자원 해제 지연을 분석하여 시스템 성능을 개선합니다.
+- 메모리 매핑 해제 시 발생하는 동기화 문제를 진단합니다.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+
+- N/A
 
 
 ## Kmem[^2]
@@ -3117,14 +3139,18 @@
 **Use Case**: 더 이상 필요하지 않은 커널 메모리를 해제할 때 사용
 
 **LIBRARY**:
-- `#include <linux/slab.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
-- `void *`p: 해제할 메모리에 대한 포인터
+- `unsigned long` call_site: 이 함수를 호출한 코드의 주소. 디버깅 및 추적 목적으로 사용.
+- `const void *`ptr: 해제할 메모리의 주소를 가리키는 포인터.
+- `size_t` bytes_req: 원래 요청된 메모리의 크기(바이트).
+- `size_t` bytes_alloc: 실제로 할당된 메모리의 크기(바이트).
+- `gfp_t` gfp_flags: 메모리 할당 시 사용된 GFP(Get Free Page) 플래그. 이는 메모리 할당 정책을 지정.
+- `int` node: 메모리가 할당된 NUMA 노드의 ID. NUMA 시스템에서 메모리 위치를 추적하는 데 사용.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### kmalloc
 > 커널 공간에서 메모리를 할당
@@ -3132,15 +3158,18 @@
 **Use Case**: 커널 작업을 위해 동적으로 메모리를 할당할 때 사용
 
 **LIBRARY**:
-- `#include <linux/slab.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
-- `size_t` size: 할당할 메모리의 크기.
-- `gfp_t` flags: 할당 플래그.
+- `unsigned long` call_site: 이 함수를 호출한 코드의 주소. 디버깅 및 추적 목적으로 사용.
+- `const void *`ptr: 할당된 메모리의 주소를 가리키는 포인터.
+- `size_t` bytes_req: 요청된 메모리의 크기(바이트).
+- `size_t` bytes_alloc: 실제로 할당된 메모리의 크기(바이트).
+- `gfp_t` gfp_flags: 메모리 할당 시 사용될 GFP(Get Free Page) 플래그. 이는 메모리 할당 정책을 지정.
+- `int` node: 메모리를 할당할 NUMA 노드의 ID. NUMA 시스템에서 메모리 위치를 지정하는 데 사용.
 
 **Return Value**:
-- **성공 시**: `void *` 할당된 메모리에 대한 포인터
-- **실패 시**: `NULL`
+- N/A
 
 ### kmem_cache_alloc
 > 특정 캐시에서 객체를 할당.
@@ -3148,15 +3177,17 @@
 **Use Case**: 자주 사용되는 객체 유형을 위해 효율적으로 메모리를 할당할 때 사용.
 
 **LIBRARY**:
-- `#include <linux/slab.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
-- `struct kmem_cache *`cachep: 할당할 캐시에 대한 포인터
-- `gfp_t` flags: 할당 플래그
+- `unsigned long` call_site: 이 함수를 호출한 코드의 주소입니다. 디버깅 및 추적 목적으로 사용됩니다.
+- `const void *`ptr: 할당된 메모리의 주소를 가리키는 포인터입니다.
+- `struct kmem_cache *`s: 메모리를 할당할 kmem 캐시의 포인터입니다. 이 캐시는 특정 크기와 속성을 가진 객체들을 관리합니다.
+- `gfp_t` gfp_flags: 메모리 할당 시 사용될 GFP(Get Free Page) 플래그입니다. 이는 메모리 할당 정책을 지정합니다.
+- `int` node: 메모리를 할당할 NUMA 노드의 ID입니다. NUMA 시스템에서 메모리 위치를 지정하는 데 사용됩니다.
 
 **Return Value**:
-- **성공 시**: 할당된 객체에 대한 포인터
-- **실패 시**: `NULL`
+- N/A
 
 ### kmem_cache_free
 > 특정 캐시에서 이전에 할당된 객체를 해제
@@ -3164,23 +3195,23 @@
 **Use Case**: 캐시에 있는 객체를 해제할 때 사용
 
 **LIBRARY**:
-- `#include <linux/slab.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
-- `struct kmem_cache *`cachep: 캐시에 대한 포인터
-- `void *`objp: 해제할 객체에 대한 포인터
+- `unsigned long` call_site: 이 함수를 호출한 코드의 주소입니다. 디버깅 및 추적 목적으로 사용됩니다.
+- `const void *`ptr: 해제할 메모리의 주소를 가리키는 포인터입니다.
+- `const struct kmem_cache *`s: 객체가 속한 kmem 캐시의 포인터입니다. 이 캐시는 특정 크기와 속성을 가진 객체들을 관리합니다.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
-### mm_page_alloc*
+### mm_page_alloc
 > 페이지 할당을 추적
 
 **Use Case**: 커널에서 페이지 할당을 디버깅하고 모니터링하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page *`page: 할당된 페이지에 대한 포인터
@@ -3189,16 +3220,14 @@
 - `int` migratetype: 할당의 마이그레이션 유형
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
-
-### mm_page_alloc_extfrag*
+- N/A
+### mm_page_alloc_extfrag
 > 페이지 할당 중 외부 단편화를 추적
 
 **Use Case**: 메모리 단편화 문제를 모니터링하고 디버깅하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page` *page: 할당된 페이지에 대한 포인터
@@ -3208,8 +3237,7 @@
 - `int` fallback_migratetype: 실제 할당의 마이그레이션 유형
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### mm_page_alloc_zone_locked*
 > 영역이 잠겨 있을 때 페이지 할당 시도를 추적
@@ -3217,7 +3245,7 @@
 **Use Case**: 영역별 페이지 할당 문제를 디버깅하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page` *page: 할당 중인 페이지에 대한 포인터
@@ -3225,8 +3253,7 @@
 - `int` migratetype: 할당의 마이그레이션 유형
 
 **Return Value**:
-- **성공 시**: `void` 
-- **실패 시**: `void` 
+- N/A
 
 ### mm_page_free*
 > 페이지 해제를 추적
@@ -3234,15 +3261,14 @@
 **Use Case**: 커널에서 페이지 해제를 디버깅하고 모니터링하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page *`page: 해제 중인 페이지에 대한 포인터
 - `unsigned int` order: 해제 중인 페이지의 순서
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### mm_page_free_batched*
 > 페이지가 배치로 프리 리스트에 추가될 때를 추적
@@ -3250,15 +3276,14 @@
 **Use Case**: 효율적인 페이지 해제 작업을 모니터링하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page *`page: 해제 중인 페이지에 대한 포인터
 - `int` cold: 페이지가 콜드 리스트로 해제되는지 여부를 나타내는 부울 값
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### mm_page_pcpu_drain*
 > CPU별 페이지 할당자가 드레인될 때를 추적
@@ -3266,7 +3291,7 @@
 **Use Case**: CPU별 페이지 할당자의 성능을 디버깅하고 최적화하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct page *`page: 드레인 중인 페이지에 대한 포인터
@@ -3274,8 +3299,7 @@
 - `int` migratetype: 페이지의 마이그레이션 유형
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### rss_stat*
 > 프로세스의 상주 세트 크기(RSS) 변화를 추적
@@ -3283,7 +3307,7 @@
 **Use Case**: 프로세스의 메모리 사용량을 모니터링하는 데 사용
 
 **LIBRARY**:
-- `#include <linux/mm.h>`
+- `#include <trace/events/kmem.h>`
 
 **Arguments**: 
 - `struct mm_struct *`mm: 메모리 서술자 구조체에 대한 포인터입니다.
@@ -3291,8 +3315,7 @@
 - `long` count: RSS 카운트의 변화량입니다.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 
 ## Oom[^3]
@@ -3308,8 +3331,7 @@
 - `int` retries: 압축 재시도 횟수
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### finish_task_reaping*
 > OOM 처리 중 태스크 정리 완료를 추적
@@ -3323,8 +3345,7 @@
 - `int` pid: 정리된 태스크의 프로세스 ID
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### mark_victim*
 > OOM 킬러에 의해 프로세스가 희생자로 표시될 때를 추적
@@ -3338,8 +3359,7 @@
 - `int` pid: 희생자의 프로세스 ID.
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### oom_score_adj_update
 > 프로세스의 OOM 점수 조정 업데이트를 추적
@@ -3355,9 +3375,7 @@
 - `int` new_val: 새 OOM 점수 조정 값
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
-
+- N/A
 ### reclaim_retry_zone*
 > OOM 처리 중 특정 영역에 대한 메모리 회수가 재시도될 때를 추적
 
@@ -3371,8 +3389,7 @@
 - `int` retries: 회수 재시도 횟수
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### skip_task_reaping*
 >  OOM 처리 중 태스크 정리를 건너뛸 때를 추적
@@ -3386,8 +3403,7 @@
 - `int` pid: 건너뛴 태스크의 프로세스 ID
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### start_task_reaping*
 > OOM 처리 중 태스크 정리 시작을 추적
@@ -3401,9 +3417,7 @@
 - `int` pid: 정리 중인 태스크의 프로세스 ID
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
-
+- N/A
 ### wake_reaper*
 > OOM 리퍼 스레드가 깨어날 때를 추적
 
@@ -3416,8 +3430,7 @@
 - int pid: 리퍼를 트리거한 태스크의 프로세스 ID
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 
 ## Context_tracking
@@ -3433,8 +3446,7 @@
 - `void`
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
+- N/A
 
 ### user_exit
 > 프로세스가 사용자 공간 컨텍스트를 나갈 때를 추적
@@ -3448,9 +3460,7 @@
 - `void`
 
 **Return Value**:
-- **성공 시**: `void`
-- **실패 시**: `void`
-
+- N/A
 
 
 [^1]: [events-kmem](https://www.kernel.org/doc/Documentation/trace/events-kmem.txt)
