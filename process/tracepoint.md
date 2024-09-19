@@ -2531,6 +2531,58 @@
 
 ## Task
 
+---
+
+### task_newtask
+
+> 새로운 태스크(프로세스)가 생성될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/task.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 생성된 태스크의 구조체
+- `unsigned long` **clone_flags**: `clone` 시스템 호출에서 사용된 플래그
+
+**Use Case**:
+
+- 시스템에서 프로세스 생성 이벤트를 모니터링합니다.
+- 프로세스 생성 패턴을 분석하여 디버깅이나 성능 튜닝에 활용합니다.
+- 새로운 프로세스의 자원 사용을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### task_rename
+
+> 태스크(프로세스)의 이름이 변경될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/task.h>`
+
+**Arguments**:
+
+- `struct task_struct *` **task**: 이름이 변경되는 태스크의 구조체
+- `const char *` **comm**: 새로운 태스크 이름 (커맨드)
+
+**Use Case**:
+
+- 프로세스의 이름 변경을 추적하여 감사(auditing)나 모니터링에 활용합니다.
+- 디버깅 시 프로세스가 언제, 왜 이름이 변경되었는지 파악하는 데 도움이 됩니다.
+- 동적으로 이름이 업데이트되는 태스크를 연관 지어 분석합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
 ## Raw_syscalls
 
 ## Cgroup
