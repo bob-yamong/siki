@@ -1,7 +1,23 @@
 # Network-Related Tracepoint in Linux
 네트워크 조작과 관련된 tracepoint 정리 문서
 
-## Syscalls
+## Table of Content
+
+### 1. System calls
+- Socket operations
+- Send/Receive
+- Naming
+
+### 2. Sub system
+- Net
+- Sock
+- TCP
+- UDP
+- XDP
+
+### 3. Usage
+
+## Socket operations
 
 ### socket
 
@@ -11,7 +27,8 @@
 
 **Use Case**: 네트워크 연결이 필요한 모든 행위가 시작할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int domain`: 통신에 사용될 프로토콜
@@ -32,7 +49,8 @@
 
 **Use Case**: 프로세스간 통신(IPC)을 하거나 내부 통신을 수행할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int domain`: 통신에 사용될 프로토콜
@@ -54,7 +72,8 @@
 
 **Use Case**: 현재 네트워크 설정을 변경할 때(버퍼 크기 변경, 브로드캐스트 허용, 보안 설정 비활성화 등)
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 옵션을 설정할 소켓의 파일 디스크립터
@@ -77,7 +96,8 @@
 
 **Use Case**: 현재 네트워크 설정을 확인할 때(수신 버퍼 크기 확인, TCP keep-alive 설정 확인)
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 옵션을 조회할 소켓의 파일 디스크립터
@@ -100,7 +120,8 @@
 
 **Use Case**: 시스템의 네트워크 구성을 파악하려 할 때(IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 정보를 조회할 소켓의 파일 디스크립터
@@ -121,7 +142,8 @@
 
 **Use Case**: 피어 시스템의 네트워크 구성을 파악하려 할 때(피어의 IP 주소나 바인딩 된 포트를 알 수 있음)
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 정보를 조회할 소켓의 파일 디스크립터
@@ -142,7 +164,8 @@
 
 **Use Case**: 네트워크 연결을 필요로 하는 모든 행위를 할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 바인딩할 소켓의 파일 디스크립터
@@ -163,7 +186,8 @@
 
 **Use Case**: 네트워크 연결을 위한 요청을 받을 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 리스닝할 소켓의 파일 디스크립터
@@ -183,7 +207,8 @@
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 리스닝 중인 소켓의 파일 디스크립터
@@ -204,7 +229,8 @@
 
 **Use Case**: 네트워크 연결을 위한 네트워크 연결 요청을 수락할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 리스닝 중인 소켓의 파일 디스크립터
@@ -226,7 +252,8 @@
 
 **Use Case**: 네트워크 연결을 시도할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 연결할 소켓의 파일 디스크립터
@@ -247,7 +274,8 @@
 
 **Use Case**: 네트워크 통신을 종료할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 종료할 소켓의 파일 디스크립터
@@ -259,6 +287,8 @@
 
 ---
 
+## Send/Receive
+
 ### recv
 
 > Receive a message from a socket
@@ -267,7 +297,8 @@
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 수신할 소켓의 파일 디스크립터
@@ -289,7 +320,8 @@
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 수신할 소켓의 파일 디스크립터
@@ -313,7 +345,8 @@
 
 **Use Case**: 상세한 네트워크 활동을 분석할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 수신할 소켓의 파일 디스크립터
@@ -334,7 +367,8 @@
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 수신할 소켓의 파일 디스크립터
@@ -357,7 +391,8 @@
 
 **Use Case**: 연결지향형 통신(TCP 통신)할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 송신할 소켓의 파일 디스크립터
@@ -379,7 +414,8 @@
 
 **Use Case**: 비연결지향형 통신(UDP 통신)할 때
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 송신할 소켓의 파일 디스크립터
@@ -403,7 +439,8 @@
 
 **Use Case**: 파일 데이터와 메타 데이터를 같이 전송할 때, DB 시스템이 복잡한 쿼리문을 전달할 때 등
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 송신할 소켓의 파일 디스크립터
@@ -424,7 +461,8 @@
 
 **Use Case**: 실시간 스트리밍 서비스, 로그 수집 서버, 네트워크 모니터링 활동 등과 같이 대량의 패킷을 처리해야하는 서비스
 
-**LIBRARY**: libc, `#include <sys/socket.h>`
+**LIBRARY**: libc
+- `#include <sys/socket.h>`
 
 **Arguments**: 
 - `int sockfd`: 송신할 소켓의 파일 디스크립터
@@ -437,6 +475,8 @@
 - **실패 시**: -1을 반환
 
 ---
+
+## Naming
 
 ### sethostname
 
@@ -480,7 +520,13 @@
 
 ## Net
 
+## Sock
 
+## TCP
+
+## UDP
+
+## XDP
 
 ## Usage
 
