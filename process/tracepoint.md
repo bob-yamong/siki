@@ -2585,7 +2585,378 @@
 
 ## Raw_syscalls
 
+---
+
+### sys_enter
+
+> 시스템 호출에 진입할 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/raw_syscalls.h>`
+
+**Arguments**:
+
+- `long` **id**: 시스템 호출 번호 (System Call Number)
+- `unsigned long` **args[6]**: 시스템 호출에 전달된 최대 6개의 인자 배열
+
+**Use Case**:
+
+- 프로세스가 어떤 시스템 호출을 실행하는지 실시간으로 추적합니다.
+- 시스템 호출의 인자 값을 모니터링하여 디버깅이나 감사(audit)에 활용합니다.
+- 보안 분석을 위해 프로세스의 시스템 호출 활동을 기록하고 이상 행위를 탐지합니다.
+- 시스템 호출 패턴을 분석하여 성능 최적화에 도움을 줍니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### sys_exit
+
+> 시스템 호출이 종료될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/raw_syscalls.h>`
+
+**Arguments**:
+
+- `long` **id**: 시스템 호출 번호 (System Call Number)
+- `long` **ret**: 시스템 호출의 반환 값
+
+**Use Case**:
+
+- 시스템 호출의 결과를 모니터링하여 오류를 추적하고 처리합니다.
+- 프로세스의 시스템 호출 활동과 그 결과를 분석하여 디버깅에 활용합니다.
+- 보안 및 성능 분석을 위해 시스템 호출의 반환 값을 기록합니다.
+- 실패한 시스템 호출을 탐지하여 시스템 안정성을 개선합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
 ## Cgroup
+
+---
+
+### cgroup_setup_root
+
+> 새로운 cgroup 루트가 설정될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 설정된 cgroup 루트의 구조체
+
+**Use Case**:
+
+- 새로운 cgroup 계층 구조가 생성될 때 이를 모니터링합니다.
+- 시스템에서 cgroup 서브시스템의 초기화 과정을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_destroy_root
+
+> cgroup 루트가 파괴될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 파괴되는 cgroup 루트의 구조체
+
+**Use Case**:
+
+- cgroup 계층 구조의 해체를 추적합니다.
+- 리소스 정리 및 메모리 해제를 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_remount
+
+> cgroup 루트가 재마운트될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup_root *` **root**: 재마운트되는 cgroup 루트의 구조체
+
+**Use Case**:
+
+- cgroup 파일 시스템의 재설정을 추적합니다.
+- 마운트 옵션 변경 등을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_mkdir
+
+> 새로운 cgroup 디렉토리가 생성될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 생성된 cgroup의 구조체
+- `const char *` **path**: 생성된 cgroup의 경로
+
+**Use Case**:
+
+- 새로운 cgroup의 생성 이벤트를 모니터링합니다.
+- cgroup 계층 구조의 변경 사항을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_rmdir
+
+> cgroup 디렉토리가 삭제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 삭제되는 cgroup의 구조체
+- `const char *` **path**: 삭제되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 제거 이벤트를 모니터링합니다.
+- 리소스 정리 및 관련 프로세스의 상태를 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_release
+
+> cgroup에 연결된 모든 프로세스가 종료되어 cgroup이 해제될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 해제되는 cgroup의 구조체
+- `const char *` **path**: 해제되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 수명 주기를 모니터링합니다.
+- 프로세스 종료 후 cgroup의 정리 과정을 추적합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_rename
+
+> cgroup의 이름이 변경될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 이름이 변경되는 cgroup의 구조체
+- `const char *` **path**: 변경된 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 이름 변경 이벤트를 추적합니다.
+- cgroup 계층 구조의 변경 사항을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_freeze
+
+> cgroup이 동결될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 동결되는 cgroup의 구조체
+- `const char *` **path**: 동결되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 동결 상태 변화를 모니터링합니다.
+- 리소스 사용량 제어나 시스템 응답성 향상을 위한 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_unfreeze
+
+> 동결된 cgroup이 해동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 해동되는 cgroup의 구조체
+- `const char *` **path**: 해동되는 cgroup의 경로
+
+**Use Case**:
+
+- cgroup의 동결 해제 이벤트를 추적합니다.
+- 프로세스 실행 재개 시점을 모니터링합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_attach_task
+
+> 프로세스가 새로운 cgroup으로 이동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **dst_cgrp**: 이동할 대상 cgroup의 구조체
+- `const char *` **path**: 대상 cgroup의 경로
+- `struct task_struct *` **task**: 이동하는 프로세스의 태스크 구조체
+- `bool` **threadgroup**: 스레드 그룹 전체 이동 여부 (`true`면 전체 이동)
+
+**Use Case**:
+
+- 프로세스의 cgroup 이동 이벤트를 모니터링합니다.
+- 리소스 제약 및 프로세스 관리를 위한 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_transfer_tasks
+
+> 여러 프로세스가 다른 cgroup으로 이동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **dst_cgrp**: 이동할 대상 cgroup의 구조체
+- `const char *` **path**: 대상 cgroup의 경로
+- `struct task_struct *` **task**: 이동하는 프로세스의 태스크 구조체 중 하나
+- `bool` **threadgroup**: 스레드 그룹 전체 이동 여부
+
+**Use Case**:
+
+- 다수의 프로세스가 한꺼번에 cgroup을 이동하는 상황을 추적합니다.
+- 시스템 리소스 재분배나 정책 변경 시 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_notify_populated
+
+> cgroup에 프로세스가 추가되거나 모두 제거되어 비워질 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 변경이 발생한 cgroup의 구조체
+- `const char *` **path**: 해당 cgroup의 경로
+- `int` **val**: cgroup의 현재 상태 (1이면 프로세스가 존재, 0이면 비어 있음)
+
+**Use Case**:
+
+- cgroup의 프로세스 수 변화를 모니터링합니다.
+- 자동화된 리소스 관리나 모니터링 도구에서 활용합니다.
+
+**Return Value**:
+
+- N/A
+
+---
+
+### cgroup_notify_frozen
+
+> cgroup이 동결되거나 해동될 때 호출됩니다.
+
+**LIBRARY**:
+
+- `#include <trace/events/cgroup.h>`
+
+**Arguments**:
+
+- `struct cgroup *` **cgrp**: 상태 변화가 발생한 cgroup의 구조체
+- `const char *` **path**: 해당 cgroup의 경로
+- `int` **val**: cgroup의 동결 상태 (1이면 동결됨, 0이면 해동됨)
+
+**Use Case**:
+
+- cgroup의 동결 및 해동 상태 변화를 추적합니다.
+- 시스템 자원 관리 및 성능 분석에 활용됩니다.
+
+**Return Value**:
+
+- N/A
+
+---
 
 ## Mmap
 
