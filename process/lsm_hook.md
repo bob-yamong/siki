@@ -14,8 +14,8 @@
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *task
-- `unsigned long` clone_flags
+- `struct task_struct` *task: 새로 할당된 태스크(프로세스 또는 스레드) 구조체를 가리키는 포인터. 이 구조체는 새로운 프로세스나 스레드의 모든 정보를 포함
+- `unsigned long` clone_flags: 프로세스 또는 스레드 생성 시 사용된 플래그. 예를 들어, CLONE_THREAD 플래그는 새 스레드를 생성
 
 ```c
 struct task_struct {
@@ -301,7 +301,7 @@ struct task_struct {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *task
+- `struct task_struct` *task: 해제될 태스크 구조체를 가리키는 포인터. 이 구조체는 종료되는 프로세스나 스레드의 정보를 포함.
 
 **Use Case** : 
 - 프로세스 종료 시 보안 리소스 정리
@@ -319,9 +319,9 @@ struct task_struct {
 - #include <linux/cred.h>
 
 **Arguments** :
-- `struct cred` *new
-- `const struct cred` *old 
-- `int` flags
+- `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
+- `const struct cred` *old: 이전 자격 증명 정보를 포함하는 구조체 포인터 
+- `int` flags: setuid 작업과 관련된 플래그
 
 ```c
 struct cred {
@@ -375,9 +375,9 @@ struct cred {
 - #include <linux/cred.h>
 
 **Arguments** :
-- `struct cred` *new
-- `const struct cred` * old
-- `int` flags
+- `struct cred` *new: 새로운 자격 증명(credentials) 정보를 포함하는 구조체 포인터
+- `const struct cred` *old: 이전 자격 증명 정보를 포함하는 구조체 포인터 
+- `int` flags: setuid 작업과 관련된 플래그
 
 **Use Case** : 
 - setgid 작업 시 그룹 권한 변경 검증
@@ -394,8 +394,8 @@ struct cred {
 - #include <linux/cred.h>
 
 **Arguments** :
-- `struct cred` *new 
-- `const struct cred` *old
+- `struct cred` *new: 새로운 보조 그룹 목록을 포함하는 자격 증명 구조체 포인터
+- `const struct cred` *old: 이전 보조 그룹 목록을 포함하는 자격 증명 구조체 포인터
 
 **Use Case** : 
 - 프로세스의 보조 그룹 목록 변경 검증
@@ -413,7 +413,7 @@ struct cred {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: 스케줄링 정책이 변경될 태스크의 구조체 포인터
 
 **Use Case** : 
 - 프로세스 스케줄링 정책 변경 제어
@@ -430,7 +430,7 @@ struct cred {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: 스케줄링 정책을 조회할 태스크의 구조체 포인터
 
 **Use Case** : 
 - 프로세스 스케줄링 정책 조회 권한 검증
@@ -447,8 +447,8 @@ struct cred {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *p
-- `int` nice
+- `struct task_struct` *p: nice 값이 변경될 태스크의 구조체 포인터
+- `int` nice: 설정하려는 새로운 nice 값
 
 **Use Case** : 
 - 프로세스 우선순위 변경 제어
@@ -466,8 +466,8 @@ struct cred {
 - #include <linux/ioprio.h>
 
 **Arguments** :
-- `struct task_struct` *p
-- `int` ioprio
+- `struct task_struct` *p: I/O 우선순위가 변경될 태스크의 구조체 포인터
+- `int` ioprio: 설정하려는 새로운 I/O 우선순위 값
 
 **Use Case** : 
 - I/O 우선순위 변경 권한 검증
@@ -484,7 +484,7 @@ struct cred {
 - #include <linux/ioprio.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: I/O 우선순위를 조회할 태스크의 구조체 포인터
 
 **Use Case** : 
 - I/O 우선순위 정보 접근 권한 검증
@@ -501,9 +501,9 @@ struct cred {
 - #include <linux/resource.h>
 
 **Arguments** :
-- `const struct cred` *cred
-- `const struct cred` *tcred
-- `unsigned int` flags
+- `const struct cred` *cred: 작업을 수행하는 프로세스의 자격 증명 구조체 포인터
+- `const struct cred` *tcred: 대상 프로세스의 자격 증명 구조체 포인터
+- `unsigned int` flags: prlimit 작업과 관련된 플래그
 
 **Use Case** : 
 - 프로세스 리소스 제한 변경 권한 검증
@@ -520,9 +520,9 @@ struct cred {
 - #include <linux/resource.h>
 
 **Arguments** :
-- `struct task_struct` *p
-- `unsigned int` resource
-- `struct rlimit` *new_rlim
+- `struct task_struct` *p: 리소스 제한이 변경될 태스크의 구조체 포인터
+- `unsigned int` resource: 제한을 설정할 리소스의 식별자
+- `struct rlimit` *new_rlim: 새로운 리소스 제한 값을 포함하는 구조체 포인터
 
 ```c
 struct rlimit {
@@ -546,7 +546,7 @@ struct rlimit {
 - #include <linux/mm.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: 메모리 이동 작업이 수행될 태스크의 구조체 포인터
 
 **Use Case** : 
 - 프로세스 메모리 이동 작업 검증
@@ -564,8 +564,8 @@ struct rlimit {
 - #include <linux/sched.h>
 
 **Arguments** :
-- struct task_struct *p
-- pid_t pgid
+- `struct task_struct` *p: 프로세스 그룹 ID가 변경될 태스크의 구조체 포인터
+- `pid_t` pgid: 설정하려는 새로운 프로세스 그룹 ID
 
 **Use Case** : 
 - 프로세스 그룹 변경 권한 검증
@@ -582,7 +582,7 @@ struct rlimit {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: 프로세스 그룹 ID를 조회할 태스크의 구조체 포인터
 
 **Use Case** : 
 - 프로세스 그룹 정보 접근 권한 검증
@@ -599,7 +599,7 @@ struct rlimit {
 - #include <linux/sched.h>
 
 **Arguments** :
-- `struct task_struct` *p
+- `struct task_struct` *p: 세션 ID를 조회할 태스크의 구조체 포인터
 
 **Use Case** : 
 - 세션 ID 접근 권한 검증
@@ -616,10 +616,10 @@ struct rlimit {
 - #include <linux/sched/signal.h>
 
 **Arguments** :
-- `struct task_struct` *p
-- `struct kernel_siginfo` *info
-- `int` sig
-- `const struct cred` *cred
+- `struct task_struct` *p: 시그널을 받을 대상 태스크의 구조체 포인터
+- `struct kernel_siginfo` *info: 전송될 시그널에 대한 상세 정보를 포함하는 구조체 포인터
+- `int` sig: 전송될 시그널 번호
+- `const struct cred` *cred: 시그널을 보내는 프로세스의 자격 증명 구조체 포인터
 
 ```c
 struct kernel_siginfo {
@@ -647,11 +647,11 @@ struct kernel_siginfo {
 - #include <linux/prctl.h>
 
 **Arguments** :
-- `int` option
-- `unsigned long` arg2
-- `unsigned long` arg3
-- `unsigned long` arg4
-- `unsigned long` arg5
+- `int` option: 수행할 prctl 작업의 옵션
+- `unsigned long` arg2: prctl 작업에 필요한 첫 번째 인자
+- `unsigned long` arg3: prctl 작업에 필요한 두 번째 인자
+- `unsigned long` arg4: prctl 작업에 필요한 세 번째 인자
+- `unsigned long` arg5: prctl 작업에 필요한 네 번째 인자
 
 **Use Case** : 
 - prctl 작업 수행 권한 검증
@@ -668,8 +668,8 @@ struct kernel_siginfo {
 - #include <linux/fs.h>
 
 **Arguments** :
-- `struct task_struct` *p 
-- `struct inode` *inode
+- `struct task_struct` *p: inode로 변환될 태스크의 구조체 포인터 
+- `struct inode` *inode: 태스크 정보를 저장할 inode 구조체 포인터
 
 **Use Case** : 
 - 프로세스 정보를 파일 시스템 inode로 변환 시 보안 속성 설정
