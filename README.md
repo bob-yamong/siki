@@ -22,3 +22,4 @@ Contributions are welcome! If you have suggestions, improvements, or additional 
 - [Tetragon: Tracing Policy Hooks](https://tetragon.io/docs/concepts/tracing-policy/hooks/)
 - [Linasm: Linux Network System Calls](https://linasm.sourceforge.net/docs/syscalls/network.php#socket)
 - [Kernel BPF Documentation](https://docs.kernel.org/bpf/libbpf/program_types.html)
+- [bootlin: Elixir Cross Referencer](https://elixir.bootlin.com/linux/v6.8/source/include/linux/lsm_hook_defs.h)
