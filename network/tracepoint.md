@@ -74,7 +74,7 @@
 - `int level`: 옵션이 적용될 프로토콜 레벨
 - `int optname`: 설정할 옵션의 이름
 - `const void *optval`: 옵션에 설정할 값을 가리키는 포인터
-- `socklen_t optlen`: optval 구조체의 크기를 가리키는 포인터
+- `socklen_t optlen`: optval 구조체의 크기
 
 **Return Value**:
 - **성공 시**: 0을 반환
@@ -156,7 +156,7 @@
 **Arguments**: 
 - `int sockfd`: 바인딩할 소켓의 파일 디스크립터
 - `const struct sockaddr *addr`: 바인딩할 주소 정보를 담은 구조체 포인터
-- `socklen_t addrlen`: addr 구조체의 크기를 가리키는 포인터
+- `socklen_t addrlen`: addr 구조체의 크기
 
 **Return Value**:
 - **성공 시**: 0을 반환
@@ -236,7 +236,7 @@
 **Arguments**: 
 - `int sockfd`: 연결할 소켓의 파일 디스크립터
 - `const struct sockaddr * addr`: 연결할 서버의 주소 정보를 담은 구조체 포인터
-- `socklen_t addrlen`: addr 구조체의 크기를 가리키는 포인터
+- `socklen_t addrlen`: addr 구조체의 크기
 
 **Return Value**:
 - **성공 시**: 0을 반환
@@ -265,7 +265,7 @@
 
 ## Send/Receive
 
-### recv
+### recv -> tracepoint에 없음 좀 더 알아봐야함.
 
 > 소켓에서 메시지(데이터) 받기 → 송신자에 대한 정보 모름
 
@@ -351,7 +351,7 @@
 
 ---
 
-### send
+### send -> tracepoint에 없음
 
 > 소켓에 메시지(데이터) 보내기 → 이미 연결된 소켓에서
 
