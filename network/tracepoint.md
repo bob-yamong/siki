@@ -426,7 +426,38 @@
 
 **Arguments**: 
 - `int sockfd`: 송신할 소켓의 파일 디스크립터
-음
+- `struct mmsghdr *msgvec`: mmsghdr 구조체의 배열(각 구조체는 하나의 메시지에 대한 정보를 포함)
+- `unsigned int vlen`: msgvec 배열의 길이
+- `int flags`: 송신옵션
+
+**Return Value**:
+- **성공 시**: msgvec 안의 전송된 메시지 수를 반환
+- **실패 시**: -1을 반환
+
+---
+
+## Naming
+
+### sethostname
+
+> 시스템의 호스트 이름을 설정할 때 사용
+
+**Use Case**: 시스템 관리자가 호스트 이름을 변경할 때, 새로운 가상머신이나 컨테이너를 생성할 때 등
+
+**LIBRARY**:
+- `#include <unistd.h>`
+
+**Arguments**: 
+- `const char *name`: 새로운 호스트 이름을 담고 있는 문자열
+- `size_t len`: name 문자열의 길이
+
+**Return Value**:
+- **성공 시**: 0을 반환
+- **실패 시**: -1을 반환
+ 
+---
+
+### setdomainname
 
 > 시스템의 NIS(Network Information Service) 도메인 이름을 설정할 때 사용
 
